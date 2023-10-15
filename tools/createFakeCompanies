@@ -1,0 +1,16 @@
+import sqlite3
+
+db = sqlite3.connect("./database/test.db")
+dbctrl = db.cursor()
+
+# yea idk i just wanted to test it out :) add more as needed
+companyData = [
+    (1,'PathFinder', 'Technology','The PathFinder company is the best company in the world')
+]
+dbctrl.executemany("""
+INSERT or IGNORE INTO companies VALUES
+    (?,?,?,?)
+""",companyData)
+
+#commits insert changes
+db.commit()
