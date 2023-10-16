@@ -16,14 +16,17 @@ class Job:
         tempData = tempDB.fetchone()
 
         #debug print
-        #print(tempData)
+        print(tempData)
         
         # setting attributes
         self.title = tempData[1]
-        self.company = tempData[2]
-        self.city = tempData[3]
-        self.state = tempData[4]
-        self.description = tempData[5]
+        self.keywords = tempData[2].split(",")
+        self.company = tempData[3]
+        self.city = tempData[4]
+        self.state = tempData[5]
+        self.minSalary = tempData[6]
+        self.maxSalary = tempData[7]
+        self.description = tempData[8]
 
     # methods
     
@@ -34,6 +37,9 @@ class Job:
 
     def getId(self):
         return self.id
+    
+    def getKeywords(self):
+        return self.keywords
     
     def getTitle(self):
         return self.title
@@ -47,5 +53,8 @@ class Job:
     def getState(self):
         return self.state
     
+    def getSalaryRange(self):
+        return [self.minSalary, self.maxSalary]
+
     def getDesc(self):
         return self.description
