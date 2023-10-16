@@ -21,7 +21,9 @@ class Company:
         # setting attributes
         self.name = tempData[1]
         self.industry = tempData[2]
-        self.description = tempData[3]
+        self.keywords = tempData[3].split(",")
+        self.description = tempData[4]
+        
 
     # methods
     
