@@ -8,4 +8,4 @@ def home():
 
 @views.route("/login") #defining the route to login page (incomplete)
 def login():
-    return render_template("index.html")
+    return render_template("base.html")
