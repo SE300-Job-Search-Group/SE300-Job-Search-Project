@@ -1,4 +1,4 @@
-import user
+from user import User
 import sqlite3
 
 class Job:
@@ -30,7 +30,7 @@ class Job:
 
     # methods
     
-    def userMatch(self,usr: user) -> float:
+    def userMatch(self,usr: User) -> float:
         return 1 #should return match ranking 
 
     # functions

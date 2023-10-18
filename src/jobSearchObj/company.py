@@ -1,4 +1,4 @@
-import user
+from user import User
 import sqlite3
 
 class Company:
@@ -27,7 +27,7 @@ class Company:
 
     # methods
     
-    def userMatch(self,usr: user) -> float:
+    def userMatch(self,usr: User) -> float:
         return 1 #should return match ranking 
     
     # functions
@@ -41,5 +41,11 @@ class Company:
     def getIndustry(self):
         return self.industry
     
+    def getKeywords(self):
+        return self.keywords
+    
     def getDesc(self):
         return self.description
+    
+    def getRating(self):
+        return 1
