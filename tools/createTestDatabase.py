@@ -20,6 +20,11 @@ def reinitDatabase():
 
     dbctrl.execute("""
         DROP TABLE IF EXISTS
+            user
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
             reviews
     """)
 
@@ -57,6 +62,21 @@ def reinitDatabase():
             rating_career REAL,
             rating_management REAL,
             rating_culture REAL
+        )
+    """)
+
+    #stores users
+    dbctrl.execute("""
+        CREATE TABLE user(
+            user_id INTEGER PRIMARY KEY,
+            username TEXT NOT NULL,
+            password TEXT,
+            keywords TEXT,
+            skills TEXT,
+            city REAL,
+            state REAL,
+            minSalary REAL,
+            maxSalary REAL,
         )
     """)
 
@@ -119,6 +139,24 @@ def fillCompanies():
     db.commit()
     db.close()
 
+def fillUser():
+    db = sqlite3.connect("./database/test.db")
+    dbctrl = db.cursor()
+
+    # add more as needed
+    userData = [
+        #User skills, pref. location, keywords
+        (1, 'luv2code', 'Passcode123%', 'work-life balance, vacation, benefits', 'python, programming, soft skills', 'New York', 'NY', 70000, 100000),
+        (2, 'NGNeer365', 'J1mmyJ@hns', 'healthy deadlines, communication, recognition', 'matlab, leadership, microsoft', 'Huntsville', 'AL', 90000, 150000)
+    ]
+    dbctrl.executemany("""
+    INSERT or IGNORE INTO users VALUES
+        (?,?,?,?,?,?,?,?,?,?,?)
+    """,userData)
+
+    #commits insert changes
+    db.commit()
+    db.close()
 #runs functions
 reinitDatabase() #reinitiates tables
 fillJobs() #fills job database with fake test jobs
