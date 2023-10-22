@@ -1,11 +1,33 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
+from jobSearchObj.jobHandler import JobHandler
 
+#Flask blueprint for views
 views = Blueprint(__name__, "views")
 
-@views.route("/home") #defining the route to the home page
+#initializing jobHandler
+job_handler = JobHandler()
+
+@views.route("/home", methods=['GET', 'POST']) #defining route to home page
 def home():
+    #request to the home page
+    if request.method == 'POST':
+        #method is POST if the user uses the search bar
+        query = request.form.get('query')
+        keywords = query.split()
+
+        #using the jobHandler
+        matching_jobs = job_handler.search_jobs(keywords)
+        
+        #page to display search results
+        return render_template('search_results.html', jobs=matching_jobs)
+    
+    #home page is displayed if nothing is searched
     return render_template("index.html")
 
-@views.route("/login") #defining the route to login page (incomplete)
+@views.route("/login") #defining the route to login page 
 def login():
-    return render_template("base.html")
+    return render_template("login.html")
+
+@views.route("/profile") #defining the route to profile page 
+def profile():
+    return render_template("profile.html")

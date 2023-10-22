@@ -1,5 +1,16 @@
-{% extends "base.html" %} <!--child template of base (represents a seperate page)-->
+{% extends "base.html" %} <!--represents the homepage-->
 {% block title %} Home page{% endblock %}
 {% block content %}
-<h1>Test</h1>
+<div class="d-flex justify-content-center align-items-center vh-100"> <!-- Center-align content vertically and horizontally -->
+    <div class="text-center"> <!-- Center-align content horizontally -->
+        <h1>Aerosearch</h1>
+        <form method="POST" action="{{ url_for('views.home') }}">
+            <div class="form-group mb-4"> <!-- Added margin to the form group -->
+                <input type="text" name="query" class="form-control form-control-lg" placeholder="Search keywords"> <!-- Increased input size with form-control-lg -->
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
