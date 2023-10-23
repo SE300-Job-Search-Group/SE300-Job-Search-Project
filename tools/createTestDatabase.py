@@ -146,7 +146,8 @@ def fillUser():
     # add more as needed
     userData = [
         #User skills, pref. location, keywords
-        (1, 'Programming', 'FL', 'Work-Life Balance')
+        (1, 'luv2code', 'Passcode123%', 'work-life balance, vacation, benefits', 'python, programming, soft skills', 'New York', 'NY', 70000, 100000),
+        (2, 'NGNeer365', 'J1mmyJ@hns', 'healthy deadlines, communication, recognition', 'matlab, leadership, microsoft', 'Huntsville', 'AL', 90000, 150000)
     ]
     dbctrl.executemany("""
     INSERT or IGNORE INTO users VALUES
