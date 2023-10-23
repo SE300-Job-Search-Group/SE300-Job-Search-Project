@@ -1,20 +1,31 @@
-from .job import Job
+from job import Job
+import sqlite3
 
 class JobHandler:
 
     def __init__(self):
-        #initialize an empty list to store job objects.
-        self.jobs = []
+        self.jobs = [] #list of jobs to be shown
 
-    def search_jobs(self, keywords):
-        #this where the code actually handles the keywords
+    #methods
 
-        #initialize an empty list to store matching jobs.
-        matching_jobs = [job for job in self.jobs if any(keyword in job.title for keyword in keywords)]
+    def searchDB(self,keywords):
+        #searches sql database for relavent jobs(first 10)
         
-        #print statements to verify keywords 
-        print(f"Received keywords: {keywords}")
-        print(f"Matching jobs: {matching_jobs}")
-        
-        #returning the list of matched jobs
-        return matching_jobs
+        # connects to test database
+        db = sqlite3.connect("./database/test.db")
+        #should have option to connect to actual database
+
+        #fetch job data
+        dbctrl = db.cursor()
+
+        # this var is an array of job listings (define which vars are needed)
+        tempDB=dbctrl.execute("SELECT job_id FROM jobs WHERE keywords LIKE '"+ ','.join(keywords)+"'")
+
+        tempJobs = tempDB.fetchall() # result from search
+
+        return tempJobs
+    
+        #formating to job objects
+        # self.jobs = tempJobs
+
+    #functions

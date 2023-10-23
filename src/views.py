@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from jobSearchObj.jobHandler import JobHandler
+from JobSearchObj import JobHandler
 
 #Flask blueprint for views
 views = Blueprint(__name__, "views")
@@ -16,7 +16,7 @@ def home():
         keywords = query.split()
 
         #using the jobHandler
-        matching_jobs = job_handler.search_jobs(keywords)
+        matching_jobs = job_handler.searchDB(keywords)
         
         #page to display search results
         return render_template('search_results.html', jobs=matching_jobs)
