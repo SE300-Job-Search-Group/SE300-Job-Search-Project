@@ -31,3 +31,15 @@ def login():
 @views.route("/profile") #defining the route to profile page 
 def profile():
     return render_template("profile.html")
+
+@views.route("/jobmatch") #defining the route to job match page 
+def jobmatch():
+    return render_template("jobMatch.html")
+
+@views.route("/jobcompare") #defining the route to compare page 
+def jobcompare():
+    return render_template("jobCompare.html")
+
+@views.route("/about") #defining the route to about page 
+def about():
+    return render_template("about.html")
