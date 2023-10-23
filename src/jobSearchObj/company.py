@@ -1,4 +1,4 @@
-from .user import User
+from user import User
 import sqlite3
 
 class Company:

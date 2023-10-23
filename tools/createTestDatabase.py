@@ -109,8 +109,8 @@ def fillJobs():
     
     # yea idk i just wanted to test it out :) add more as needed
     jobData = [
-        (1, 'Entry Level Software Engineer', 'Software, Entry-level, Programming, Computer Science, Engineering', 'PathFinder', 'Daytona Beach', 'FL', 5, 100000, 'idk'),
-        (2, 'Project Manager', 'Project Management, Manager, Software, Engineering', 'PathFinder', 'Daytona Beach', 'FL', 1000000, 2000000, 'manage the projects duh')
+        (1, 'Entry Level Software Engineer', 'Software,Entry-level,Programming,Computer Science,Engineering,PathFinder', 'PathFinder', 'Daytona Beach', 'FL', 5, 100000, 'idk'),
+        (2, 'Project Manager', 'Project Management,Manager,Software,Engineering,PathFinder', 'PathFinder', 'Daytona Beach', 'FL', 1000000, 2000000, 'manage the projects duh')
     ]
     
     dbctrl.executemany("""
@@ -128,7 +128,7 @@ def fillCompanies():
 
     # yea idk i just wanted to test it out :) add more as needed
     companyData = [
-        (1,'PathFinder', 'Technology','Work-Life Balance, Flat Hierarchy, Family-like, Opportunity', 'The PathFinder company is the best company in the world',5.0,4.9,4.8,4.7,4.6,4.5)
+        (1,'PathFinder', 'Technology','Work-Life Balance,Flat Hierarchy,Family-like,Opportunity', 'The PathFinder company is the best company in the world',5.0,4.9,4.8,4.7,4.6,4.5)
     ]
     dbctrl.executemany("""
     INSERT or IGNORE INTO companies VALUES
@@ -146,8 +146,8 @@ def fillUser():
     # add more as needed
     userData = [
         #User skills, pref. location, keywords
-        (1, 'luv2code', 'Passcode123%', 'work-life balance, vacation, benefits', 'python, programming, soft skills', 'New York', 'NY', 70000, 100000),
-        (2, 'NGNeer365', 'J1mmyJ@hns', 'healthy deadlines, communication, recognition', 'matlab, leadership, microsoft', 'Huntsville', 'AL', 90000, 150000)
+        (1, 'luv2code', 'Passcode123%', 'work-life balance,vacation,benefits', 'python, programming, soft skills', 'New York', 'NY', 70000, 100000),
+        (2, 'NGNeer365', 'J1mmyJ@hns', 'healthy deadlines,communication,recognition', 'matlab, leadership, microsoft', 'Huntsville', 'AL', 90000, 150000)
     ]
     dbctrl.executemany("""
     INSERT or IGNORE INTO users VALUES
