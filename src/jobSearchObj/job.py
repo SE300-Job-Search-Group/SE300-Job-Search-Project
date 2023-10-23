@@ -30,8 +30,18 @@ class Job:
 
     # methods
     
-    def userMatch(self,usr: User) -> float:
-        return 1 #should return match ranking 
+    def userMatch(self,user: User) -> float:
+        #compares keywords w/ skills, salary range, location
+
+        #temp until user stuff is setup
+        tempUserSkills = ['']
+        tempUserSalaryRange = ['']
+        tempUserLocation = ['']
+
+        
+
+
+        return 1 #should return match rating
 
     # functions
 
@@ -52,6 +62,9 @@ class Job:
     
     def getState(self):
         return self.state
+    
+    def getLocation(self):
+        return self.city+ ", "+ self.state
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]
