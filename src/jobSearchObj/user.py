@@ -43,7 +43,3 @@ class User:
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]
-
-
-
-
