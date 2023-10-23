@@ -20,7 +20,7 @@ def reinitDatabase():
 
     dbctrl.execute("""
         DROP TABLE IF EXISTS
-            user
+            users
     """)
 
     dbctrl.execute("""
@@ -67,7 +67,7 @@ def reinitDatabase():
 
     #stores users
     dbctrl.execute("""
-        CREATE TABLE user(
+        CREATE TABLE users(
             user_id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
             password TEXT,
@@ -76,7 +76,7 @@ def reinitDatabase():
             city REAL,
             state REAL,
             minSalary REAL,
-            maxSalary REAL,
+            maxSalary REAL
         )
     """)
 
@@ -151,15 +151,17 @@ def fillUser():
     ]
     dbctrl.executemany("""
     INSERT or IGNORE INTO users VALUES
-        (?,?,?,?,?,?,?,?,?,?,?)
+        (?,?,?,?,?,?,?,?,?)
     """,userData)
 
     #commits insert changes
     db.commit()
     db.close()
+
 #runs functions
 reinitDatabase() #reinitiates tables
 fillJobs() #fills job database with fake test jobs
 fillCompanies() #fills company database with fake test companies
+fillUser() # fills user database with fake test users
 #fillReviews() #fills review database w/ company relations
 #relateJobsCompanies() #fills job_company database
