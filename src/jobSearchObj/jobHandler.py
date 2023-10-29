@@ -1,4 +1,5 @@
 from job import Job
+from company import Company
 import sqlite3
 
 class JobHandler:
@@ -8,7 +9,7 @@ class JobHandler:
 
     #methods
 
-    def searchDB(self,keywords):
+    def searchDB(self,keywords: list,comp: Company,loc,sal_min: int, sal_max: int):
         #searches sql database for relavent jobs(first 10)
         
         # connects to test database

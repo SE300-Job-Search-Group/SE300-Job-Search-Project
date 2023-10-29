@@ -14,6 +14,8 @@ class Job:
 
         tempDB=dbctrl.execute('SELECT * FROM jobs WHERE job_id ='+str(id))
         tempData = tempDB.fetchone()
+        
+        db.close()
 
         #debug print
         print(tempData)

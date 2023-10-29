@@ -30,7 +30,6 @@ class Company:
         self.rating_management = tempData[9]
         self.rating_culture = tempData[10]
         
-
     # methods
     
     def userMatch(self,usr: User) -> float:

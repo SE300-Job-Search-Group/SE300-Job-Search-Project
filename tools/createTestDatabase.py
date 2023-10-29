@@ -2,12 +2,12 @@ import sqlite3
 
 # RUNNING THIS DELETES ALL DATA IN test.db
 
-def reinitDatabase():
-    #initialization
-    db = sqlite3.connect("./database/test.db")
-    dbctrl = db.cursor()
+#initialization
+db = sqlite3.connect("./database/test.db")
+dbctrl = db.cursor()
 
-    #deletes tables that are being setup
+def deleteOldDatabases():
+     #deletes tables that are being setup
     dbctrl.execute("""
         DROP TABLE IF EXISTS
             jobs
@@ -30,21 +30,54 @@ def reinitDatabase():
 
     dbctrl.execute("""
         DROP TABLE IF EXISTS
-            job_company
+            tags
     """)
 
-    #stores all jobs
     dbctrl.execute("""
-        CREATE TABLE jobs(
-            job_id INTEGER PRIMARY KEY,
-            title TEXT NOT NULL, 
-            keywords TEXT,
-            company TEXT NOT NULL,
-            location_city TEXT,
-            location_state TEXT,
-            max_salary INTEGER,
-            min_salary INTEGER, 
-            description TEXT
+        DROP TABLE IF EXISTS
+            keywords
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
+            skills
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
+            locations
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
+            job_tag
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
+            company_keyword
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
+            user_keyword
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
+            user_skill
+    """)
+
+def reinitMainDatabase():
+
+    ## MAIN TABLE
+
+    # location table since jobs and user are dependent
+    dbctrl.execute("""
+        CREATE TABLE locations(
+            location_id INTEGER PRIMARY KEY,
+            city_name TEXT,
+            state_name TEXT UNIQUE
         )
     """)
 
@@ -54,7 +87,6 @@ def reinitDatabase():
             company_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             industry TEXT,
-            keywords TEXT,
             description TEXT,
             rating_overall REAL,
             rating_worklife REAL,
@@ -62,6 +94,27 @@ def reinitDatabase():
             rating_career REAL,
             rating_management REAL,
             rating_culture REAL
+        )
+    """)
+
+    #stores all jobs
+    dbctrl.execute("""
+        CREATE TABLE jobs(
+            job_id INTEGER PRIMARY KEY,
+            title TEXT NOT NULL, 
+            company_id INTEGER,
+            location_id INTEGER,
+            max_salary INTEGER,
+            min_salary INTEGER, 
+            description TEXT,
+            FOREIGN KEY (company_id)
+                REFERENCES companies (company_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+            FOREIGN KEY (location_id)
+                REFERENCES locations (location_id)
+                    ON UPDATE CASCADE
+                    ON DELETE SET NULL
         )
     """)
 
@@ -73,26 +126,49 @@ def reinitDatabase():
             password TEXT,
             keywords TEXT,
             skills TEXT,
-            city REAL,
-            state REAL,
+            location_id INTEGER,
             minSalary REAL,
-            maxSalary REAL
+            maxSalary REAL,
+            FOREIGN KEY (location_id)
+                REFERENCES locations (location_id)
+                    ON UPDATE CASCADE
+                    ON DELETE SET NULL
         )
     """)
 
-    #stores all company reviews NEEDS TO BE MADE link w/ company_id
-    # dbctrl.execute("""
-    #     CREATE TABLE reviews(
-            
-    #     )
-    # """)
+    ## SUB TABLES
 
-    # Table that stores all relations between jobs and companies 
     dbctrl.execute("""
-        CREATE TABLE job_company(
+        CREATE TABLE tags(
+            tag_id INTEGER PRIMARY KEY,
+            tag TEXT NOT NULL UNIQUE
+        )
+    """)
+
+    dbctrl.execute("""
+        CREATE TABLE keywords(
+            keyword_id INTEGER PRIMARY KEY,
+            keyword TEXT NOT NULL UNIQUE
+        )
+    """)
+
+    dbctrl.execute("""
+        CREATE TABLE skills(
+            skill_id INTEGER PRIMARY KEY,
+            skill TEXT NOT NULL UNIQUE
+        )
+    """)
+
+    ## RELATIONS TABLE
+    dbctrl.execute("""
+        CREATE TABLE job_tag(
+            tag_id INTEGER,
             job_id INTEGER,
-            company_id INTEGER,
-            PRIMARY KEY (job_id, company_id),
+            PRIMARY KEY (tag_id, job_id)
+            FOREIGN KEY (tag_id)
+                REFERENCES tags (tags_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
             FOREIGN KEY (job_id)
                 REFERENCES jobs (job_id)
                     ON UPDATE CASCADE
@@ -100,17 +176,73 @@ def reinitDatabase():
         )
     """)
 
-    #cleanup
-    db.close()
+    dbctrl.execute("""
+        CREATE TABLE company_keyword(
+            keyword_id INTEGER,
+            company_id INTEGER,
+            PRIMARY KEY (keyword_id, company_id)
+            FOREIGN KEY (keyword_id)
+                REFERENCES keywords (keyword_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+            FOREIGN KEY (company_id)
+                REFERENCES companies (company_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+        )
+    """)
+
+    dbctrl.execute("""
+        CREATE TABLE user_keyword(
+            user_id INTEGER,
+            keyword_id INTEGER,
+            PRIMARY KEY (user_id, keyword_id)
+            FOREIGN KEY (user_id)
+                REFERENCES users (user_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+            FOREIGN KEY (keyword_id)
+                REFERENCES keywords (keywords_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+        )
+    """)
+
+    dbctrl.execute("""
+        CREATE TABLE user_skill(
+            user_id INTEGER,
+            skill_id INTEGER,
+            PRIMARY KEY (user_id, skill_id)
+            FOREIGN KEY (user_id)
+                REFERENCES users (user_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+            FOREIGN KEY (skill_id)
+                REFERENCES skills (skill_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+        )
+    """)
+
+    # stores all company reviews NEEDS TO BE MADE link w/ company_id
+    dbctrl.execute("""
+        CREATE TABLE reviews(
+            review_id PRIMARY KEY,
+            company_id INTEGER,
+            review TEXT,
+            FOREIGN KEY (company_id)
+                REFERENCES company (company_id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+        )
+    """)
 
 def fillJobs():
-    db = sqlite3.connect("./database/test.db")
-    dbctrl = db.cursor()
     
     # yea idk i just wanted to test it out :) add more as needed
     jobData = [
-        (1, 'Entry Level Software Engineer', 'Software,Entry-level,Programming,Computer Science,Engineering,PathFinder', 'PathFinder', 'Daytona Beach', 'FL', 5, 100000, 'idk'),
-        (2, 'Project Manager', 'Project Management,Manager,Software,Engineering,PathFinder', 'PathFinder', 'Daytona Beach', 'FL', 1000000, 2000000, 'manage the projects duh')
+        (1, 'Entry Level Software Engineer', 'Software,Entry-level,Programming,Computer Science,Engineering,PathFinder', 1, 'Daytona Beach', 'FL', 5, 100000, 'idk'),
+        (2, 'Project Manager', 'Project Management,Manager,Software,Engineering,PathFinder', 1, 'Daytona Beach', 'FL', 1000000, 2000000, 'manage the projects duh')
     ]
     
     dbctrl.executemany("""
@@ -120,28 +252,45 @@ def fillJobs():
 
     #commits insert changes
     db.commit()
-    db.close()
 
 def fillCompanies():
-    db = sqlite3.connect("./database/test.db")
-    dbctrl = db.cursor()
 
     # yea idk i just wanted to test it out :) add more as needed
     companyData = [
-        (1,'PathFinder', 'Technology','Work-Life Balance,Flat Hierarchy,Family-like,Opportunity', 'The PathFinder company is the best company in the world',5.0,4.9,4.8,4.7,4.6,4.5)
+        (1,'PathFinder', 'Technology', 'The PathFinder company is the best company in the world',5.0,4.9,4.8,4.7,4.6,4.5)
+    ]
+    keywordData = [
+        (1,'Work-Life Balance'),
+        (2,'Flat Hierarchy'),
+        (3,'Family-like'),
+        (4,'Opportunity')
     ]
     dbctrl.executemany("""
-    INSERT or IGNORE INTO companies VALUES
-        (?,?,?,?,?,?,?,?,?,?,?)
+        INSERT or IGNORE INTO companies VALUES
+            (?,?,?,?,?,?,?,?,?,?)
     """,companyData)
+
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO keywords VALUES
+            (?,?)
+    """,keywordData)
+
+    company_keywordData = [
+        (1,1),
+        (2,1),
+        (3,1),
+        (4,1)
+    ]
+
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO company_keyword VALUES
+            (?,?)
+    """,company_keywordData)
 
     #commits insert changes
     db.commit()
-    db.close()
 
 def fillUser():
-    db = sqlite3.connect("./database/test.db")
-    dbctrl = db.cursor()
 
     # add more as needed
     userData = [
@@ -156,12 +305,14 @@ def fillUser():
 
     #commits insert changes
     db.commit()
-    db.close()
 
 #runs functions
-reinitDatabase() #reinitiates tables
-fillJobs() #fills job database with fake test jobs
-fillCompanies() #fills company database with fake test companies
-fillUser() # fills user database with fake test users
+deleteOldDatabases() # duh
+reinitMainDatabase() #reinitiates tables
+#fillCompanies() #fills company database with fake test companies
+#fillJobs() #fills job database with fake test jobs
+#fillUser() # fills user database with fake test users
 #fillReviews() #fills review database w/ company relations
 #relateJobsCompanies() #fills job_company database
+
+db.close()
