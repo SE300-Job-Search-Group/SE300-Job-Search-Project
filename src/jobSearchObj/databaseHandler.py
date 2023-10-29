@@ -1,6 +1,6 @@
 import sqlite3
 
-class DatabaseHandler:
+class GenericDatabaseHandler:
     def __init__(self,dir):
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
@@ -10,21 +10,31 @@ class DatabaseHandler:
         self.db.close()
 
     def getTable(self,table: str):
-        tempDB = self.dbctrl.execute('SELECT * FROM '+table)
-        tableData = tempDB.fetchall()
+        tempResults = self.dbctrl.execute('SELECT * FROM '+table)
+        tableData = tempResults.fetchall()
         return tableData
 
-    # Tag Related
+class WordsDBHandler(GenericDatabaseHandler):
+
+    def searchbyID(self,id: int, type:str) -> str:
+        table_name = type+'s'
+        col_id = type+'_id'
+        tempResults = self.dbctrl.execute("SELECT "+type+" FROM "+table_name+" WHERE EXISTS (SELECT "+col_id+" FROM "+table_name+" WHERE "+col_id+" = '"+str(id)+"') AND "+col_id+" = '"+str(id)+"'")
+        
+        tempName = tempResults.fetchone()
+        if tempName is None:
+            return None
+        else:
+            return tempName[0]
 
     def findID(self,name: str,type: str) -> int:
         table_name = type+'s'
         col_id = type+'_id'
 
-        tempDB = self.dbctrl.execute("SELECT "+col_id+" FROM "+table_name+" WHERE EXISTS (SELECT "+col_id+" FROM "+table_name+" WHERE "+type+" = '"+name+"')")
-        
-        tempID = tempDB.fetchone()
+        tempResults = self.dbctrl.execute("SELECT "+col_id+" FROM "+table_name+" WHERE EXISTS (SELECT "+col_id+" FROM "+table_name+" WHERE "+type+" LIKE '"+name+"') AND "+type+" = '"+name+"'")
+        tempID = tempResults.fetchone()
         if tempID is None:
-            return tempID
+            return None
         else:
             return tempID[0]
 
@@ -33,8 +43,8 @@ class DatabaseHandler:
         col_id = type+'_id'
 
         #finds new ID
-        tempDB = self.dbctrl.execute('SELECT MAX('+col_id+') FROM '+table_name)
-        maxID = tempDB.fetchone()[0]
+        tempResults = self.dbctrl.execute('SELECT MAX('+col_id+') FROM '+table_name)
+        maxID = tempResults.fetchone()[0]
         if maxID is None:
             maxID = 0
         newID = maxID + 1
@@ -43,3 +53,14 @@ class DatabaseHandler:
         self.db.commit()
 
         return newID
+    
+class CompanyDBHandler(GenericDatabaseHandler):
+    def searchByID(self, id):
+        tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT company_id FROM companies WHERE company_id = "+str(id)+")")
+
+        return tempResults.fetchone()
+    
+    def findKeywordIDs(self,id) -> list:
+        tempResults = self.dbctrl.execute("SELECT keyword_id FROM company_keyword WHERE company_id = " + str(id))
+
+        return tempResults.fetchall()

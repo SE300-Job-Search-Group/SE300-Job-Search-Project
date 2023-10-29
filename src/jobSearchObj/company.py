@@ -1,35 +1,54 @@
 from user import User
-import sqlite3
+from databaseHandler import CompanyDBHandler
+from words import Industry,Keyword
 
 class Company:
-    def __init__(self,id):
-        self.id = id
+    def __init__(self):
 
-        # connects to test database
-        db = sqlite3.connect("./database/test.db")
-        # should have option to connect to actual database
+        # DB TO USE
+        self.db = "./database/test.db";
 
-        # fetch job data
-        dbctrl = db.cursor()
+        self.id = None
+        self.name = None
+        self.industry = None # Industry Object
+        self.keywords = [] # list of Keyword Object
+        self.description = None
+        self.rating = None
+        self.rating_wl = None
+        self.rating_pb = None
+        self.rating_career = None
+        self.rating_management = None
+        self.rating_culture = None
+    
+    # init functions
+    def fillByID(self, id):
+        dbh = CompanyDBHandler(self.db)
 
-        tempDB=dbctrl.execute('SELECT * FROM companies WHERE company_id ='+str(id))
-        tempData = tempDB.fetchone()
-        
-        # debug print
-        # print(tempData)
-        
-        # setting attributes
-        self.name = tempData[1]
-        self.industry = tempData[2]
-        self.keywords = tempData[3].split(",")
-        self.description = tempData[4]
-        self.rating = tempData[5]
-        self.rating_wl = tempData[6] #worklife rating
-        self.rating_pb = tempData[7] #pay and benefits rating
-        self.rating_career = tempData[8]
-        self.rating_management = tempData[9]
-        self.rating_culture = tempData[10]
-        
+        companyInfo = dbh.searchByID(id)
+
+        if companyInfo is None:
+            raise Exception("Database Search Error: No Existing Company with ID")
+        else:
+            self.id = companyInfo[0]
+            self.name = companyInfo[1]
+            self.industry = Industry().fillByID(companyInfo[2])
+            self.description = companyInfo[3]
+            self.rating = companyInfo[4]
+            self.rating_wl = companyInfo[5]
+            self.rating_pb = companyInfo[6]
+            self.rating_career = companyInfo[7]
+            self.rating_management = companyInfo[8]
+            self.rating_culture = companyInfo[9]
+            
+            #sets all keywords
+            tempkeywordIDs = dbh.findKeywordIDs(self.id)
+            print(tempkeywordIDs)
+
+            for id in tempkeywordIDs:
+                self.keywords.append(Keyword().fillByID(id[0]))
+
+        return self
+
     # methods
     
     def userMatch(self,usr: User) -> float:
@@ -50,10 +69,13 @@ class Company:
         return self.name
     
     def getIndustry(self):
-        return self.industry
+        return self.industry.getWord()
     
     def getKeywords(self):
-        return self.keywords
+        tempNames = []
+        for kw in self.keywords:
+            tempNames.append(kw.getWord())
+        return tempNames
     
     def getDesc(self):
         return self.description

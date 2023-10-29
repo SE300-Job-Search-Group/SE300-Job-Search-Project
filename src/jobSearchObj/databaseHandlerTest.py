@@ -1,40 +1,47 @@
-from databaseHandler import DatabaseHandler
+from databaseHandler import GenericDatabaseHandler
 from words import Tag, Keyword, Skill
 
-dbh = DatabaseHandler("./database/test.db")
+dbh = GenericDatabaseHandler("./database/test.db")
 
 print(dbh.getTable("tags"))
 print(dbh.getTable("keywords"))
 print(dbh.getTable("skills"))
 
-testTag = Tag('TESTTAG')
+dbh.close()
+
+testTag = Tag().setWord('TESTTAG')
 
 print(testTag.getWord())
 
 print(testTag.assignID())
 
-testKeyword = Keyword('TESTKEYWORD')
+testKeyword = Keyword().setWord('TESTKEYWORD')
 
 print(testKeyword.getWord())
 print(testKeyword.assignID()) # assigns id to object from database 
 
-testSkill = Skill('TESTSKILL')
+testSkill = Skill().setWord('TESTSKILL')
 
 print(testSkill.getWord())
 print(testSkill.assignID())
 
-testTag = Tag('TESTTAG2')
+testTag = Tag().setWord('TESTTAG2')
 
 print(testTag.getWord())
 
 print(testTag.assignID())
 
-testKeyword = Keyword('TESTKEYWORD2')
+testKeyword = Keyword().setWord('TESTKEYWORD2')
 
 print(testKeyword.getWord())
 print(testKeyword.assignID()) # assigns id to object from database 
 
-testSkill = Skill('TESTSKILL2')
+testSkill = Skill().setWord('TESTSKILL2')
 
 print(testSkill.getWord())
 print(testSkill.assignID())
+
+testSkillByID = Skill().fillByID(2)
+
+print('TEST fillbyid()')
+print(testSkillByID.getWord())

@@ -50,6 +50,11 @@ def deleteOldDatabases():
 
     dbctrl.execute("""
         DROP TABLE IF EXISTS
+            industrynames
+    """)
+
+    dbctrl.execute("""
+        DROP TABLE IF EXISTS
             job_tag
     """)
 
@@ -72,7 +77,7 @@ def reinitMainDatabase():
 
     ## MAIN TABLE
 
-    # location table since jobs and user are dependent
+    # Subtables that the main tables reference
     dbctrl.execute("""
         CREATE TABLE locations(
             location_id INTEGER PRIMARY KEY,
@@ -81,19 +86,30 @@ def reinitMainDatabase():
         )
     """)
 
+    dbctrl.execute("""
+        CREATE TABLE industrynames(
+            industryname_id INTEGER PRIMARY KEY,
+            industryname TEXT NOT NULL UNIQUE
+        )
+    """)
+
     #stores all companies
     dbctrl.execute("""
         CREATE TABLE companies(
             company_id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            industry TEXT,
+            industryname_id INTEGER,
             description TEXT,
             rating_overall REAL,
             rating_worklife REAL,
             rating_paybenefits REAL,
             rating_career REAL,
             rating_management REAL,
-            rating_culture REAL
+            rating_culture REAL,
+            FOREIGN KEY (industryname_id)
+                REFERENCES industrynames (industryname_id)
+                    ON UPDATE CASCADE
+                    ON DELETE SET NULL
         )
     """)
 
@@ -257,13 +273,16 @@ def fillCompanies():
 
     # yea idk i just wanted to test it out :) add more as needed
     companyData = [
-        (1,'PathFinder', 'Technology', 'The PathFinder company is the best company in the world',5.0,4.9,4.8,4.7,4.6,4.5)
+        (1,'PathFinder', 1, 'The PathFinder company is the best company in the world',5.0,4.9,4.8,4.7,4.6,4.5)
     ]
     keywordData = [
         (1,'Work-Life Balance'),
         (2,'Flat Hierarchy'),
         (3,'Family-like'),
         (4,'Opportunity')
+    ]
+    industryData = [
+        (1,'Technology')
     ]
     dbctrl.executemany("""
         INSERT or IGNORE INTO companies VALUES
@@ -274,6 +293,11 @@ def fillCompanies():
         INSERT or IGNORE INTO keywords VALUES
             (?,?)
     """,keywordData)
+
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO industrynames VALUES
+            (?,?)
+    """,industryData)
 
     company_keywordData = [
         (1,1),
@@ -309,7 +333,7 @@ def fillUser():
 #runs functions
 deleteOldDatabases() # duh
 reinitMainDatabase() #reinitiates tables
-#fillCompanies() #fills company database with fake test companies
+fillCompanies() #fills company database with fake test companies
 #fillJobs() #fills job database with fake test jobs
 #fillUser() # fills user database with fake test users
 #fillReviews() #fills review database w/ company relations
