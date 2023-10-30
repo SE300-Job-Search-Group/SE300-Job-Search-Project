@@ -1,45 +1,75 @@
-import sqlite3
+from databaseHandler import UserDBHandler
+from location import Location
+from words import Keyword, Skill
 
 class User:
     
-    def __init__(self,id):
-        self.id = id
+    def __init__(self):
+        self.db = "./database/test.db"
 
-        #connects to test database
-        db = sqlite3.connect("./database/test.db")
+        #attributes
+        self.id = None
+        self.username = None
+        self.__password = None
+        self.keywords = []
+        self.skills = []
+        self.location = None
+        self.minSalary = None
+        self.maxSalary = None
 
-        #fetch user data
-        dbctrl = db.cursor()
+    # methods
+    def login(self,user: str,password: str) -> bool:  # login & user id filling. Returns False if login failed
+        dbh = UserDBHandler(self.db)
+        self.id = dbh.validateLogin(user,password)
+        if self.id is None:
+            return False
+        else:
+            userInfo = dbh.searchByID(self.id)
+            self.username = userInfo[1]
+            self.__password = userInfo[2]
+            self.location = Location().fillByID(userInfo[3])
+            self.minSalary = userInfo[4]
+            self.maxSalary = userInfo[5]
 
-        tempDB=dbctrl.execute('SELECT * FROM user WHERE user_id ='+str(id))
-        tempData = tempDB.fetchone()
+            # sets all keywords
+            tempKeywordID = dbh.findKeywordIDs(self.id)
 
-        # setting attributes
-        self._username = tempData[1]
-        self._password = tempData[2]
-        self.keywords = tempData[3].split(",")
-        self.skills = tempData[4].split(",")
-        self.city = tempData[5]
-        self.state = tempData[6]
-        self.minSalary = tempData[7]
-        self.maxSalary = tempData[8]
+            for id in tempKeywordID:
+                self.keywords.append(Keyword().fillByID(id[0]))
+
+            #sets all skills
+            tempSkillID = dbh.findSkillIDs(self.id)
+
+            for id in tempSkillID:
+                self.keywords.append(Skill().fillByID(id[0]))
+
+            return True
+
+    #methods
 
     # functions
 
     def getId(self):
         return self.id
     
+    def getUsername(self):
+        return self.username
+    
     def getKeywords(self):
-        return self.keywords
+        tempKeywords = []
+        for keyword in self.keywords:
+            tempKeywords.append(keyword.getWord())
+        return tempKeywords
     
     def getSkills(self):
-        return self.skills
+        tempSkills = []
+        for skill in self.skills:
+            tempSkills.append(skill.getWord())
+
+        return tempSkills
     
-    def getCity(self):
-        return self.city
-    
-    def getState(self):
-        return self.state
+    def getLocation(self):
+        self.location.getLocationName()
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]

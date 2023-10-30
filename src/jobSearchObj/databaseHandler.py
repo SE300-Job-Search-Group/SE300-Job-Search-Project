@@ -82,3 +82,30 @@ class JobDBHandler(GenericDatabaseHandler):
         tempResults = self.dbctrl.execute("SELECT tag_id FROM job_tag WHERE job_id = " + str(id))
 
         return tempResults.fetchall()
+    
+class UserDBHandler(GenericDatabaseHandler):
+    def searchByID(self, id:int):
+        tempResults = self.dbctrl.execute("SELECT * FROM users WHERE EXISTS (SELECT user_id FROM users WHERE user_id= "+str(id)+") AND user_id = "+str(id))
+
+        return tempResults.fetchone()
+    
+    def validateLogin(self,username: str,password: str) -> int:
+        # returns None if failed, returns user id if exists
+        tempResults = self.dbctrl.execute("SELECT user_id FROM users WHERE EXISTS (SELECT user_id FROM users WHERE username = '"+username+"' AND password = '"+password+"') AND username = '"+username+"' AND password = '"+password]"'")
+
+        tempUserID = tempResults.fetchone
+
+        if tempUserID is not None:
+            tempUserID = tempUserID[0]
+
+        return tempUserID
+    
+    def findKeywordIDs(self,id: int) -> list:
+        tempResults = self.dbctrl.execute("SELECT keyword_id FROM user_keyword WHERE user_id = " + str(id))
+
+        return tempResults.fetchall()
+
+    def findSkillIDs(self,id:int) -> list:
+        tempResults = self.dbctrl.execute("SELECT skill_id FROM user_skill WHERE user_id = "+ str(id))
+        
+        return tempResults.fetchall()

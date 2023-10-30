@@ -140,8 +140,6 @@ def reinitMainDatabase():
             user_id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
             password TEXT,
-            keywords TEXT,
-            skills TEXT,
             location_id INTEGER,
             minSalary REAL,
             maxSalary REAL,
