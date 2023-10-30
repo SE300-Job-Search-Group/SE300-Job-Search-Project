@@ -45,8 +45,38 @@ class User:
 
             return True
         
-    def newUser(self):
-        pass
+    def createUser(self,username:str,password:str,keywords:list,skills:list,location:Location,minSalary:int,maxSalary:int):
+        #adding attributes to object
+        self.username = username
+        self.__password = password
+        self.keywords = keywords    #list of Keywords
+        self.skills = skills        #list of Skills
+        self.location = location    #Location Object
+        self.minSalary = minSalary
+        self.maxSalary = maxSalary
+
+        #find available ID & write User Data to ID
+        #### MAKE SURE KEYWORDS SKILLS AND OBJECTS EXIST IN DB PRIOR THIS POINT
+        dbh = UserDBHandler(self.db)
+        self.id = dbh.findAvailableID()
+        userInfo = [(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)]
+        dbh.writeUser(userInfo)
+
+        #write Keyword Associations
+        tempUserKw = []
+        for kw in self.keywords:
+            tempUserKw.append((kw.getID(),self.id))
+
+        dbh.writeUserKeywords(tempUserKw)
+
+        #write Skill Associations
+        tempUserSkill = []
+        for skill in self.skills:
+            tempUserSkill.append((skill.getID(),self.id))
+        
+        dbh.writeUserSkills(tempUserSkill)
+
+        dbh.close()
 
     #methods
 

@@ -8,3 +8,4 @@ from .jobHandler import JobHandler
 from userHandler import User
 from .words import GenericWord, Tag, Keyword, Skill
 from .location import Location
+from.databaseHandler import GenericDatabaseHandler,WordsDBHandler,UserDBHandler,JobDBHandler,CompanyDBHandler

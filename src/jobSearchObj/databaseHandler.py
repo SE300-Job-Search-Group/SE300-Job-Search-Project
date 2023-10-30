@@ -7,6 +7,7 @@ class GenericDatabaseHandler:
     
     #Generic Commands
     def close(self):
+        self.db.commit()
         self.db.close()
 
     def getTable(self,table: str):
@@ -62,6 +63,10 @@ class LocDBHandler(GenericDatabaseHandler):
     
     def addLocation(self,city: str,state: str):
         self.dbctrl.execute("")
+
+    def findID(self,city:str,state:str)-> int:
+        tempResults = self.dbctrl.execute("SELECT location_id FROM locations WHERE EXISTS (SELECT location_id FROM locations WHERE city_name = '"+city+"' AND state_name = '"+state+"') AND city_name = '"+city+"' AND state_name = '"+state+"'")
+        return tempResults.fetchone()[0]
     
 
 class CompanyDBHandler(GenericDatabaseHandler):
@@ -112,3 +117,30 @@ class UserDBHandler(GenericDatabaseHandler):
         tempResults = self.dbctrl.execute("SELECT skill_id FROM user_skill WHERE user_id = "+ str(id))
         
         return tempResults.fetchall()
+    
+    def findAvailableID(self) -> int:
+        tempResults = self.dbctrl.execute('SELECT MAX(user_id) from users')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        return maxID+1
+    
+    def writeUser(self,userInfo: list):
+        print('TESTING: WRITING USER')
+        print(userInfo)
+        self.dbctrl.executemany("""
+        INSERT or IGNORE INTO users VALUES
+            (?,?,?,?,?,?)
+    """,userInfo)
+        
+    def writeUserKeywords(self,user_kw_list: list):
+        self.dbctrl.executemany("""
+        INSERT or IGNORE INTO user_keyword VALUES
+            (?,?)
+    """,user_kw_list)
+
+    def writeUserSkills(self,user_skill_list: list):
+        self.dbctrl.executemany("""
+        INSERT or IGNORE INTO user_skill VALUES
+            (?,?)
+    """,user_skill_list)

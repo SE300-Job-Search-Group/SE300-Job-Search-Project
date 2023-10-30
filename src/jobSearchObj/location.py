@@ -27,8 +27,15 @@ class Location:
         self.state = state
 
         existingID = dbh.findID(self.city, self.state)
+        self.id = existingID
+
+        dbh.close()
+        return self
 
     #functions
 
     def getLocationName(self):
         return self.city+', '+self.state
+    
+    def getID(self):
+        return self.id

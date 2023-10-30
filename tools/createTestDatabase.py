@@ -81,8 +81,8 @@ def reinitMainDatabase():
     dbctrl.execute("""
         CREATE TABLE locations(
             location_id INTEGER PRIMARY KEY,
-            city_name TEXT,
-            state_name TEXT
+            city_name TEXT NOT NULL,
+            state_name TEXT NOT NULL
         )
     """)
 
@@ -138,8 +138,8 @@ def reinitMainDatabase():
     dbctrl.execute("""
         CREATE TABLE users(
             user_id INTEGER PRIMARY KEY,
-            username TEXT NOT NULL,
-            password TEXT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
             location_id INTEGER,
             minSalary REAL,
             maxSalary REAL,
@@ -407,22 +407,22 @@ def fillUser():
             (?,?,?,?,?,?)
     """,userData)
 
-    db.executemany("""
+    dbctrl.executemany("""
         INSERT or IGNORE INTO keywords VALUES
             (?,?)
     """,keywordData)
 
-    db.executemany("""
+    dbctrl.executemany("""
         INSERT or IGNORE INTO user_keyword VALUES
             (?,?)
     """,userKeywordMatch)
 
-    db.executemany("""
+    dbctrl.executemany("""
         INSERT or IGNORE INTO skills VALUES
             (?,?)
     """,skillData)
 
-    db.executemany("""
+    dbctrl.executemany("""
         INSERT or IGNORE INTO user_skill VALUES
             (?,?)
     """,userSkillMatch)
