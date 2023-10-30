@@ -16,7 +16,7 @@ class GenericDatabaseHandler:
 
 class WordsDBHandler(GenericDatabaseHandler):
 
-    def searchbyID(self,id: int, type:str) -> str:
+    def searchByID(self,id: int, type:str) -> str:
         table_name = type+'s'
         col_id = type+'_id'
         tempResults = self.dbctrl.execute("SELECT "+type+" FROM "+table_name+" WHERE EXISTS (SELECT "+col_id+" FROM "+table_name+" WHERE "+col_id+" = '"+str(id)+"') AND "+col_id+" = '"+str(id)+"'")
@@ -53,14 +53,32 @@ class WordsDBHandler(GenericDatabaseHandler):
         self.db.commit()
 
         return newID
-    
-class CompanyDBHandler(GenericDatabaseHandler):
-    def searchByID(self, id):
-        tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT company_id FROM companies WHERE company_id = "+str(id)+")")
 
+class LocDBHandler(GenericDatabaseHandler):
+    def searchByID(self,id: int):
+        tempResults = self.dbctrl.execute("SELECT * FROM locations WHERE EXISTS (SELECT location_id FROM locations WHERE location_id = "+str(id)+") AND location_id = "+str(id))
+        
         return tempResults.fetchone()
     
-    def findKeywordIDs(self,id) -> list:
+
+class CompanyDBHandler(GenericDatabaseHandler):
+    def searchByID(self, id: int):
+        tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT company_id FROM companies WHERE company_id = "+str(id)+") AND company_id = "+str(id))
+        
+        return tempResults.fetchone()
+    
+    def findKeywordIDs(self,id: int) -> list:
         tempResults = self.dbctrl.execute("SELECT keyword_id FROM company_keyword WHERE company_id = " + str(id))
+
+        return tempResults.fetchall()
+    
+class JobDBHandler(GenericDatabaseHandler):
+    def searchByID(self, id: int):
+        tempResults = self.dbctrl.execute("SELECT * FROM jobs WHERE EXISTS (SELECT job_id FROM jobs WHERE job_id = "+str(id)+") AND job_id = "+str(id))
+        
+        return tempResults.fetchone()
+    
+    def findTagIDs(self,id: int) -> list:
+        tempResults = self.dbctrl.execute("SELECT tag_id FROM job_tag WHERE job_id = " + str(id))
 
         return tempResults.fetchall()

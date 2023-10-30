@@ -11,12 +11,13 @@ class GenericWord:
     def fillByID(self,id: int):
         dbh = WordsDBHandler(self.db)
         self.id = id
-        tempWord = dbh.searchbyID(self.id,self.type)
+        tempWord = dbh.searchByID(self.id,self.type)
         if tempWord is None:
             raise Exception("Database Search Error: No Existing "+self.type+" with ID")
         else:
             self.word = tempWord
 
+        dbh.close()
         return self
 
     def assignID(self):

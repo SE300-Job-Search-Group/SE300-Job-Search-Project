@@ -82,7 +82,7 @@ def reinitMainDatabase():
         CREATE TABLE locations(
             location_id INTEGER PRIMARY KEY,
             city_name TEXT,
-            state_name TEXT UNIQUE
+            state_name TEXT
         )
     """)
 
@@ -257,13 +257,21 @@ def fillJobs():
     
     # yea idk i just wanted to test it out :) add more as needed
     jobData = [
-        (1, 'Entry Level Software Engineer', 'Software,Entry-level,Programming,Computer Science,Engineering,PathFinder', 1, 'Daytona Beach', 'FL', 5, 100000, 'idk'),
-        (2, 'Project Manager', 'Project Management,Manager,Software,Engineering,PathFinder', 1, 'Daytona Beach', 'FL', 1000000, 2000000, 'manage the projects duh')
+        (1, 'Entry Level Software Engineer', 1, 1, 5, 100000, 'idk'),
+        (2, 'Project Manager', 1, 1, 1000000, 2000000, 'manage the projects duh')
+    ]
+    locData = [
+        (1,'Daytona Beach', 'FL')
     ]
     
     dbctrl.executemany("""
-    INSERT or IGNORE INTO jobs VALUES
-        (?,?,?,?,?,?,?,?,?)
+        INSERT or IGNORE INTO locations VALUES
+            (?,?,?)
+    """,locData)
+
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO jobs VALUES
+            (?,?,?,?,?,?,?)
     """,jobData)
 
     #commits insert changes
@@ -334,7 +342,7 @@ def fillUser():
 deleteOldDatabases() # duh
 reinitMainDatabase() #reinitiates tables
 fillCompanies() #fills company database with fake test companies
-#fillJobs() #fills job database with fake test jobs
+fillJobs() #fills job database with fake test jobs
 #fillUser() # fills user database with fake test users
 #fillReviews() #fills review database w/ company relations
 #relateJobsCompanies() #fills job_company database

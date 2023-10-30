@@ -1,39 +1,54 @@
 from user import User
-import sqlite3
+from databaseHandler import JobDBHandler
+from words import Tag
+from location import Location
 
 class Job:
-    def __init__(self,id):
-        self.id = id
+    def __init__(self):
         
-        # connects to test database
-        db = sqlite3.connect("./database/test.db")
-        #should have option to connect to actual database
-
-        #fetch job data
-        dbctrl = db.cursor()
-
-        tempDB=dbctrl.execute('SELECT * FROM jobs WHERE job_id ='+str(id))
-        tempData = tempDB.fetchone()
-        
-        db.close()
-
-        #debug print
-        print(tempData)
+        # DB TO USE
+        self.db = "./database/test.db";
         
         # setting attributes
-        self.title = tempData[1]
-        self.keywords = tempData[2].split(",")
-        self.company = tempData[3]
-        self.city = tempData[4]
-        self.state = tempData[5]
-        self.minSalary = tempData[6]
-        self.maxSalary = tempData[7]
-        self.description = tempData[8]
+        self.id = None
+        self.title = None
+        self.tags = []
+        self.company_id = None
+        self.location = None
+        self.minSalary = None
+        self.maxSalary = None
+        self.description = None
+
+    # init functions
+    def fillByID(self,id):
+        dbh = JobDBHandler(self.db)
+
+        jobInfo = dbh.searchByID(id)
+
+        if jobInfo is None:
+            raise Exception("Database Search Error: No Existing Job with ID")
+        else:
+            self.id = jobInfo[0]
+            self.title = jobInfo[1]
+            self.company_id = jobInfo[2]
+            self.location = Location().fillByID(jobInfo[3])
+            self.maxSalary = jobInfo[4]
+            self.minSalary = jobInfo[5]
+            self.description = jobInfo[6]
+
+            #sets all tags
+            tempTagIDs = dbh.findTagIDs(self.id)
+
+            for id in tempTagIDs:
+                self.tags.append(Tag().fillByID(id[0]))
+
+        dbh.close()
+        return self
 
     # methods
     
     def userMatch(self,user: User) -> float:
-        #compares keywords w/ skills, salary range, location
+        #compares tags w/ skills, salary range, location
 
         #temp until user stuff is setup
         tempUserSkills = ['']
@@ -50,23 +65,21 @@ class Job:
     def getId(self):
         return self.id
     
-    def getKeywords(self):
-        return self.keywords
+    def getTags(self):
+        tempTags = []
+        for tag in self.tags:
+            tempTags.append(tag.getWord())
+
+        return tempTags
     
     def getTitle(self):
         return self.title
     
-    def getCompany(self):
-        return self.company
-    
-    def getCity(self):
-        return self.city
-    
-    def getState(self):
-        return self.state
+    def getCompanyID(self):
+        return self.company_id
     
     def getLocation(self):
-        return self.city+ ", "+ self.state
+        return self.location.getLocationName()
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]

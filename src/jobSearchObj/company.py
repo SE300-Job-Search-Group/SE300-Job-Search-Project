@@ -8,6 +8,7 @@ class Company:
         # DB TO USE
         self.db = "./database/test.db";
 
+        # Attributes
         self.id = None
         self.name = None
         self.industry = None # Industry Object
@@ -41,12 +42,12 @@ class Company:
             self.rating_culture = companyInfo[9]
             
             #sets all keywords
-            tempkeywordIDs = dbh.findKeywordIDs(self.id)
-            print(tempkeywordIDs)
+            tempKeywordIDs = dbh.findKeywordIDs(self.id)
 
-            for id in tempkeywordIDs:
+            for id in tempKeywordIDs:
                 self.keywords.append(Keyword().fillByID(id[0]))
 
+        dbh.close()
         return self
 
     # methods
@@ -72,10 +73,10 @@ class Company:
         return self.industry.getWord()
     
     def getKeywords(self):
-        tempNames = []
+        tempKwds = []
         for kw in self.keywords:
-            tempNames.append(kw.getWord())
-        return tempNames
+            tempKwds.append(kw.getWord())
+        return tempKwds
     
     def getDesc(self):
         return self.description
