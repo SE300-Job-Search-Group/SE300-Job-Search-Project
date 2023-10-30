@@ -8,7 +8,7 @@ class Location:
         self.state = None
     
     #init functions
-    def fillByID(self,id:int):
+    def fillByID(self,id:int): #returns new location object filled from input ID
         dbh = LocDBHandler(self.db)
         tempLoc = dbh.searchByID(id)
         if tempLoc is None:
@@ -21,7 +21,7 @@ class Location:
         dbh.close()
         return self
 
-    def assignID(self,city: str,state: str):
+    def assignID(self,city: str,state: str): #returns a new location object filled out based on input ID NEEDS WORK TO INCLUDE ID ASSIGNING IF LOCATION DOES NOT EXIST
         dbh = LocDBHandler(self.db)
         self.city = city
         self.state = state

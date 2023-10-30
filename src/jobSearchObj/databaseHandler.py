@@ -6,18 +6,18 @@ class GenericDatabaseHandler:
         self.dbctrl = self.db.cursor()
     
     #Generic Commands
-    def close(self):
+    def close(self): #commits and closes the sqlite connection. SHOULD BE RUN EVERY TIME YOU OPEN A HANDLER
         self.db.commit()
         self.db.close()
 
-    def getTable(self,table: str):
+    def getTable(self,table: str): #general function to read tables
         tempResults = self.dbctrl.execute('SELECT * FROM '+table)
         tableData = tempResults.fetchall()
         return tableData
 
 class WordsDBHandler(GenericDatabaseHandler):
 
-    def searchByID(self,id: int, type:str) -> str:
+    def searchByID(self,id: int, type:str) -> str: #searches tag,keyword,skill data base for a specific ID. returns the associated word
         table_name = type+'s'
         col_id = type+'_id'
         tempResults = self.dbctrl.execute("SELECT "+type+" FROM "+table_name+" WHERE EXISTS (SELECT "+col_id+" FROM "+table_name+" WHERE "+col_id+" = '"+str(id)+"') AND "+col_id+" = '"+str(id)+"'")
@@ -28,7 +28,7 @@ class WordsDBHandler(GenericDatabaseHandler):
         else:
             return tempName[0]
 
-    def findID(self,name: str,type: str) -> int:
+    def findID(self,name: str,type: str) -> int: #finds id based on word provided (for tag, keyword, and skills db)
         table_name = type+'s'
         col_id = type+'_id'
 
@@ -39,7 +39,7 @@ class WordsDBHandler(GenericDatabaseHandler):
         else:
             return tempID[0]
 
-    def assignID(self,name: str,type: str) -> int:
+    def assignID(self,name: str,type: str) -> int: #assigns new id for a word
         table_name = type+'s'
         col_id = type+'_id'
 
@@ -92,12 +92,12 @@ class JobDBHandler(GenericDatabaseHandler):
         return tempResults.fetchall()
     
 class UserDBHandler(GenericDatabaseHandler):
-    def searchByID(self, id:int):
+    def searchByID(self, id:int): #searches for user using ID
         tempResults = self.dbctrl.execute("SELECT * FROM users WHERE EXISTS (SELECT user_id FROM users WHERE user_id= "+str(id)+") AND user_id = "+str(id))
 
         return tempResults.fetchone()
     
-    def validateLogin(self,username: str,password: str) -> int:
+    def validateLogin(self,username: str,password: str) -> int: #basically a login function but should only be used by User object
         # returns None if failed, returns user id if exists
         tempResults = self.dbctrl.execute("""SELECT user_id FROM users WHERE EXISTS (SELECT user_id FROM users WHERE username = '"""+username+"' AND password = '"+password+"') AND username = '"+username+"' AND password = '"+password+"'")
 
@@ -108,38 +108,36 @@ class UserDBHandler(GenericDatabaseHandler):
 
         return tempUserID
     
-    def findKeywordIDs(self,id: int) -> list:
+    def findKeywordIDs(self,id: int) -> list: #finds keywords associated with the user
         tempResults = self.dbctrl.execute("SELECT keyword_id FROM user_keyword WHERE user_id = " + str(id))
 
         return tempResults.fetchall()
 
-    def findSkillIDs(self,id:int) -> list:
+    def findSkillIDs(self,id:int) -> list: #finds skills associated with user
         tempResults = self.dbctrl.execute("SELECT skill_id FROM user_skill WHERE user_id = "+ str(id))
         
         return tempResults.fetchall()
     
-    def findAvailableID(self) -> int:
+    def findAvailableID(self) -> int: #finds available ID to be assigned to a new user
         tempResults = self.dbctrl.execute('SELECT MAX(user_id) from users')
         maxID = tempResults.fetchone()[0]
         if maxID is None:
             maxID = 0
         return maxID+1
     
-    def writeUser(self,userInfo: list):
-        print('TESTING: WRITING USER')
-        print(userInfo)
+    def writeUser(self,userInfo: list): #writes a new user to the user table in DB
         self.dbctrl.executemany("""
         INSERT or IGNORE INTO users VALUES
             (?,?,?,?,?,?)
     """,userInfo)
         
-    def writeUserKeywords(self,user_kw_list: list):
+    def writeUserKeywords(self,user_kw_list: list): #write user keyword associations to user_keyword table in db
         self.dbctrl.executemany("""
         INSERT or IGNORE INTO user_keyword VALUES
             (?,?)
     """,user_kw_list)
 
-    def writeUserSkills(self,user_skill_list: list):
+    def writeUserSkills(self,user_skill_list: list): #see writeUserKeywords but for Skills instead
         self.dbctrl.executemany("""
         INSERT or IGNORE INTO user_skill VALUES
             (?,?)

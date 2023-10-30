@@ -20,7 +20,7 @@ class Job:
         self.description = None
 
     # init functions
-    def fillByID(self,id):
+    def fillByID(self,id): # returns a new job object filled based on provided job_id
         dbh = JobDBHandler(self.db)
 
         jobInfo = dbh.searchByID(id)

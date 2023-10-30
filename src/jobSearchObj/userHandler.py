@@ -13,7 +13,7 @@ class UserHandler:
 
         return loginSuccess
     
-    def createAccount(self,username:str,password:str,keywordNames:list,skillNames:list,city:str,state:str,minSalary:int,maxSalary:int):
+    def createAccount(self,username:str,password:str,keywordNames:list,skillNames:list,city:str,state:str,minSalary:int,maxSalary:int): # creates new account
         
         # changing words from string list to Word Object List
         keywords = []
@@ -27,6 +27,7 @@ class UserHandler:
         #from city & state to location
         location = Location().assignID(city, state)
         
+        #tells User to put itself in database
         self.curUser.createUser(username,password,keywords,skills,location,minSalary,maxSalary)
     
     def updateUser(self):

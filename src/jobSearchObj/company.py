@@ -22,7 +22,7 @@ class Company:
         self.rating_culture = None
     
     # init functions
-    def fillByID(self, id):
+    def fillByID(self, id): # returns a new Company give the input ID
         dbh = CompanyDBHandler(self.db)
 
         companyInfo = dbh.searchByID(id)

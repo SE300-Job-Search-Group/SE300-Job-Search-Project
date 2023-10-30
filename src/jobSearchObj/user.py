@@ -45,7 +45,7 @@ class User:
 
             return True
         
-    def createUser(self,username:str,password:str,keywords:list,skills:list,location:Location,minSalary:int,maxSalary:int):
+    def createUser(self,username:str,password:str,keywords:list,skills:list,location:Location,minSalary:int,maxSalary:int): # creates new user
         #adding attributes to object
         self.username = username
         self.__password = password
@@ -77,8 +77,6 @@ class User:
         dbh.writeUserSkills(tempUserSkill)
 
         dbh.close()
-
-    #methods
 
     # functions
 

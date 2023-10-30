@@ -9,7 +9,7 @@ class JobHandler:
 
     #methods
 
-    def searchDB(self,keywords: list,comp: Company,loc,sal_min: int, sal_max: int):
+    def searchDB(self,keywords: list,comp: Company,loc,sal_min: int, sal_max: int): # NEEDS TO BE FIXED/RESTRUCTURED TO USE databaseHandler
         #searches sql database for relavent jobs(first 10)
         
         # connects to test database
