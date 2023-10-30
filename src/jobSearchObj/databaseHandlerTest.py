@@ -6,42 +6,48 @@ dbh = GenericDatabaseHandler("./database/test.db")
 print(dbh.getTable("tags"))
 print(dbh.getTable("keywords"))
 print(dbh.getTable("skills"))
+print(dbh.getTable('locations'))
 
 dbh.close()
 
-testTag = Tag().setWord('TESTTAG')
+testTag = Tag().fillbyName('TESTTAG')
 
 print(testTag.getWord())
 
-print(testTag.assignID())
+print(testTag.getID())
 
-testKeyword = Keyword().setWord('TESTKEYWORD')
+testKeyword = Keyword().fillbyName('TESTKEYWORD')
 
 print(testKeyword.getWord())
-print(testKeyword.assignID()) # assigns id to object from database 
+print(testKeyword.getID()) # assigns id to object from database 
 
-testSkill = Skill().setWord('TESTSKILL')
+testSkill = Skill().fillbyName('TESTSKILL')
 
 print(testSkill.getWord())
-print(testSkill.assignID())
+print(testSkill.getID())
 
-testTag = Tag().setWord('TESTTAG2')
+testTag = Tag().fillbyName('TESTTAG2')
 
 print(testTag.getWord())
 
-print(testTag.assignID())
+print(testTag.getID())
 
-testKeyword = Keyword().setWord('TESTKEYWORD2')
+testKeyword = Keyword().fillbyName('TESTKEYWORD2')
 
 print(testKeyword.getWord())
-print(testKeyword.assignID()) # assigns id to object from database 
+print(testKeyword.getID()) # assigns id to object from database 
 
-testSkill = Skill().setWord('TESTSKILL2')
+testSkill = Skill().fillbyName('TESTSKILL2')
 
 print(testSkill.getWord())
-print(testSkill.assignID())
+print(testSkill.getID())
 
 testSkillByID = Skill().fillByID(2)
 
-print('TEST fillbyid()')
+print('TEST fillbyid(2)')
 print(testSkillByID.getWord())
+
+testSkillbyName = Skill().fillbyName('TESTSKILL')
+
+print("Test fillbyName('TESTSKILL')")
+print(testSkillbyName.getID())

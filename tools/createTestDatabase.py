@@ -208,8 +208,8 @@ def reinitMainDatabase():
 
     dbctrl.execute("""
         CREATE TABLE user_keyword(
-            user_id INTEGER,
             keyword_id INTEGER,
+            user_id INTEGER,
             PRIMARY KEY (user_id, keyword_id)
             FOREIGN KEY (user_id)
                 REFERENCES users (user_id)
@@ -224,8 +224,8 @@ def reinitMainDatabase():
 
     dbctrl.execute("""
         CREATE TABLE user_skill(
-            user_id INTEGER,
             skill_id INTEGER,
+            user_id INTEGER,
             PRIMARY KEY (user_id, skill_id)
             FOREIGN KEY (user_id)
                 REFERENCES users (user_id)
@@ -261,6 +261,24 @@ def fillJobs():
     locData = [
         (1,'Daytona Beach', 'FL')
     ]
+
+    tagData = [
+        (1,'Entry-Level'),
+        (2,'Software'),
+        (3,'Engineer'),
+        (4,'Project'),
+        (5,'Manager'),
+        (6,'PathFinder')
+    ]
+    jobTagMatch = [
+        (1,1),
+        (2,1),
+        (3,1),
+        (6,1),
+        (4,2),
+        (5,2),
+        (6,2)
+    ]
     
     dbctrl.executemany("""
         INSERT or IGNORE INTO locations VALUES
@@ -271,6 +289,17 @@ def fillJobs():
         INSERT or IGNORE INTO jobs VALUES
             (?,?,?,?,?,?,?)
     """,jobData)
+
+    # job tags
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO tags VALUES
+            (?,?)
+    """,tagData)
+
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO job_tag VALUES
+            (?,?)
+    """,jobTagMatch)
 
     #commits insert changes
     db.commit()
@@ -323,15 +352,80 @@ def fillCompanies():
 def fillUser():
 
     # add more as needed
+    # per user
     userData = [
         #User skills, pref. location, keywords
-        (1, 'luv2code', 'Passcode123%', 'work-life balance,vacation,benefits', 'python, programming, soft skills', 'New York', 'NY', 70000, 100000),
-        (2, 'NGNeer365', 'J1mmyJ@hns', 'healthy deadlines,communication,recognition', 'matlab, leadership, microsoft', 'Huntsville', 'AL', 90000, 150000)
+        (1, 'luv2code', 'Passcode123%',2 , 70000, 100000),
+        (2, 'NGNeer365', 'J1mmyJ@hns',3 , 90000, 150000)
     ]
+    locationData = [
+        (2,'New York', 'NY'),
+        (3,'Huntsville', 'AL')
+    ]
+    keywordData = [
+        (1, 'work-life balance'),
+        (5, 'vacation'),
+        (6,'benefits'),
+        (7,'healthy deadlines'),
+        (8, 'communication'),
+        (9,'recognition')
+    ]
+    userKeywordMatch = [
+        (1,1),
+        (5,1),
+        (6,1),
+        (2,2),
+        (7,2),
+        (8,2),
+        (9,2)
+    ]
+    skillData = [
+        (1,'python'), 
+        (2,'programming'), 
+        (3,'soft skills'),
+        (4,'matlab'),
+        (5,'leadership'), 
+        (6,'microsoft')
+    ]
+
+    userSkillMatch = [
+        (1,1),
+        (2,1),
+        (3,1),
+        (4,2),
+        (5,2),
+        (6,2)
+    ]
+    #add locations
     dbctrl.executemany("""
-    INSERT or IGNORE INTO users VALUES
-        (?,?,?,?,?,?,?,?,?)
+        INSERT or IGNORE INTO locations VALUES
+            (?,?,?)
+    """,locationData)
+
+    dbctrl.executemany("""
+        INSERT or IGNORE INTO users VALUES
+            (?,?,?,?,?,?)
     """,userData)
+
+    db.executemany("""
+        INSERT or IGNORE INTO keywords VALUES
+            (?,?)
+    """,keywordData)
+
+    db.executemany("""
+        INSERT or IGNORE INTO user_keyword VALUES
+            (?,?)
+    """,userKeywordMatch)
+
+    db.executemany("""
+        INSERT or IGNORE INTO skills VALUES
+            (?,?)
+    """,skillData)
+
+    db.executemany("""
+        INSERT or IGNORE INTO user_skill VALUES
+            (?,?)
+    """,userSkillMatch)
 
     #commits insert changes
     db.commit()
@@ -341,7 +435,7 @@ deleteOldDatabases() # duh
 reinitMainDatabase() #reinitiates tables
 fillCompanies() #fills company database with fake test companies
 fillJobs() #fills job database with fake test jobs
-#fillUser() # fills user database with fake test users
+fillUser() # fills user database with fake test users
 #fillReviews() #fills review database w/ company relations
 #relateJobsCompanies() #fills job_company database
 

@@ -41,15 +41,18 @@ class User:
             tempSkillID = dbh.findSkillIDs(self.id)
 
             for id in tempSkillID:
-                self.keywords.append(Skill().fillByID(id[0]))
+                self.skills.append(Skill().fillByID(id[0]))
 
             return True
+        
+    def newUser(self):
+        pass
 
     #methods
 
     # functions
 
-    def getId(self):
+    def getID(self):
         return self.id
     
     def getUsername(self):
@@ -69,7 +72,7 @@ class User:
         return tempSkills
     
     def getLocation(self):
-        self.location.getLocationName()
+        return self.location.getLocationName()
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]

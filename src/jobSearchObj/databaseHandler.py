@@ -60,6 +60,9 @@ class LocDBHandler(GenericDatabaseHandler):
         
         return tempResults.fetchone()
     
+    def addLocation(self,city: str,state: str):
+        self.dbctrl.execute("")
+    
 
 class CompanyDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
@@ -91,9 +94,9 @@ class UserDBHandler(GenericDatabaseHandler):
     
     def validateLogin(self,username: str,password: str) -> int:
         # returns None if failed, returns user id if exists
-        tempResults = self.dbctrl.execute("SELECT user_id FROM users WHERE EXISTS (SELECT user_id FROM users WHERE username = '"+username+"' AND password = '"+password+"') AND username = '"+username+"' AND password = '"+password]"'")
+        tempResults = self.dbctrl.execute("""SELECT user_id FROM users WHERE EXISTS (SELECT user_id FROM users WHERE username = '"""+username+"' AND password = '"+password+"') AND username = '"+username+"' AND password = '"+password+"'")
 
-        tempUserID = tempResults.fetchone
+        tempUserID = tempResults.fetchone()
 
         if tempUserID is not None:
             tempUserID = tempUserID[0]

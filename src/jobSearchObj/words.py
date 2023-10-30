@@ -6,7 +6,7 @@ class GenericWord:
         self.id = None
         self.type = None
 
-    #Methods
+    #init Methods
 
     def fillByID(self,id: int):
         dbh = WordsDBHandler(self.db)
@@ -19,8 +19,15 @@ class GenericWord:
 
         dbh.close()
         return self
+    
+    def fillbyName(self,name: str):
+        self._setWord(name)
+        self._assignID()
+        return self
 
-    def assignID(self):
+    # methods
+
+    def _assignID(self):
         # searches db if exists
         dbh = WordsDBHandler(self.db)
         
@@ -39,9 +46,12 @@ class GenericWord:
     def getWord(self):
         return self.word
     
-    def setWord(self,word):
+    def _setWord(self,word):
         self.word = word
         return self
+    
+    def getID(self):
+        return self.id
 
 class Tag(GenericWord):
     def __init__(self):

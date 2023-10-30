@@ -21,6 +21,12 @@ class Location:
         dbh.close()
         return self
 
+    def assignID(self,city: str,state: str):
+        dbh = LocDBHandler(self.db)
+        self.city = city
+        self.state = state
+
+        existingID = dbh.findID(self.city, self.state)
 
     #functions
 
