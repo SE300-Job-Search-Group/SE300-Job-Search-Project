@@ -7,9 +7,13 @@ print(dbh.getTable("tags"))
 print(dbh.getTable("keywords"))
 print(dbh.getTable("skills"))
 print(dbh.getTable('locations'))
+print(dbh.getTable('users'))
 
 dbh.close()
 
+
+# test cases for word addition and search
+"""
 testTag = Tag().fillbyName('TESTTAG')
 
 print(testTag.getWord())
@@ -51,3 +55,4 @@ testSkillbyName = Skill().fillbyName('TESTSKILL')
 
 print("Test fillbyName('TESTSKILL')")
 print(testSkillbyName.getID())
+"""
