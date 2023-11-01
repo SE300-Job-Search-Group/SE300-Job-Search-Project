@@ -45,10 +45,24 @@ class User:
 
             return True
         
-    def newUser(self):
-        pass
+    def newUser(self, username, password, location, min_salary, max_salary, keywords, skills): #create a new user
+        dbh = UserDBHandler(self.db)
 
-    #methods
+        #check for existing username
+        if dbh.usernameExists(username): 
+            return False
+
+        #add to the database
+        user_id = dbh.createUser(username, password, location, min_salary, max_salary)
+
+        #insert keywords and skills
+        for keyword in keywords:
+            dbh.addKeywordToUser(user_id, keyword)  
+
+        for skill in skills:
+            dbh.addSkillToUser(user_id, skill)
+
+        return True
 
     # functions
 

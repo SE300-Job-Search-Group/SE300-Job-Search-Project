@@ -1,0 +1,31 @@
+{% extends "base.html" %} <!-- Represents the profile editing page -->
+{% block title %} Edit Profile {% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1>Edit Profile</h1>
+            <form method="post" action="/edit_profile">
+                <!-- Input fields for editing profile information -->
+                <div class="form-group">
+                    <label for="keywords">Keywords</label>
+                    <input type="text" class="form-control" name="keywords" id="keywords" value="{{ keywords }}">
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <input type="text" class="form-control" name="skills" id="skills" value="{{ skills }}">
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" class="form-control" name="location" id="location" value="{{ location }}">
+                </div>
+                <div class="form-group">
+                    <label for="salary_range">Salary Range</label>
+                    <input type="text" class="form-control" name="salary_range" id="salary_range" value="{{ salary_range }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

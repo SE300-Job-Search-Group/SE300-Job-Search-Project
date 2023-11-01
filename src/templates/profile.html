@@ -1,5 +1,15 @@
-{% extends "base.html" %} <!--represents the profile page-->
-{% block title %} Profile{% endblock %}
+{% extends "base.html" %}
 {% block content %}
-<h1>profile</h1>
+<div class="container">
+    <h2>Welcome, {{ username }}</h2>
+    <p>Your Profile:</p>
+    <ul>
+        <li><strong>Keywords:</strong> {{ keywords }}</li>
+        <li><strong>Skills:</strong> {{ skills }}</li>
+        <li><strong>Location:</strong> {{ location }}</li>
+        <li><strong>Salary Range:</strong> {{ salary_range }}</li>
+    </ul>
+    
+    <a href="{{ url_for('views.edit_profile') }}" class="btn btn-primary">Edit Profile</a>
+</div>
 {% endblock %}

@@ -5,6 +5,6 @@ from .job import Job
 from .company import Company
 from .user import User
 from .jobHandler import JobHandler
-from userHandler import User
+from .userHandler import UserHandler
 from .words import GenericWord, Tag, Keyword, Skill
 from .location import Location
