@@ -30,7 +30,7 @@ class UserHandler:
         #tells User to put itself in database
         self.curUser.createUser(username,password,keywords,skills,location,minSalary,maxSalary)
     
-    def updateUser(self):
+    def updateAccount(self):
         pass
 
     #functions
