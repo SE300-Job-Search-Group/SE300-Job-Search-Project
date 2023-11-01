@@ -77,7 +77,7 @@ class User:
         dbh.writeUserSkills(tempUserSkill)
 
         dbh.close()
-
+        
     # functions
 
     def getID(self):
