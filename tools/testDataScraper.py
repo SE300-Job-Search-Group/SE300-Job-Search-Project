@@ -45,8 +45,7 @@ for keyword in keyword_list:
                 
                 
                 if response.status_code == 200:
-                    
-                    script_tag  = re.findall(r"_initialData=(\{.+?\});", response.text)
+                    script_tag = re.findall(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', html)
                     if script_tag is not None:
                         json_blob = json.loads(script_tag[0])
                         jobs_list = json_blob["metaData"]["mosaicProviderJobCardsModel"]
