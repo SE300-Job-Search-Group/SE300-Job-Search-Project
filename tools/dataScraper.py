@@ -24,7 +24,7 @@ def create_database():
 
 def scrape_indeed_aerospace_jobs():
     base_url = "https://www.indeed.com"
-    search_url = "/jobs?q=aerospace+engineering"
+    search_url = "/jobs?q=aerospace"
 
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
     cursor = conn.cursor()
