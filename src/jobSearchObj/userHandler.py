@@ -1,6 +1,7 @@
 from user import User
 from location import Location
 from words import Keyword, Skill
+from typing import Union
 
 class UserHandler:
 
@@ -8,10 +9,11 @@ class UserHandler:
         self.curUser = User()
 
     #methods
-    def login(self, user: str, password: str) -> bool:
-        loginSuccess = self.curUser.login(user,password)
+    def login(self, user: str, password: str) -> Union[bool, int]:
+        # Assuming self.curUser is an instance of the user class
+        loginSuccess = self.curUser.login(user, password)
 
-        return loginSuccess
+        return loginSuccess  # This will now return either False or the user ID
     
     def updateUser(self, user_id, new_location, new_salary_range, new_keywords, new_skills):
         # Assuming you have a User object and a method to update user information
@@ -50,3 +52,17 @@ class UserHandler:
         pass
 
     #functions
+    def userUsername(self):
+        return self.curUser.getUsername()
+    
+    def userKeywords(self):
+        return self.curUser.getKeywords()
+    
+    def userSkills(self):
+        return self.curUser.getSkills()
+    
+    def userLocation(self):
+        return self.curUser.getLocation()
+    
+    def userSalaryRange(self):
+        return self.curUser.getSalaryRange()

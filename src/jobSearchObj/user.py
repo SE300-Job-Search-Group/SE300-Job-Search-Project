@@ -1,6 +1,7 @@
 from databaseHandler import UserDBHandler
 from location import Location
 from words import Keyword, Skill
+from typing import Union
 
 class User:
     
@@ -18,9 +19,9 @@ class User:
         self.maxSalary = None
 
     # methods
-    def login(self,user: str,password: str) -> bool:  # login & user id filling. Returns False if login failed
+    def login(self, user: str, password: str) -> Union[bool, int]:
         dbh = UserDBHandler(self.db)
-        self.id = dbh.validateLogin(user,password)
+        self.id = dbh.validateLogin(user, password)
         if self.id is None:
             return False
         else:
@@ -37,13 +38,14 @@ class User:
             for id in tempKeywordID:
                 self.keywords.append(Keyword().fillByID(id[0]))
 
-            #sets all skills
+            # sets all skills
             tempSkillID = dbh.findSkillIDs(self.id)
 
             for id in tempSkillID:
                 self.skills.append(Skill().fillByID(id[0]))
 
-            return True
+            return self.id  # Return the user ID if login is successful
+
         
     def createUser(self,username:str,password:str,keywords:list,skills:list,location:Location,minSalary:int,maxSalary:int): # creates new user
         #adding attributes to object
@@ -75,7 +77,7 @@ class User:
             tempUserSkill.append((skill.getID(),self.id))
         
         dbh.writeUserSkills(tempUserSkill)
-
+    
         dbh.close()
         
     # functions

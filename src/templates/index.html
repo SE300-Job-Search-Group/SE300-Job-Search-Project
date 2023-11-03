@@ -8,19 +8,24 @@
             <div class="form-group mb-4"> <!-- Added margin to the form group -->
                 <input type="text" name="query" class="form-control form-control-lg" style="width: 600px;" placeholder="Search jobs with keywords"> <!-- Increased input size with form-control-lg -->
             </div>
+            <div class="form-group">
+                <input type="text" name="company" class="form-control" placeholder="Filter by Company">
+                <input type="text" name="location" class="form-control" placeholder="Filter by Location">
+                <input type="text" name="salary_range" class="form-control" placeholder="Filter by Salary Range">
+            </div>
             <button type="submit" class="btn btn-primary" style="background-color: #2a71cd; color: #FFFFFF;">Search</button>
         </form>
     </div>
 </div>
 
-    <style>
-    .aero-search-title {
-        font-size: 64px; 
-        font-family: 'Helvitica Neue', sans-serif;
-    }
+<style>
+.aero-search-title {
+    font-size: 64px;
+    font-family: 'Helvitica Neue', sans-serif;
+}
 
-    .aero-search-title i.fas.fa-plane {
-    color: #2a71cd; 
-    }
-    </style>
+.aero-search-title i.fas.fa-plane {
+    color: #2a71cd;
+}
+</style>
 {% endblock %}

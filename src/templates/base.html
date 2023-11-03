@@ -36,12 +36,9 @@
                 <i class="fa fa-user"></i> 
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown"> 
-                {% if user_is_logged_in %}
-                  <a class="dropdown-item" href="{{ url_for('views.profile') }}">Profile</a>
-                  <a class="dropdown-item" href="{{ url_for('views.logout') }}">Logout</a>
-                {% else %}
-                  <a class="dropdown-item" href="{{ url_for('views.login') }}">Login</a>
-                {% endif %}
+                <a class="dropdown-item" href="{{ url_for('views.login') }}">Login</a>
+                <a class="dropdown-item" href="{{ url_for('views.profile') }}">Profile</a>
+                <a class="dropdown-item" href="{{ url_for('views.logout') }}">Logout</a>
               </div>
             </li>
           </ul>
