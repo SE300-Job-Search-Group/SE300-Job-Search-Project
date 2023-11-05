@@ -80,6 +80,11 @@ class User:
     
         dbh.close()
         
+    def updateUser(self,keywords: list, skills: list, location: Location, minSal: int, maxSal: int):
+        dbh = UserDBHandler(self.db)
+        userInfo = [(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)]
+
+
     # functions
 
     def getID(self):
