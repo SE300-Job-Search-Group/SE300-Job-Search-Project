@@ -87,23 +87,20 @@ def profile():
 @views.route("/edit_profile", methods=['GET', 'POST'])
 def edit_profile():
     if request.method == 'POST':
-        # Get the user's ID from the session
-        user_id = session.get('user_id')
-
+        
         # Get the updated profile information from the form
-        new_location = request.form.get("new_location")
-        new_salary_range = request.form.get("new_salary_range")
-        new_keywords = request.form.getlist("new_keywords")  # If using checkboxes for keywords
-        new_skills = request.form.getlist("new_skills")  # If using checkboxes for skills
-
+        new_keywords = request.form.getlist("new_keywords") 
+        new_skills = request.form.getlist("new_skills")  
+        new_city = request.form.get("new_city")
+        new_state = request.form.get("new_state")
+        new_salary_min = request.form.get("new_salary_min")
+        new_salary_max = request.form.get("new_salary_max")
+    
         # Call the updateUser method to update the user's profile
-        if user_handler.updateAccount(user_id, new_location, new_salary_range, new_keywords, new_skills):
-            # Profile update successful, you can redirect to the user's profile page or another page
-            flash("Profile updated successfully.")
-            return redirect(url_for('views.profile'))
-        else:
-            # Profile update failed, handle the error
-            flash("Profile update failed. Please try again.")
+        user_handler.updateAccount(new_keywords, new_skills, new_city, new_state, new_salary_min, new_salary_max)
+        # Profile update successful, you can redirect to the user's profile page or another page
+        return redirect(url_for('views.profile'))
+        
 
     # If the request method is GET, display the profile editing form
     return render_template("edit_profile.html")

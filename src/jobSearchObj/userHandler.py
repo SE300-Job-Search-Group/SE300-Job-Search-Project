@@ -17,23 +17,6 @@ class UserHandler:
     
     def logout(self):
         self.curUser = User()
-        
-
-    def updateAccount(self, user_id, new_location, new_salary_range, new_keywords, new_skills):
-        # Assuming you have a User object and a method to update user information
-        user = self.curUser.get_user_by_id(user_id)
-
-        # Update the user's information
-        user.location = new_location
-        user.salary_range = new_salary_range
-        user.keywords = new_keywords
-        user.skills = new_skills
-
-        # Save the updated user to the data store
-        # You need to implement this part based on your data store (e.g., database)
-
-        return True  # Return True if the update was successful, otherwise handle errors
-
 
     def createAccount(self,username:str,password:str,keywordNames:list,skillNames:list,city:str,state:str,minSalary:int,maxSalary:int): # creates new account
         
@@ -51,6 +34,12 @@ class UserHandler:
         
         #tells User to put itself in database
         self.curUser.createUser(username,password,keywords,skills,location,minSalary,maxSalary)
+
+    def updateAccount(self, new_keywords, new_skills, new_city, new_state, new_salary_min, new_salary_max):
+
+        # Update the user's information
+        
+
 
     #functions
     def userUsername(self):
