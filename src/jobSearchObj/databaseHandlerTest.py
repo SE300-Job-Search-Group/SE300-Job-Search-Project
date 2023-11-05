@@ -8,6 +8,7 @@ print(dbh.getTable("keywords"))
 print(dbh.getTable("skills"))
 print(dbh.getTable('locations'))
 print(dbh.getTable('users'))
+print(dbh.getTable('user_keyword'))
 
 dbh.close()
 

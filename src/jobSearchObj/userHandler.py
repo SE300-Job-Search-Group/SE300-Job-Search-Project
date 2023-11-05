@@ -48,8 +48,6 @@ class UserHandler:
         #tells User to put itself in database
         self.curUser.createUser(username,password,keywords,skills,location,minSalary,maxSalary)
 
-        return True
-
     #functions
     def userUsername(self):
         return self.curUser.getUsername()

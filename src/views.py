@@ -13,10 +13,11 @@ def home():
         keywords = query.split()
         company = request.form.get('company')
         location = request.form.get('location')
-        salary_range = request.form.get('salary_range')
+        salary_min = request.form.get('salary_range')
+        salary_max = request.form.get('salary_range')
 
         # Use job_handler.searchDB() with the filters
-        matching_jobs = job_handler.searchDB(keywords, company, location, salary_range)
+        matching_jobs = job_handler.searchDB(keywords, company, location, salary_min, salary_max)
 
         return render_template('search_results.html', jobs=matching_jobs)
 
@@ -49,7 +50,6 @@ def register():
         user_handler.createAccount(username, password, keywords, skills, city, state, min_salary, max_salary)
         return redirect(url_for('views.profile'))
         
-
     return render_template("register.html", registration_url=url_for('views.register'))
 
 @views.route("/login", methods=['GET', 'POST'])  # Defining the route to the login page
@@ -60,7 +60,7 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        if user_handler.login(username, password):
+        if user_handler.login(username, password) is not False:
             # User login successful
             session['user_id'] = user_handler.curUser.getID() 
             return redirect(url_for('views.profile'))
