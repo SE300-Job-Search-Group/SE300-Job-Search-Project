@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for, flash
-from JobSearchObj import JobHandler
-from JobSearchObj import UserHandler
+from jobSearchObj import JobHandler
+from jobSearchObj import UserHandler
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
