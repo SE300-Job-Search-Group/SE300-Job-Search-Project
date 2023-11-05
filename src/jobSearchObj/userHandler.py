@@ -15,6 +15,10 @@ class UserHandler:
 
         return loginSuccess  # This will now return either False or the user ID
     
+    def logout(self):
+        self.curUser = User()
+        
+
     def updateAccount(self, user_id, new_location, new_salary_range, new_keywords, new_skills):
         # Assuming you have a User object and a method to update user information
         user = self.curUser.get_user_by_id(user_id)
