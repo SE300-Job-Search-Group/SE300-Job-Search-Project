@@ -89,12 +89,14 @@ class User:
         keywordsUpdate = []
         for kw in keywords:
             keywordsUpdate.append(kw.getID(),self.id)
+        
         skillsUpdate = []
         for skill in skills:
             skillsUpdate.append(skill.getID(),self.id)
         
-        dbh.updateUserKeywords(keywordsUpdate)
-        
+        dbh.updateUserKeywords(self.id,keywordsUpdate)
+        dbh.updateUserSkills(self.id,skillsUpdate)
+
 
     # functions
 
