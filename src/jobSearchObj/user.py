@@ -92,9 +92,9 @@ class User:
         skillsUpdate = []
         for skill in skills:
             skillsUpdate.append(skill.getID(),self.id)
-    
-
-
+        
+        dbh.updateUserKeywords(keywordsUpdate)
+        
 
     # functions
 
