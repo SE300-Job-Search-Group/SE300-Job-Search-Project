@@ -2,6 +2,7 @@ import sqlite3
 
 class GenericDatabaseHandler:
     def __init__(self,dir):
+        print(dir)
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
