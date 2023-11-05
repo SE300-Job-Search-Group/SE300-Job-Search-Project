@@ -27,6 +27,7 @@ class Location:
         self.state = state
 
         existingID = dbh.findID(self.city, self.state)
+        print(str(existingID))
         self.id = existingID
 
         dbh.close()
@@ -39,3 +40,9 @@ class Location:
     
     def getID(self):
         return self.id
+
+    def getCity(self):
+        return self.city
+    
+    def getState(self):
+        return self.state

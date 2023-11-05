@@ -86,11 +86,27 @@ def profile():
 
 @views.route("/edit_profile", methods=['GET', 'POST'])
 def edit_profile():
+
+    if 'user_id' in session:
+        keywords = user_handler.userKeywords()
+        skills = user_handler.userSkills()
+        city = user_handler.userCity()
+        state = user_handler.userState()
+        minSal = str(user_handler.userMinSalary())
+        maxSal = str(user_handler.userMaxSalary())
+        keywords_prefill = ""
+        skills_prefill = ""
+        for kw in keywords:
+            keywords_prefill = keywords_prefill + kw+','
+        
+        for skill in skills:
+            skills_prefill = skills_prefill + skill+','
+
     if request.method == 'POST':
         
         # Get the updated profile information from the form
-        new_keywords = request.form.getlist("new_keywords") 
-        new_skills = request.form.getlist("new_skills")  
+        new_keywords = [kw.strip() for kw in request.form.get("new_keywords").split(',')]
+        new_skills = [skill.strip() for skill in request.form.get("new_skills").split(',')] 
         new_city = request.form.get("new_city")
         new_state = request.form.get("new_state")
         new_minSal = request.form.get("new_salary_min")
@@ -103,7 +119,7 @@ def edit_profile():
         
 
     # If the request method is GET, display the profile editing form
-    return render_template("edit_profile.html")
+    return render_template("edit_profile.html", keywords=keywords_prefill,skills = skills_prefill,city = city,state = state, minSal = minSal, maxSal = maxSal)
 
 @views.route('/logout')
 def logout():

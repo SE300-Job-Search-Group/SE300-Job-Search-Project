@@ -48,8 +48,7 @@ class UserHandler:
 
         #location object
         location = Location().assignID(new_city, new_state)
-
-        self.curUser.updateUser(new_keywords,new_skills,location,new_minSal,new_maxSal)
+        self.curUser.updateUser(keywords,skills,location,new_minSal,new_maxSal)
 
 
     #functions
@@ -67,3 +66,15 @@ class UserHandler:
     
     def userSalaryRange(self):
         return self.curUser.getSalaryRange()
+    
+    def userCity(self):
+        return self.curUser.getCity()
+    
+    def userState(self):
+        return self.curUser.getState()
+    
+    def userMinSalary(self):
+        return self.curUser.getMinSalary()
+    
+    def userMaxSalary(self):
+        return self.curUser.getMaxSalary()

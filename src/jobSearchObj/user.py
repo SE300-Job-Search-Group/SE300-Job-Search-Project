@@ -83,20 +83,28 @@ class User:
     def updateUser(self,keywords: list, skills: list, location: Location, minSal: int, maxSal: int):
         dbh = UserDBHandler(self.db)
 
-        userInfo = [(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)]
+
+        userInfo = [(self.id,self.username,self.__password,location.getID(),self.minSalary,self.maxSalary)]
         dbh.writeUser(userInfo)
 
         keywordsUpdate = []
         for kw in keywords:
-            keywordsUpdate.append(kw.getID(),self.id)
+            keywordsUpdate.append((kw.getID(),self.id))
         
         skillsUpdate = []
         for skill in skills:
-            skillsUpdate.append(skill.getID(),self.id)
+            skillsUpdate.append((skill.getID(),self.id))
         
         dbh.updateUserKeywords(self.id,keywordsUpdate)
         dbh.updateUserSkills(self.id,skillsUpdate)
 
+        self.keywords = keywords
+        self.skills = skills
+        self.location = location
+        self.minSalary = minSal
+        self.maxSalary = maxSal
+
+        dbh.close()
 
     # functions
 
@@ -124,3 +132,15 @@ class User:
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]
+    
+    def getCity(self):
+        return self.location.getCity()
+    
+    def getState(self):
+        return self.location.getState()
+    
+    def getMinSalary(self):
+        return self.minSalary
+    
+    def getMaxSalary(self):
+        return self.maxSalary
