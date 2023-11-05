@@ -112,6 +112,7 @@ def edit_profile():
 def logout():
     # Clear the user session data to log the user out
     session.clear()
+    user_handler.logout()
     return redirect(url_for('views.login')) 
 
 @views.route("/jobmatch") #defining the route to job match page 
