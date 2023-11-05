@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for, flash
-from jobSearchObj import JobHandler
-from jobSearchObj import UserHandler
+from JobSearchObj import JobHandler
+from JobSearchObj import UserHandler
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
@@ -35,7 +35,7 @@ def register():
         max_salary = request.form.get("max_salary")
 
         # Input validation
-        if not (username and password and keywords and skills and city and state and min_salary and max_salary):
+        """if not (username and password and keywords and skills and city and state and min_salary and max_salary):
             flash("All fields are required.", "error")
             return redirect(url_for('views.register'))
 
@@ -44,14 +44,11 @@ def register():
             max_salary = int(max_salary)
         except ValueError:
             flash("Salary values must be valid integers.", "error")
-            return redirect(url_for('views.register'))
+            return redirect(url_for('views.register'))"""
 
-        if user_handler.createAccount(username, password, keywords, skills, city, state, min_salary, max_salary):
-            flash("User registration successful.", "success")
-            return redirect(url_for('views.profile'))
-        else:
-            flash("User registration failed. Please try again.", "error")
-            return redirect(url_for('views.register'))
+        user_handler.createAccount(username, password, keywords, skills, city, state, min_salary, max_salary)
+        return redirect(url_for('views.profile'))
+        
 
     return render_template("register.html", registration_url=url_for('views.register'))
 
@@ -100,7 +97,7 @@ def edit_profile():
         new_skills = request.form.getlist("new_skills")  # If using checkboxes for skills
 
         # Call the updateUser method to update the user's profile
-        if user_handler.updateUser(user_id, new_location, new_salary_range, new_keywords, new_skills):
+        if user_handler.updateAccount(user_id, new_location, new_salary_range, new_keywords, new_skills):
             # Profile update successful, you can redirect to the user's profile page or another page
             flash("Profile updated successfully.")
             return redirect(url_for('views.profile'))
@@ -115,9 +112,7 @@ def edit_profile():
 def logout():
     # Clear the user session data to log the user out
     session.clear()
-    return redirect(url_for('views.index')) 
-
-#Future work
+    return redirect(url_for('views.login')) 
 
 @views.route("/jobmatch") #defining the route to job match page 
 def jobmatch():
