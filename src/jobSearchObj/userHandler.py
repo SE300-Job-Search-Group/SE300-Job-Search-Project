@@ -35,16 +35,21 @@ class UserHandler:
         #tells User to put itself in database
         self.curUser.createUser(username,password,keywords,skills,location,minSalary,maxSalary)
 
-    def updateAccount(self, new_keywords, new_skills, new_city, new_state, new_salary_min, new_salary_max):
+    def updateAccount(self, new_keywords, new_skills, new_city, new_state, new_minSal, new_maxSal):
 
         # finds keyword/skills id
         keywords = []
+        for kwName in new_keywords:
+            keywords.append(Keyword().fillbyName(kwName))
+        
         skills = []
+        for skillName in new_skills:
+            skills.append(Skill().fillbyName(skillName))
 
         #location object
-        location = Location()
+        location = Location().assignID(new_city, new_state)
 
-        self.curUser.updateUser(keywords,skills,location,minSal,maxSal)
+        self.curUser.updateUser(new_keywords,new_skills,location,new_minSal,new_maxSal)
 
 
     #functions

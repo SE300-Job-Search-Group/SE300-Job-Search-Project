@@ -95,7 +95,6 @@ class User:
         
         dbh.updateUserKeywords(keywordsUpdate)
         
-
     # functions
 
     def getID(self):

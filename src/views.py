@@ -93,11 +93,11 @@ def edit_profile():
         new_skills = request.form.getlist("new_skills")  
         new_city = request.form.get("new_city")
         new_state = request.form.get("new_state")
-        new_salary_min = request.form.get("new_salary_min")
-        new_salary_max = request.form.get("new_salary_max")
+        new_minSal = request.form.get("new_salary_min")
+        new_maxSal = request.form.get("new_salary_max")
     
         # Call the updateUser method to update the user's profile
-        user_handler.updateAccount(new_keywords, new_skills, new_city, new_state, new_salary_min, new_salary_max)
+        user_handler.updateAccount(new_keywords, new_skills, new_city, new_state, new_minSal, new_maxSal)
         # Profile update successful, you can redirect to the user's profile page or another page
         return redirect(url_for('views.profile'))
         
@@ -112,6 +112,7 @@ def logout():
     user_handler.logout()
     return redirect(url_for('views.login')) 
 
+# Future Work
 @views.route("/jobmatch") #defining the route to job match page 
 def jobmatch():
     return render_template("jobMatch.html")
