@@ -82,7 +82,18 @@ class User:
         
     def updateUser(self,keywords: list, skills: list, location: Location, minSal: int, maxSal: int):
         dbh = UserDBHandler(self.db)
+
         userInfo = [(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)]
+        dbh.writeUser(userInfo)
+
+        keywordsUpdate = []
+        for kw in keywords:
+            keywordsUpdate.append(kw.getID(),self.id)
+        skillsUpdate = []
+        for skill in skills:
+            skillsUpdate.append(skill.getID(),self.id)
+    
+
 
 
     # functions

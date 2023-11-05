@@ -128,7 +128,7 @@ class UserDBHandler(GenericDatabaseHandler):
     
     def writeUser(self,userInfo: list): #writes a new user to the user table in DB
         self.dbctrl.executemany("""
-        INSERT or IGNORE INTO users VALUES
+        INSERT or REPLACE INTO users VALUES
             (?,?,?,?,?,?)
     """,userInfo)
         
