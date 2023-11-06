@@ -1,30 +1,26 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, flash
+from flask import Blueprint, request, session, render_template, redirect, url_for, flash
 from jobSearchObj import JobHandler
-from jobSearchObj import User
 from jobSearchObj import UserHandler
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
-user = User()
 user_handler = UserHandler()
 
-@views.route("/home", methods=['GET', 'POST']) #defining route to home page
+@views.route("/home", methods=['GET', 'POST'])
 def home():
-    #check is user is logged in
-    user_is_logged_in = 'user.id' in session
-
     if request.method == 'POST':
-        #method is POST if the user uses the search bar
         query = request.form.get('query')
         keywords = query.split()
+        company = request.form.get('company')
+        location = request.form.get('location')
+        salary_min = request.form.get('salary_range')
+        salary_max = request.form.get('salary_range')
 
-        # using the jobHandler
-        matching_jobs = job_handler.searchDB(keywords)
-        
-        #TODO develop the page to show the matching jobs
+        # Use job_handler.searchDB() with the filters
+        matching_jobs = job_handler.searchDB(keywords, company, location, salary_min, salary_max)
+
         return render_template('search_results.html', jobs=matching_jobs)
-    
-    # home page is displayed if nothing is searched
+
     return render_template("index.html")
 
 @views.route("/register", methods=["GET", "POST"])
@@ -32,26 +28,29 @@ def register():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-
-        # User creation
-        location = request.form.get("location")
+        keywords = [kw.strip() for kw in request.form.get("keywords").split(',')]
+        skills = [skill.strip() for skill in request.form.get("skills").split(',')]
+        city = request.form.get("city")
+        state = request.form.get("state")
         min_salary = request.form.get("min_salary")
         max_salary = request.form.get("max_salary")
-        keywords = request.form.getlist("keywords")  # If using checkboxes for keywords
-        skills = request.form.getlist("skills")  # If using checkboxes for skills
 
-        # Create the new user and handle any errors during user creation
-        if user.newUser(username, password, location, min_salary, max_salary, keywords, skills):
-            # User creation successful, redirect to the "edit_profile" page
-            return redirect(url_for('views.profile'))
-        else:
-            # User creation failed, handle the error (e.g., display an error message)
-            error_message = "User registration failed. Please try again."
-            return render_template("register.html", registration_url=url_for('register'), error=error_message)
+        # Input validation
+        """if not (username and password and keywords and skills and city and state and min_salary and max_salary):
+            flash("All fields are required.", "error")
+            return redirect(url_for('views.register'))
 
-    # If the request method is GET, display the registration form
+        try:
+            min_salary = int(min_salary)
+            max_salary = int(max_salary)
+        except ValueError:
+            flash("Salary values must be valid integers.", "error")
+            return redirect(url_for('views.register'))"""
+
+        user_handler.createAccount(username, password, keywords, skills, city, state, min_salary, max_salary)
+        return redirect(url_for('views.profile'))
+        
     return render_template("register.html", registration_url=url_for('views.register'))
-
 
 @views.route("/login", methods=['GET', 'POST'])  # Defining the route to the login page
 def login():
@@ -61,9 +60,8 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        if user_handler.login(username, password):
+        if user_handler.login(username, password) is not False:
             # User login successful
-            # Store user's ID in the session
             session['user_id'] = user_handler.curUser.getID() 
             return redirect(url_for('views.profile'))
         else:
@@ -76,11 +74,11 @@ def login():
 @views.route("/profile") #defining the route to profile page 
 def profile():
     if 'user_id' in session:
-        username = user.getUsername()
-        keywords = user.getKeywords()
-        skills = user.getSkills()
-        location = user.getLocation()
-        salary_range = user.getSalaryRange()
+        username = user_handler.userUsername()
+        keywords = user_handler.userKeywords()
+        skills = user_handler.userSkills()
+        location = user_handler.userLocation()
+        salary_range = user_handler.userSalaryRange()
 
         return render_template("profile.html", username=username, keywords=keywords, skills=skills, location=location, salary_range=salary_range)
     else:
@@ -88,30 +86,49 @@ def profile():
 
 @views.route("/edit_profile", methods=['GET', 'POST'])
 def edit_profile():
+
+    if 'user_id' in session:
+        keywords = user_handler.userKeywords()
+        skills = user_handler.userSkills()
+        city = user_handler.userCity()
+        state = user_handler.userState()
+        minSal = str(user_handler.userMinSalary())
+        maxSal = str(user_handler.userMaxSalary())
+        keywords_prefill = ""
+        skills_prefill = ""
+        for kw in keywords:
+            keywords_prefill = keywords_prefill + kw+','
+        
+        for skill in skills:
+            skills_prefill = skills_prefill + skill+','
+
     if request.method == 'POST':
-        # Get the user's ID from the session
-        user_id = session.get('user_id')
-
+        
         # Get the updated profile information from the form
-        new_location = request.form.get("new_location")
-        new_salary_range = request.form.get("new_salary_range")
-        new_keywords = request.form.getlist("new_keywords")  # If using checkboxes for keywords
-        new_skills = request.form.getlist("new_skills")  # If using checkboxes for skills
-
+        new_keywords = [kw.strip() for kw in request.form.get("new_keywords").split(',')]
+        new_skills = [skill.strip() for skill in request.form.get("new_skills").split(',')] 
+        new_city = request.form.get("new_city")
+        new_state = request.form.get("new_state")
+        new_minSal = request.form.get("new_salary_min")
+        new_maxSal = request.form.get("new_salary_max")
+    
         # Call the updateUser method to update the user's profile
-        if user_handler.updateUser(user_id, new_location, new_salary_range, new_keywords, new_skills):
-            # Profile update successful, you can redirect to the user's profile page or another page
-            flash("Profile updated successfully.")
-            return redirect(url_for('views.profile'))
-        else:
-            # Profile update failed, handle the error
-            flash("Profile update failed. Please try again.")
+        user_handler.updateAccount(new_keywords, new_skills, new_city, new_state, new_minSal, new_maxSal)
+        # Profile update successful, you can redirect to the user's profile page or another page
+        return redirect(url_for('views.profile'))
+        
 
     # If the request method is GET, display the profile editing form
-    return render_template("edit_profile.html")
+    return render_template("edit_profile.html", keywords=keywords_prefill,skills = skills_prefill,city = city,state = state, minSal = minSal, maxSal = maxSal)
 
-#Future work
+@views.route('/logout')
+def logout():
+    # Clear the user session data to log the user out
+    session.clear()
+    user_handler.logout()
+    return redirect(url_for('views.login')) 
 
+# Future Work
 @views.route("/jobmatch") #defining the route to job match page 
 def jobmatch():
     return render_template("jobMatch.html")

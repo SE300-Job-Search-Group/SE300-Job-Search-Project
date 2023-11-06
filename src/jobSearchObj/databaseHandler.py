@@ -2,6 +2,7 @@ import sqlite3
 
 class GenericDatabaseHandler:
     def __init__(self,dir):
+        print(dir)
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
@@ -127,18 +128,32 @@ class UserDBHandler(GenericDatabaseHandler):
     
     def writeUser(self,userInfo: list): #writes a new user to the user table in DB
         self.dbctrl.executemany("""
-        INSERT or IGNORE INTO users VALUES
+        INSERT or REPLACE INTO users VALUES
             (?,?,?,?,?,?)
-    """,userInfo)
+        """,userInfo)
         
     def writeUserKeywords(self,user_kw_list: list): #write user keyword associations to user_keyword table in db
         self.dbctrl.executemany("""
         INSERT or IGNORE INTO user_keyword VALUES
             (?,?)
-    """,user_kw_list)
+        """,user_kw_list)
 
     def writeUserSkills(self,user_skill_list: list): #see writeUserKeywords but for Skills instead
         self.dbctrl.executemany("""
         INSERT or IGNORE INTO user_skill VALUES
             (?,?)
-    """,user_skill_list)
+        """,user_skill_list)
+        
+    def updateUserKeywords(self,id,user_kw_list):
+        self.dbctrl.execute("""
+            DELETE FROM user_keyword
+                WHERE user_id = """ + str(id))
+        
+        self.writeUserKeywords(user_kw_list)
+
+    def updateUserSkills(self,id,user_skill_list):
+        self.dbctrl.execute("""
+            DELETE FROM user_skill
+                WHERE user_id = """ + str(id))
+        
+        self.writeUserSkills(user_skill_list)

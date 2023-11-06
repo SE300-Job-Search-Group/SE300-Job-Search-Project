@@ -8,20 +8,28 @@
             <form method="post" action="/edit_profile">
                 <!-- Input fields for editing profile information -->
                 <div class="form-group">
-                    <label for="keywords">Keywords</label>
-                    <input type="text" class="form-control" name="keywords" id="keywords" value="{{ keywords }}">
+                    <label for="new_keywords">Keywords</label>
+                    <input type="text" class="form-control" name="new_keywords" id="new_keywords" value= "{{ keywords }}">
                 </div>
                 <div class="form-group">
-                    <label for="skills">Skills</label>
-                    <input type="text" class="form-control" name="skills" id="skills" value="{{ skills }}">
+                    <label for="new_skills">Skills</label>
+                    <input type="text" class="form-control" name="new_skills" id="new_skills" value="{{ skills }}">
                 </div>
                 <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" class="form-control" name="location" id="location" value="{{ location }}">
+                    <label for="new_city">City</label>
+                    <input type="text" class="form-control" name="new_city" id="new_city" value="{{ city }}">
                 </div>
                 <div class="form-group">
-                    <label for="salary_range">Salary Range</label>
-                    <input type="text" class="form-control" name="salary_range" id="salary_range" value="{{ salary_range }}">
+                    <label for="new_state">State</label>
+                    <input type="text" class="form-control" name="new_state" id="new_state" value="{{ state }}">
+                </div>
+                <div class="form-group">
+                    <label for="new_salary_min">Minimum Salary</label>
+                    <input type="text" class="form-control" name="new_salary_min" id="new_salary_min" value="{{ minSal }}">
+                </div>
+                <div class="form-group">
+                    <label for="new_salary_max">Maximum Salary</label>
+                    <input type="text" class="form-control" name="new_salary_max" id="new_salary_max" value="{{ maxSal }}">
                 </div>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>

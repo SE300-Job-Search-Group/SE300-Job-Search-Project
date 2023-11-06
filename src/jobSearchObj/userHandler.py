@@ -1,6 +1,7 @@
 from user import User
 from location import Location
 from words import Keyword, Skill
+from typing import Union
 
 class UserHandler:
 
@@ -8,26 +9,14 @@ class UserHandler:
         self.curUser = User()
 
     #methods
-    def login(self, user: str, password: str) -> bool:
-        loginSuccess = self.curUser.login(user,password)
+    def login(self, user: str, password: str) -> Union[bool, int]:
+        # Assuming self.curUser is an instance of the user class
+        loginSuccess = self.curUser.login(user, password)
 
-        return loginSuccess
+        return loginSuccess  # This will now return either False or the user ID
     
-    def updateUser(self, user_id, new_location, new_salary_range, new_keywords, new_skills):
-        # Assuming you have a User object and a method to update user information
-        user = self.curUser.get_user_by_id(user_id)
-
-        # Update the user's information
-        user.location = new_location
-        user.salary_range = new_salary_range
-        user.keywords = new_keywords
-        user.skills = new_skills
-
-        # Save the updated user to the data store
-        # You need to implement this part based on your data store (e.g., database)
-
-        return True  # Return True if the update was successful, otherwise handle errors
-
+    def logout(self):
+        self.curUser = User()
 
     def createAccount(self,username:str,password:str,keywordNames:list,skillNames:list,city:str,state:str,minSalary:int,maxSalary:int): # creates new account
         
@@ -45,8 +34,47 @@ class UserHandler:
         
         #tells User to put itself in database
         self.curUser.createUser(username,password,keywords,skills,location,minSalary,maxSalary)
-    
-    def updateAccount(self):
-        pass
+
+    def updateAccount(self, new_keywords, new_skills, new_city, new_state, new_minSal, new_maxSal):
+
+        # finds keyword/skills id
+        keywords = []
+        for kwName in new_keywords:
+            keywords.append(Keyword().fillbyName(kwName))
+        
+        skills = []
+        for skillName in new_skills:
+            skills.append(Skill().fillbyName(skillName))
+
+        #location object
+        location = Location().assignID(new_city, new_state)
+        self.curUser.updateUser(keywords,skills,location,new_minSal,new_maxSal)
+
 
     #functions
+    def userUsername(self):
+        return self.curUser.getUsername()
+    
+    def userKeywords(self):
+        return self.curUser.getKeywords()
+    
+    def userSkills(self):
+        return self.curUser.getSkills()
+    
+    def userLocation(self):
+        return self.curUser.getLocation()
+    
+    def userSalaryRange(self):
+        return self.curUser.getSalaryRange()
+    
+    def userCity(self):
+        return self.curUser.getCity()
+    
+    def userState(self):
+        return self.curUser.getState()
+    
+    def userMinSalary(self):
+        return self.curUser.getMinSalary()
+    
+    def userMaxSalary(self):
+        return self.curUser.getMaxSalary()

@@ -3,6 +3,7 @@ from views import views
 
 app = Flask(__name__, template_folder="templates") #initializing the application
 app.register_blueprint(views, url_prefix="/")
+app.secret_key = 'AeroSearch'
 
 @app.route("/")
 def index():
