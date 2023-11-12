@@ -50,16 +50,25 @@ for keyword in keyword_list:
                 )
 
                 if response.status_code == 200:
-                    script_tag = re.findall(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
-                    if script_tag:
-                        json_blob = json.loads(script_tag[0])
-                        jobs_list = json_blob["metaData"]["mosaicProviderJobCardsModel"]
+                    script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
+                    if script_tag is not None:
+                        json_blob = json.loads(script_tag.group(1))
+        
+                        # Extract jobs data
+                        jobs_list =json_blob['metaData']['mosaicProviderJobCardsModel']['results']      
+                        
                         for job in jobs_list:
-                            if job.get('jobkey'):
-                                job_id = job.get('jobkey')
-                                job_id_list.append(job_id)
+                            if job.get('jobkey') is not None:
+                                job_id_list.append(job.get('jobkey'))
+                                print("Appended job key:", job.get('jobkey'))
+
+                                ## If response contains less than 10 jobs then stop pagination
+                                if len(jobs_list) < 10:
+                                    print('3')
+                                    break
+                                
                                 # Insert job data into the database
-                                save_job_to_database(job_id, keyword, location)
+                                save_job_to_database(job_id_list, keyword, location)
                         if len(jobs_list) < 10:
                             break
 
