@@ -1,4 +1,4 @@
-from flask import Blueprint, request, session, render_template, redirect, url_for, flash
+from flask import Blueprint, request, session, render_template, redirect, url_for
 from jobSearchObj import JobHandler
 from jobSearchObj import UserHandler
 
@@ -13,8 +13,8 @@ def home():
         keywords = query.split()
         company = request.form.get('company')
         location = request.form.get('location')
-        salary_min = request.form.get('salary_range')
-        salary_max = request.form.get('salary_range')
+        salary_min = request.form.get('salary_min')
+        salary_max = request.form.get('salary_max')
 
         # Use job_handler.searchDB() with the filters
         matching_jobs = job_handler.searchDB(keywords, company, location, salary_min, salary_max)
@@ -22,6 +22,17 @@ def home():
         return render_template('search_results.html', jobs=matching_jobs)
 
     return render_template("index.html")
+
+@views.route("/search_results", methods=['GET'])
+@views.route("/search_results/<int:page>", methods=['GET'])
+def search_results(page=1):
+    # Assuming you have a pagination object named 'pagination' that is returned by the searchDB method
+    # If not, replace 'pagination' with the actual pagination object returned by your searchDB method
+    pagination = job_handler.searchDB(keywords=[], comp=None, loc=None, sal_min=50000, sal_max=150000).paginate(page, per_page=10, error_out=False)
+
+    jobs = pagination.items  # Get the jobs for the current page
+
+    return render_template('search_results.html', jobs=jobs, pagination=pagination)
 
 @views.route("/register", methods=["GET", "POST"])
 def register():
@@ -34,18 +45,6 @@ def register():
         state = request.form.get("state")
         min_salary = request.form.get("min_salary")
         max_salary = request.form.get("max_salary")
-
-        # Input validation
-        """if not (username and password and keywords and skills and city and state and min_salary and max_salary):
-            flash("All fields are required.", "error")
-            return redirect(url_for('views.register'))
-
-        try:
-            min_salary = int(min_salary)
-            max_salary = int(max_salary)
-        except ValueError:
-            flash("Salary values must be valid integers.", "error")
-            return redirect(url_for('views.register'))"""
 
         user_handler.createAccount(username, password, keywords, skills, city, state, min_salary, max_salary)
         return redirect(url_for('views.profile'))
