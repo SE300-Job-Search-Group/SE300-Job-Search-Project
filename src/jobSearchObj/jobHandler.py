@@ -1,6 +1,8 @@
 from job import Job
 from company import Company
+from words import Tag
 import sqlite3
+from databaseHandler import JobSearchDBHandler
 
 class JobHandler:
 
@@ -10,29 +12,43 @@ class JobHandler:
 
     #methods
 
-    def searchDB(self,keywords: list,comp: Company,loc,sal_min: int, sal_max: int): # NEEDS TO BE FIXED/RESTRUCTURED TO USE databaseHandler
-        #searches sql database for relavent jobs(first 10)
+    def searchDB(self, tags:list, company: str, loc:str, sal_min: int, sal_max: int):
+        tag_res = []
+        if tags is not None:
+            tag_res = self.searchTags(tags)
         
-        # connects to test database
-        db = sqlite3.connect(self.db)
+        #temp keyword results
+        self.jobs = tag_res
+
+    def searchTags(self,tags: list)-> list[Job]:
+        #consts. change as needed
+        numMatches = 3
+        
+        jsdb = JobSearchDBHandler(self.db)
+
+        tag_ids = []
+        for kw in tags:
+            
+            tag_ids.append(Tag().fillbyName(kw).getID())
 
         #fetch job data
-        dbctrl = db.cursor()
+        job_ids = jsdb.searchByTags(tag_ids,numMatches)
 
-        # this var is an array of job listings (define which vars are needed)
-        tempDB=dbctrl.execute("""
-            SELECT job_id FROM jobs 
-                INNER JOIN job_keyword
-                    ON jobs.job_id = job_keyword.job_id
-                WHERE keyword.keyword_id 
+        jobs = []
 
-        """)
+        for id in job_ids:
+            jobs.append(Job().fillByID(id))
 
-        tempJobs = tempDB.fetchall() # result from search
-
-        return tempJobs
-    
-        #formating to job objects
-        # self.jobs = tempJobs
+        return jobs
 
     #functions
+
+    def getJobs(self):
+        return self.jobs
+    
+    def getJob(self,index:int)-> Job:
+        return self.jobs[index]
+    
+    def getJobTitle(self,index:int)-> str: #add get functions as needed
+        return self.jobs[index].getTitle()
+    

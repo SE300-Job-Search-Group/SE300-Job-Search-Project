@@ -2,7 +2,6 @@ import sqlite3
 
 class GenericDatabaseHandler:
     def __init__(self,dir):
-        print(dir)
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
@@ -69,7 +68,6 @@ class LocDBHandler(GenericDatabaseHandler):
         tempResults = self.dbctrl.execute("SELECT location_id FROM locations WHERE EXISTS (SELECT location_id FROM locations WHERE city_name = '"+city+"' AND state_name = '"+state+"') AND city_name = '"+city+"' AND state_name = '"+state+"'")
         return tempResults.fetchone()[0]
     
-
 class CompanyDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
         tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT company_id FROM companies WHERE company_id = "+str(id)+") AND company_id = "+str(id))
@@ -157,3 +155,29 @@ class UserDBHandler(GenericDatabaseHandler):
                 WHERE user_id = """ + str(id))
         
         self.writeUserSkills(user_skill_list)
+
+class JobSearchDBHandler(GenericDatabaseHandler):
+    def searchByTags(self,tag_ids: list,numMatches: int)-> list[int]:
+
+        tag_id_phrase = ''
+        for id in tag_ids:
+            tag_id_phrase = tag_id_phrase +str(id)+","
+
+        tag_id_phrase = tag_id_phrase.rstrip(tag_id_phrase[-1])
+
+        tempResults = self.dbctrl.execute("""
+            SELECT job_id FROM job_tag
+                WHERE tag_id IN ("""+tag_id_phrase+""") 
+                GROUP BY job_id
+                HAVING COUNT(*)>="""+str(numMatches)+"""
+        """)
+        tempOutput = tempResults.fetchall()
+        output = []
+        for i in tempOutput:
+            output.append(i[0])
+        
+        return output
+
+class TestDBHandler(GenericDatabaseHandler):
+    def execute(self,input):
+        return self.dbctrl.execute(input)
