@@ -22,7 +22,7 @@ class JobHandler:
 
     def searchTags(self,tags: list)-> list[Job]:
         #consts. change as needed
-        numMatches = 3
+        numMatches = 1
         
         jsdb = JobSearchDBHandler(self.db)
 

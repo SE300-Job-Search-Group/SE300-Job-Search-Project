@@ -18,26 +18,24 @@ def home():
         salary_max = request.form.get('salary_max')
 
         # Use job_handler.searchDB() with the filters
-        matching_jobs = job_handler.searchTags(keywords) #, company, location, salary_min, salary_max)
+        job_handler.searchDB(keywords, company, location, salary_min, salary_max)
         print(keywords, type(keywords))
-        return redirect(url_for('views.search_results', jobs=matching_jobs))
+        return redirect(url_for('views.search_results'))
 
     return render_template("index.html")
 
 @views.route("/search_results", methods=['GET'])
 @views.route("/search_results/<int:page>", methods=['GET'])
 def search_results(page=1):
-    keywords = []  # Define your keywords here or get them from the request
-    matching_jobs = job_handler.searchTags(keywords)  # Retrieve matching jobs
-
+    jobs=job_handler.getJobs()
     per_page = 10  # Jobs per page
 
     # Paginate the matching_jobs
-    pagination = Pagination(matching_jobs, page=page, per_page=per_page)
+    pagination = Pagination(jobs, page=page, per_page=per_page)
 
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
-    jobs = matching_jobs[start_idx:end_idx]  # Get the jobs for the current page
+    jobs = jobs[start_idx:end_idx]  # Get the jobs for the current page
 
     return render_template('search_results.html', jobs=jobs, pagination=pagination)
 
