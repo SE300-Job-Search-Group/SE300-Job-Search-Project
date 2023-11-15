@@ -1,3 +1,4 @@
+##Cancel the run asap so we don't use up the API key
 import re
 import json
 import requests
@@ -48,9 +49,10 @@ for keyword in keyword_list:
                         'url': indeed_jobs_url,
                     },
                 )
-
+                ##bypass indeed blocking
                 if response.status_code == 200:
                     script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
+                    
                     if script_tag is not None:
                         json_blob = json.loads(script_tag.group(1))
         
