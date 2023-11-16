@@ -85,6 +85,9 @@ class JobDBHandler(GenericDatabaseHandler):
         
         return tempResults.fetchone()
     
+    def writeJob(self):
+        pass
+    
     def findTagIDs(self,id: int) -> list:
         tempResults = self.dbctrl.execute("SELECT tag_id FROM job_tag WHERE job_id = " + str(id))
 
@@ -124,11 +127,9 @@ class UserDBHandler(GenericDatabaseHandler):
             maxID = 0
         return maxID+1
     
-    def writeUser(self,userInfo: list): #writes a new user to the user table in DB
-        self.dbctrl.executemany("""
-        INSERT or REPLACE INTO users VALUES
-            (?,?,?,?,?,?)
-        """,userInfo)
+    def writeUser(self,id,username,password,location_id,minSalary,maxSalary): #writes a new user to the user table in DB
+        inputstr = "("+str(id)+",'"+username+"','"+password+"',"+str(location_id)+','+str(minSalary)+','+str(maxSalary)+')'
+        self.dbctrl.execute("""INSERT INTO users  VALUES """+inputstr)
         
     def writeUserKeywords(self,user_kw_list: list): #write user keyword associations to user_keyword table in db
         self.dbctrl.executemany("""

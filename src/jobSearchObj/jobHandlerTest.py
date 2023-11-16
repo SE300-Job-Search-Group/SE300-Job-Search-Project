@@ -6,5 +6,5 @@ jh = JobHandler()
 
 test_result = jh.searchTags(test_keywords)
 
-print(test_result)
-print("Hello World")
+for job in test_result:
+    print(str(job.getId()))
