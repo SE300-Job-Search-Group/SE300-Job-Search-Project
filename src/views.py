@@ -1,4 +1,5 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
+from flask_paginate import Pagination, get_page_parameter
 from jobSearchObj import JobHandler
 from jobSearchObj import UserHandler
 
@@ -17,20 +18,24 @@ def home():
         salary_max = request.form.get('salary_max')
 
         # Use job_handler.searchDB() with the filters
-        matching_jobs = job_handler.searchDB(keywords, company, location, salary_min, salary_max)
-
-        return render_template('search_results.html', jobs=matching_jobs)
+        job_handler.searchDB(keywords, company, location, salary_min, salary_max)
+        print(keywords, type(keywords))
+        return redirect(url_for('views.search_results'))
 
     return render_template("index.html")
 
 @views.route("/search_results", methods=['GET'])
 @views.route("/search_results/<int:page>", methods=['GET'])
 def search_results(page=1):
-    # Assuming you have a pagination object named 'pagination' that is returned by the searchDB method
-    # If not, replace 'pagination' with the actual pagination object returned by your searchDB method
-    pagination = job_handler.searchDB(keywords=[], comp=None, loc=None, sal_min=50000, sal_max=150000).paginate(page, per_page=10, error_out=False)
+    jobs=job_handler.getJobs()
+    per_page = 10  # Jobs per page
 
-    jobs = pagination.items  # Get the jobs for the current page
+    # Paginate the matching_jobs
+    pagination = Pagination(jobs, page=page, per_page=per_page)
+
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    jobs = jobs[start_idx:end_idx]  # Get the jobs for the current page
 
     return render_template('search_results.html', jobs=jobs, pagination=pagination)
 

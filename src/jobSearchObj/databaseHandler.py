@@ -163,7 +163,6 @@ class JobSearchDBHandler(GenericDatabaseHandler):
         tag_id_phrase = ''
         for id in tag_ids:
             tag_id_phrase = tag_id_phrase +str(id)+","
-
         tag_id_phrase = tag_id_phrase.rstrip(tag_id_phrase[-1])
 
         tempResults = self.dbctrl.execute("""

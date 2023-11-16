@@ -5,59 +5,28 @@
     <h1 class="mb-4">Search Results</h1>
     
     {% if jobs %}
-        <ul class="list-group">
+        <div class="row">
             {% for job in jobs %}
-                <li class="list-group-item">{{ job }}</li>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ job.getTitle() }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ job.getCompanyID() }}</h6>
+                            <p class="card-text">Location: {{ job.getLocation() }}</p>
+                            <p class="card-text">Salary Range: ${{ job.getSalaryRange()[0] }} - ${{ job.getSalaryRange()[1] }}</p>
+                            <p class="card-text">Description: {{ job.getDesc() }}</p>
+                            <p class="card-text">Tags:
+                                <ul>
+                                    {% for tag in job.getTags() %}
+                                        <li>{{ tag }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
-
-        {% if jobs.has_prev or jobs.has_next %}
-            <nav aria-label="Search results navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    {% if jobs.has_prev %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('views.search_results', page=jobs.prev_num) }}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link" aria-hidden="true">&laquo;</span>
-                        </li>
-                    {% endif %}
-
-                    {% for num in jobs.iter_pages() %}
-                        {% if num %}
-                            {% if num == jobs.page %}
-                                <li class="page-item active">
-                                    <span class="page-link">{{ num }}</span>
-                                </li>
-                            {% else %}
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ url_for('views.search_results', page=num) }}">{{ num }}</a>
-                                </li>
-                            {% endif %}
-                        {% else %}
-                            <li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if jobs.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('views.search_results', page=jobs.next_num) }}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link" aria-hidden="true">&raquo;</span>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        {% endif %}
+        </div>
     {% else %}
         <p>No matching jobs found.</p>
     {% endif %}
