@@ -74,10 +74,16 @@ class CompanyDBHandler(GenericDatabaseHandler):
         
         return tempResults.fetchone()
     
+    def searchByName(self,name:str):
+        tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT name FROM companies WHERE name = '"+name+"') AND name = '"+name+"'")
+        
+        return tempResults.fetchone()
+    
     def findKeywordIDs(self,id: int) -> list:
         tempResults = self.dbctrl.execute("SELECT keyword_id FROM company_keyword WHERE company_id = " + str(id))
 
         return tempResults.fetchall()
+    
     
 class JobDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
@@ -85,8 +91,24 @@ class JobDBHandler(GenericDatabaseHandler):
         
         return tempResults.fetchone()
     
-    def writeJob(self):
-        pass
+    def writeJob(self,title,company_id,locID,minSal,maxSal,desc):
+        tempResults = self.dbctrl.execute('SELECT MAX(job_id) FROM jobs')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        newID = maxID + 1
+
+        inputStr = "("+str(newID)+",'"+title+"',"+str(company_id)+","+str(locID)+","+str(maxSal)+","+str(minSal)+",'"+desc+"')"
+        tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO jobs VALUES "+inputStr)
+
+        return newID
+    
+    def writeTags(self,tempJobTags):
+        self.dbctrl.executemany("""
+        INSERT or IGNORE INTO job_tags VALUES
+            (?,?)
+        """,tempJobTags)
+
     
     def findTagIDs(self,id: int) -> list:
         tempResults = self.dbctrl.execute("SELECT tag_id FROM job_tag WHERE job_id = " + str(id))
