@@ -21,7 +21,8 @@ def create_database():
             company_reviews NUMERIC,
             job_title TEXT,
             job_description TEXT,
-            job_salary TEXT,
+            job_salaryHigh NUMERIC,
+            job_salaryLow NUMERIC,
             job_keywords TEXT,
             job_city TEXT,
             job_state TEXT,
@@ -53,9 +54,7 @@ def scrape_indeed_aerospace_jobs():
             indeed_jobs_url = get_indeed_search_url("aerospace", "United States", offset)
             response = requests.get(scrapeops_url(indeed_jobs_url))
             script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
-        
-        
-            print(response.status_code)
+
             if response.status_code == 200:
                 
                 if script_tag is not None:
@@ -73,18 +72,21 @@ def scrape_indeed_aerospace_jobs():
                             #cut off at backwards slash
                             #take out initial string "snippet":"\u003Cul style=\"list-style-type:circle;margin-top: 0px;margin-bottom: 0px;padding-left:20px;\"\u003E \n \u003Cli
                             job_salary = job.get('estimatedSalary')
+                            job_salaryHigh = 0
+                            job_salaryLow = 0
                             job_keywords = job.get('jobCardReqContainer')
                             job_city = job.get('jobLocationCity')
                             job_state = job.get('jobLocationState')
                             URL = job.get('thirdPartyApplyUrl')
-
+                            
                             if company_reviews:
                               company_reviews = company_reviews           
                             else:
                                 company_reviews = 9
 
                             if job_salary:
-                                job_salary = job_salary['formattedRange']
+                                job_salaryHigh = job_salary['max']
+                                job_salaryLow = job_salary['min']
                             else:
                                 job_salary = "Salary not specified"
 
@@ -115,9 +117,9 @@ def scrape_indeed_aerospace_jobs():
                          
                         
                         cursor.execute('''
-                            INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salary, job_keywords, job_city, job_state, URL)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        ''', (company_name, company_reviews, job_title, job_description, job_salary, job_keywords, job_city, job_state, URL))
+                            INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
 
                         conn.commit()
 
