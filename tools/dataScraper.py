@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 import re
 import json
 import html
+from job import Job
 
 def create_database():
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
@@ -48,6 +49,10 @@ def scrape_indeed_aerospace_jobs():
 
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
     cursor = conn.cursor()
+
+    company_ids = {}
+    current_company_id = 1
+
     while True:
         
         for offset in range(0, 1010, 10):
@@ -79,6 +84,10 @@ def scrape_indeed_aerospace_jobs():
                             job_state = job.get('jobLocationState')
                             URL = job.get('thirdPartyApplyUrl')
                             
+                            if company_name not in company_ids:
+                                company_ids[company_name] = current_company_id
+                                
+
                             if company_reviews:
                               company_reviews = company_reviews           
                             else:
@@ -93,8 +102,6 @@ def scrape_indeed_aerospace_jobs():
                             if job_description:
                                 # Remove HTML tags
                                 job_description = html.unescape(job_description)
-                                #job_description = job_description.replace('\u003Cul style="list-style-type:circle;margin-top: 0px;margin-bottom: 0px;padding-left:20px;"\u003E \n \u003Cli\u003E', '')
-                                #job_description = job_description.replace('\u003C/li\u003E\n\u003C/ul\u003E', '')
                                 job_description = re.sub(r'<[^>]*>', '', job_description)
                                 
                             else:
@@ -120,8 +127,12 @@ def scrape_indeed_aerospace_jobs():
                             INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
+                        
+                        tags = 'placeholder'
+                        Job.newJob(job_title,tags,current_company_id,job_city,job_state,job_salaryLow, job_salaryHigh, job_description)
 
                         conn.commit()
+                        current_company_id += 1
 
                         ## If response contains less than 10 jobs then stop pagination
                         if len(jobs_list) < 10:
