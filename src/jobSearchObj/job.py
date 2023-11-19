@@ -58,8 +58,15 @@ class Job:
         for tag in tags:
             self.tags.append(Tag().fillbyName(tag))
 
-        dbh.writeJob(self.title,self.getTagIDs(),self.company_id,self.city,self.state,self.minSalary,self.maxSalary,self.description)
+        #write jobs
+        self.id = dbh.writeJob(self.title,self.company_id,self.location.getID(),self.minSalary,self.maxSalary,self.description)
 
+        #write tag associations
+        tempJobTags = []
+        for tag in self.tags:
+            tempJobTags.append((tag.getID(),self.id))
+
+        dbh.close()
         return self
 
     # methods
@@ -79,7 +86,7 @@ class Job:
 
     # functions
 
-    def getId(self):
+    def getID(self):
         return self.id
     
     def getTags(self):

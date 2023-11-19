@@ -49,6 +49,30 @@ class Company:
 
         dbh.close()
         return self
+    
+    def findCompany(self,name):
+        dbh = CompanyDBHandler(self.db)
+        companyInfo = dbh.searchByName(name)
+        if companyInfo is None:
+            raise Exception("Database Search Error: No Existing Company with Name")
+        else:
+            self.id = companyInfo[0]
+            self.name = companyInfo[1]
+            self.industry = Industry().fillByID(companyInfo[2])
+            self.description = companyInfo[3]
+            self.rating = companyInfo[4]
+            self.rating_wl = companyInfo[5]
+            self.rating_pb = companyInfo[6]
+            self.rating_career = companyInfo[7]
+            self.rating_management = companyInfo[8]
+            self.rating_culture = companyInfo[9]
+
+        dbh.close()
+        return self
+    
+    def writeCompany(self):
+
+        return self
 
     # methods
     
@@ -63,7 +87,7 @@ class Company:
     
     # functions
     
-    def getId(self):
+    def getID(self):
         return self.id
     
     def getName(self):
