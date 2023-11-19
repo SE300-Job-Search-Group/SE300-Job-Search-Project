@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %} Job Match {% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Job Match</h1>
+    <form method="POST" action="{{ url_for('match_results') }}">
+        <div class="form-group">
+            <label for="workLifeBalance">Work-Life Balance</label>
+            <input type="range" class="form-control-range" id="workLifeBalance" name="workLifeBalance" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="compensation">Compensation and Benefits</label>
+            <input type="range" class="form-control-range" id="compensation" name="compensation" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="jobSecurity">Job Security and Advancement</label>
+            <input type="range" class="form-control-range" id="jobSecurity" name="jobSecurity" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="management">Management</label>
+            <input type="range" class="form-control-range" id="management" name="management" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="culture">Culture</label>
+            <input type="range" class="form-control-range" id="culture" name="culture" min="0" max="10" value="5">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

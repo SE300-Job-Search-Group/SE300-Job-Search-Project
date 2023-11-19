@@ -1,7 +1,7 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
-from jobSearchObj import JobHandler
-from jobSearchObj import UserHandler
+from jobSearchObj import JobHandler, UserHandler, JobMatch, CompanyMatch
+
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
@@ -132,14 +132,32 @@ def logout():
     user_handler.logout()
     return redirect(url_for('views.login')) 
 
-# Future Work
-@views.route("/jobmatch") #defining the route to job match page 
-def jobmatch():
-    return render_template("jobMatch.html")
+@views.route('/job_match', methods=['GET', 'POST'])
+def job_match():
+    if request.method == 'POST':
+        # Fetch form data
+        work_life_balance = int(request.form['workLifeBalance'])
+        compensation = int(request.form['compensation'])
+        job_security = int(request.form['jobSecurity'])
+        management = int(request.form['management'])
+        culture = int(request.form['culture'])
 
-@views.route("/jobcompare") #defining the route to compare page 
-def jobcompare():
-    return render_template("jobCompare.html")
+        # Pass user rankings to the job matching algorithm
+        jobMatch.match_jobs(work_life_balance, compensation, job_security, management, culture)
+
+        # Redirect to job_match_results with matched jobs
+        return redirect(url_for('views.match_results'))
+
+    return render_template('job_match.html')
+
+@views.route('/job_match_results')
+def match_results():
+    # Pass the matched jobs to the template
+    return render_template('job_match_results.html', jobs=matched_jobs)
+
+@views.route("/job_compare") #defining the route to compare page 
+def job_compare():
+    return render_template("job_compare.html")
 
 @views.route("/about") #defining the route to about page 
 def about():
