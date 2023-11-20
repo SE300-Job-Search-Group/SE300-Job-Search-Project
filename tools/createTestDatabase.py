@@ -82,7 +82,10 @@ def reinitMainDatabase():
         CREATE TABLE locations(
             location_id INTEGER PRIMARY KEY,
             city_name TEXT NOT NULL,
-            state_name TEXT NOT NULL
+            state_name TEXT NOT NULL,
+            latitude REAL,
+            longitude REAL,
+            UNIQUE(city_name,state_name)
         )
     """)
 
@@ -123,6 +126,7 @@ def reinitMainDatabase():
             max_salary INTEGER,
             min_salary INTEGER, 
             description TEXT,
+            url TEXT,
             FOREIGN KEY (company_id)
                 REFERENCES companies (company_id)
                     ON UPDATE CASCADE
@@ -255,11 +259,11 @@ def fillJobs():
     
     # yea idk i just wanted to test it out :) add more as needed
     jobData = [
-        (1, 'Entry Level Software Engineer', 1, 1, 5, 100000, 'idk'),
-        (2, 'Project Manager', 1, 1, 1000000, 2000000, 'manage the projects duh')
+        (1, 'Entry Level Software Engineer', 1, 1, 5, 100000, 'idk','https://testurl.com'),
+        (2, 'Project Manager', 1, 1, 1000000, 2000000, 'manage the projects duh','https://testurl.com')
     ]
     locData = [
-        (1,'Daytona Beach', 'FL')
+        (1,'Daytona Beach', 'FL',29.207060,-81.020737)
     ]
 
     tagData = [
@@ -282,12 +286,12 @@ def fillJobs():
     
     dbctrl.executemany("""
         INSERT or IGNORE INTO locations VALUES
-            (?,?,?)
+            (?,?,?,?,?)
     """,locData)
 
     dbctrl.executemany("""
         INSERT or IGNORE INTO jobs VALUES
-            (?,?,?,?,?,?,?)
+            (?,?,?,?,?,?,?,?)
     """,jobData)
 
     # job tags
@@ -359,8 +363,8 @@ def fillUser():
         (2, 'NGNeer365', 'J1mmyJ@hns',3 , 90000, 150000)
     ]
     locationData = [
-        (2,'New York', 'NY'),
-        (3,'Huntsville', 'AL')
+        (2,'New York', 'NY',40.712776,-74.005974),
+        (3,'Huntsville', 'AL',34.729542,-86.585297)
     ]
     keywordData = [
         (1, 'work-life balance'),
@@ -399,7 +403,7 @@ def fillUser():
     #add locations
     dbctrl.executemany("""
         INSERT or IGNORE INTO locations VALUES
-            (?,?,?)
+            (?,?,?,?,?)
     """,locationData)
 
     dbctrl.executemany("""
