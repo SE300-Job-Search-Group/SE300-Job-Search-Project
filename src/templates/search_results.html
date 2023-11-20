@@ -12,8 +12,8 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ job.getTitle() }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ job.getCompanyID() }}</h6>
-                            <p class="card-text">Location: {{ job.getLocation() }}</p>
-                            <p class="card-text">Salary Range: ${{ job.getSalaryRange()[0] }} - ${{ job.getSalaryRange()[1] }}</p>
+                            <p class="card-text">Location: {{ job.getLocationName() }}</p>
+                            <p class="card-text">Salary Range: ${{ job.getMinSalary() }} - ${{ job.getMaxSalary() }}</p>
                             <p class="card-text">Description: {{ job.getDesc() }}</p>
                             <p class="card-text">Tags:
                                 <ul>
