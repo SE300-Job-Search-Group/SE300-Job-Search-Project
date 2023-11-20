@@ -61,8 +61,7 @@ class User:
         #### MAKE SURE KEYWORDS SKILLS AND OBJECTS EXIST IN DB PRIOR THIS POINT
         dbh = UserDBHandler(self.db)
         self.id = dbh.findAvailableID()
-        userInfo = [(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)]
-        dbh.writeUser(userInfo)
+        dbh.writeUser(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)
 
         #write Keyword Associations
         tempUserKw = []

@@ -44,6 +44,30 @@ class Job:
 
         dbh.close()
         return self
+    
+    def newJob(self,title: str,tags: list[str],company_id: int,city: str,state: str,minSalary: int, maxSalary: int, description: str):
+        dbh = JobDBHandler(self.db)
+
+        self.title = title
+        self.company_id = company_id
+        self.location = Location().assignID(city,state)
+        self.minSalary = minSalary
+        self.maxSalary = maxSalary
+        self.description = description
+        #tags handling
+        for tag in tags:
+            self.tags.append(Tag().fillbyName(tag))
+
+        #write jobs
+        self.id = dbh.writeJob(self.title,self.company_id,self.location.getID(),self.minSalary,self.maxSalary,self.description)
+
+        #write tag associations
+        tempJobTags = []
+        for tag in self.tags:
+            tempJobTags.append((tag.getID(),self.id))
+
+        dbh.close()
+        return self
 
     # methods
     
@@ -62,13 +86,20 @@ class Job:
 
     # functions
 
-    def getId(self):
+    def getID(self):
         return self.id
     
     def getTags(self):
         tempTags = []
         for tag in self.tags:
             tempTags.append(tag.getWord())
+
+        return tempTags
+    
+    def getTagIDs(self):
+        tempTags = []
+        for tag in self.tags:
+            tempTags.append(tag.getID())
 
         return tempTags
     

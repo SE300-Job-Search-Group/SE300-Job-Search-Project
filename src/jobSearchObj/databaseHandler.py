@@ -2,7 +2,6 @@ import sqlite3
 
 class GenericDatabaseHandler:
     def __init__(self,dir):
-        print(dir)
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
@@ -69,10 +68,14 @@ class LocDBHandler(GenericDatabaseHandler):
         tempResults = self.dbctrl.execute("SELECT location_id FROM locations WHERE EXISTS (SELECT location_id FROM locations WHERE city_name = '"+city+"' AND state_name = '"+state+"') AND city_name = '"+city+"' AND state_name = '"+state+"'")
         return tempResults.fetchone()[0]
     
-
 class CompanyDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
         tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT company_id FROM companies WHERE company_id = "+str(id)+") AND company_id = "+str(id))
+        
+        return tempResults.fetchone()
+    
+    def searchByName(self,name:str):
+        tempResults = self.dbctrl.execute("SELECT * FROM companies WHERE EXISTS (SELECT name FROM companies WHERE name = '"+name+"') AND name = '"+name+"'")
         
         return tempResults.fetchone()
     
@@ -81,11 +84,43 @@ class CompanyDBHandler(GenericDatabaseHandler):
 
         return tempResults.fetchall()
     
+    def writeCompany(self,name,industry_id,desc,rating,r_wl,r_pb,r_cr,r_mm,r_ct):
+        tempResults = self.dbctrl.execute('SELECT MAX(company_id) FROM companies')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        newID = maxID + 1
+
+        inputStr = "("+str(newID)+",'"+name+"',"+str(industry_id)+",'"+desc+"',"+str(rating)+","+str(r_wl)+","+str(r_pb)+","+str(r_cr)+","+str(r_mm)+","+str(r_ct)+")"
+        print(inputStr)
+        tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO companies VALUES "+inputStr)
+
+        return newID
+    
 class JobDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
         tempResults = self.dbctrl.execute("SELECT * FROM jobs WHERE EXISTS (SELECT job_id FROM jobs WHERE job_id = "+str(id)+") AND job_id = "+str(id))
         
         return tempResults.fetchone()
+    
+    def writeJob(self,title,company_id,locID,minSal,maxSal,desc):
+        tempResults = self.dbctrl.execute('SELECT MAX(job_id) FROM jobs')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        newID = maxID + 1
+
+        inputStr = "("+str(newID)+",'"+title+"',"+str(company_id)+","+str(locID)+","+str(maxSal)+","+str(minSal)+",'"+desc+"')"
+        tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO jobs VALUES "+inputStr)
+
+        return newID
+    
+    def writeTags(self,tempJobTags):
+        self.dbctrl.executemany("""
+        INSERT or IGNORE INTO job_tags VALUES
+            (?,?)
+        """,tempJobTags)
+
     
     def findTagIDs(self,id: int) -> list:
         tempResults = self.dbctrl.execute("SELECT tag_id FROM job_tag WHERE job_id = " + str(id))
@@ -126,11 +161,9 @@ class UserDBHandler(GenericDatabaseHandler):
             maxID = 0
         return maxID+1
     
-    def writeUser(self,userInfo: list): #writes a new user to the user table in DB
-        self.dbctrl.executemany("""
-        INSERT or REPLACE INTO users VALUES
-            (?,?,?,?,?,?)
-        """,userInfo)
+    def writeUser(self,id,username,password,location_id,minSalary,maxSalary): #writes a new user to the user table in DB
+        inputstr = "("+str(id)+",'"+username+"','"+password+"',"+str(location_id)+','+str(minSalary)+','+str(maxSalary)+')'
+        self.dbctrl.execute("""INSERT INTO users  VALUES """+inputstr)
         
     def writeUserKeywords(self,user_kw_list: list): #write user keyword associations to user_keyword table in db
         self.dbctrl.executemany("""
@@ -157,3 +190,28 @@ class UserDBHandler(GenericDatabaseHandler):
                 WHERE user_id = """ + str(id))
         
         self.writeUserSkills(user_skill_list)
+
+class JobSearchDBHandler(GenericDatabaseHandler):
+    def searchByTags(self,tag_ids: list,numMatches: int)-> list[int]:
+
+        tag_id_phrase = ''
+        for id in tag_ids:
+            tag_id_phrase = tag_id_phrase +str(id)+","
+        tag_id_phrase = tag_id_phrase.rstrip(tag_id_phrase[-1])
+
+        tempResults = self.dbctrl.execute("""
+            SELECT job_id FROM job_tag
+                WHERE tag_id IN ("""+tag_id_phrase+""") 
+                GROUP BY job_id
+                HAVING COUNT(*)>="""+str(numMatches)+"""
+        """)
+        tempOutput = tempResults.fetchall()
+        output = []
+        for i in tempOutput:
+            output.append(i[0])
+        
+        return output
+
+class TestDBHandler(GenericDatabaseHandler):
+    def execute(self,input):
+        return self.dbctrl.execute(input)

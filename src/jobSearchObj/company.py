@@ -49,6 +49,58 @@ class Company:
 
         dbh.close()
         return self
+    
+    def findCompany(self,name):
+        dbh = CompanyDBHandler(self.db)
+        companyInfo = dbh.searchByName(name)
+        if companyInfo is None:
+            raise Exception("Database Search Error: No Existing Company with Name")
+        else:
+            self.id = companyInfo[0]
+            self.name = companyInfo[1]
+            self.industry = Industry().fillByID(companyInfo[2])
+            self.description = companyInfo[3]
+            self.rating = companyInfo[4]
+            self.rating_wl = companyInfo[5]
+            self.rating_pb = companyInfo[6]
+            self.rating_career = companyInfo[7]
+            self.rating_management = companyInfo[8]
+            self.rating_culture = companyInfo[9]
+
+            #sets all keywords
+            tempKeywordIDs = dbh.findKeywordIDs(self.id)
+
+            for id in tempKeywordIDs:
+                self.keywords.append(Keyword().fillByID(id[0]))
+
+        dbh.close()
+        return self
+    
+    def newCompany(self,name:str,industry:str,keywords:list[str],description:str,ratings: list[float]):
+        dbh = CompanyDBHandler(self.db)
+
+        self.name = name
+        self.industry = Industry().fillbyName(industry)
+        self.description = description
+        self.rating = ratings[0]
+        self.rating_wl = ratings[1]
+        self.rating_pb = ratings[2]
+        self.rating_career = ratings[3]
+        self.rating_management = ratings[4]
+        self.rating_culture = ratings[5]
+        #tags handling
+        for kw in keywords:
+            self.keywords.append(Keyword().fillbyName(kw))
+
+        self.id = dbh.writeCompany(self.name,self.industry.getID(),self.description,self.rating,self.rating_wl,self.rating_pb,self.rating_career,self.rating_management,self.rating_culture)
+
+        #write kwd associations
+        tempCompKwds = []
+        for keywords in self.keywords:
+            tempCompKwds.append((keywords.getID(),self.id))
+
+        dbh.close()
+        return self
 
     # methods
     
@@ -63,7 +115,7 @@ class Company:
     
     # functions
     
-    def getId(self):
+    def getID(self):
         return self.id
     
     def getName(self):

@@ -1,11 +1,10 @@
 from jobHandler import JobHandler
 
-test_keywords = ['PathFinder','Engineering','Software']
+test_keywords = ['PathFinder','Engineer','Software']
 
 jh = JobHandler()
 
-test_result = jh.searchDB(test_keywords)
+test_result = jh.searchTags(test_keywords)
 
-print(','.join(test_keywords))
-print(test_result)
-print("Hello World")
+for job in test_result:
+    print(str(job.getId()))
