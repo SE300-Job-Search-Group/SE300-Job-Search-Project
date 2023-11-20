@@ -1,10 +1,16 @@
+from user import User
+import Keywords
+
 class CompanyMatch:
 
     # loop to compare user keywords from profile to keywords from company reviews
     def keywordCompare():
-        usrKeywords = 1 #import user keywords stored in SQL
-        numMatches = 1 #placeholder
-        return numMatches, usrKeywords
+        usrKeywords = User.getKeywords() #import user keywords stored in SQL
+        numMatches = 0 #placeholder
+        for x in usrKeywords:
+            if x in Keywords.rPhrase:
+                numMatches + 1 
+        return numMatches
 
     # import user's preference for category weight
     normRank = 1 #placeholder for normalized user ranking

@@ -4,26 +4,35 @@ import sqlite3
 from urllib.parse import urlencode
 import re
 import json
+import html
+from job import Job
 
 def create_database():
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
     cursor = conn.cursor()
+    cursor.execute("""
+        DROP TABLE IF EXISTS
+            jobs
+    """)
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS jobs (
             id INTEGER PRIMARY KEY,
             company_name TEXT,
-            company_reviews TEXT,
+            company_reviews NUMERIC,
             job_title TEXT,
             job_description TEXT,
-            job_salary_range TEXT,
+            job_salaryHigh NUMERIC,
+            job_salaryLow NUMERIC,
             job_keywords TEXT,
-            job_location TEXT
+            job_city TEXT,
+            job_state TEXT,
+            URL TEXT
         )
     ''')
 
     conn.commit()
-    conn.close()
+    #conn.close()
 
 def get_indeed_search_url(keyword, location, offset=0):
     parameters = {"q": keyword, "l": location, "filter": 0, "start": offset}
@@ -40,78 +49,99 @@ def scrape_indeed_aerospace_jobs():
 
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
     cursor = conn.cursor()
-    print(0.5)
-    while True:
-        print(0.75)
-        indeed_jobs_url = get_indeed_search_url
-        response = requests.get(scrapeops_url(indeed_jobs_url))
-        #soup = BeautifulSoup(response.text, 'html.parser')
-        #job_listings = soup.find_all('div', class_='jobsearch-SerpJobCard')
-        script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
-        
-        
-        print(response.status_code)
-        if response.status_code == 200:
-            print(0.8)
 
-            if script_tag is not None:
-                json_blob = json.loads(script_tag.group(1))
+    company_ids = {}
+    current_company_id = 1
+
+    while True:
+        
+        for offset in range(0, 1010, 10):
+            indeed_jobs_url = get_indeed_search_url("aerospace", "United States", offset)
+            response = requests.get(scrapeops_url(indeed_jobs_url))
+            script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
+
+            if response.status_code == 200:
+                
+                if script_tag is not None:
+                    json_blob = json.loads(script_tag.group(1))
         
                 # Extract jobs data
-                jobs_list =json_blob['metaData']['mosaicProviderJobCardsModel']['results']      
+                    jobs_list =json_blob['metaData']['mosaicProviderJobCardsModel']['results']      
                 
-                for job in jobs_list:
-                    if job.get('jobkey') is not None:
-                        company_name = job.find('span', class_='company').text.strip()
-                        company_reviews = job.find('span', class_='ratingsContent')
-                        job_title = job.find('a', class_='jobtitle').text.strip()
-                        job_description = job.find('div', class_='summary').text.strip()
-                        job_salary = job.find('span', class_='salaryText')
-                        job_keywords = job.find('div', class_='jobCardReqContainer')
-                        job_location = job.find('div', class_='location')
+                    for job in jobs_list:
+                        if job.get('jobkey') is not None:
+                            company_name = job.get('company')
+                            company_reviews = job.get('companyRating')
+                            job_title = job.get('displayTitle')
+                            job_description = job.get('snippet') #after second u003E
+                            #cut off at backwards slash
+                            #take out initial string "snippet":"\u003Cul style=\"list-style-type:circle;margin-top: 0px;margin-bottom: 0px;padding-left:20px;\"\u003E \n \u003Cli
+                            job_salary = job.get('estimatedSalary')
+                            job_salaryHigh = 0
+                            job_salaryLow = 0
+                            job_keywords = job.get('jobCardReqContainer')
+                            job_city = job.get('jobLocationCity')
+                            job_state = job.get('jobLocationState')
+                            URL = job.get('thirdPartyApplyUrl')
+                            
+                            if company_name not in company_ids:
+                                company_ids[company_name] = current_company_id
+                                
 
-                        if company_reviews:
-                            company_reviews = company_reviews.text.strip()
-                            print(1)
-                        else:
-                            company_reviews = "No reviews"
+                            if company_reviews:
+                              company_reviews = company_reviews           
+                            else:
+                                company_reviews = 9
 
-                        if job_salary:
-                            job_salary = job_salary.text.strip()
-                        else:
-                            job_salary = "Salary not specified"
+                            if job_salary:
+                                job_salaryHigh = job_salary['max']
+                                job_salaryLow = job_salary['min']
+                            else:
+                                job_salary = "Salary not specified"
 
-                        if job_keywords:
-                            job_keywords = job_keywords.text.strip()
-                        else:
-                            job_keywords = "No keywords specified"
+                            if job_description:
+                                # Remove HTML tags
+                                job_description = html.unescape(job_description)
+                                job_description = re.sub(r'<[^>]*>', '', job_description)
+                                
+                            else:
+                                job_description = "Description not specified"
 
-                        if job_location:
-                            job_location = job_location.text.strip()
-                        else:
-                            job_location = "Location not specified"
+                            if job_keywords:
+                                job_keywords = job_keywords 
+                            else:
+                                job_keywords = "No keywords specified"
 
-                       ## If response contains less than 10 jobs then stop pagination
-                    if len(jobs_list) < 10:
-                        print('3')
-                        break  
-                          
+                            if job_city:
+                                job_city = job_city
+                            else:
+                                job_city = "City not specified"
 
-            cursor.execute('''
-                INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salary_range, job_keywords, job_location)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (company_name, company_reviews, job_title, job_description, job_salary, job_keywords, job_location))
+                            if job_state:
+                                job_state = job_state
+                            else:
+                                job_state = "State not specified"
+                         
+                        
+                        cursor.execute('''
+                            INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
+                        
+                        tags = 'placeholder'
+                        Job.newJob(job_title,tags,current_company_id,job_city,job_state,job_salaryLow, job_salaryHigh, job_description)
 
-            conn.commit()
+                        conn.commit()
+                        current_company_id += 1
 
-        #next_page = soup.find('span', {'aria-label': 'Next'})
+                        ## If response contains less than 10 jobs then stop pagination
+                        if len(jobs_list) < 10:
+                            print('3')
+                            break
 
-            if len(jobs_list) < 10:
-                print('3')
-                break
-
-    conn.close()
+                        
 
 if __name__ == "__main__":
     create_database()
     scrape_indeed_aerospace_jobs()
+    scrape_indeed_aerospace_jobs.conn.close()
