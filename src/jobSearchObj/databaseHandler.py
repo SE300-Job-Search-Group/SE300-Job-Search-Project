@@ -61,12 +61,21 @@ class LocDBHandler(GenericDatabaseHandler):
         
         return tempResults.fetchone()
     
-    def addLocation(self,city: str,state: str):
-        self.dbctrl.execute("")
+    def addLocation(self,city: str,state: str,lat:float, long: float):
+        tempResults = self.dbctrl.execute('SELECT MAX(location_id) FROM locations')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        newID = maxID + 1
+
+        inputStr = "("+str(newID)+",'"+city+"','"+state+"',"+str(lat)+","+str(long)+")"
+        self.dbctrl.execute("INSERT OR IGNORE INTO locations VALUES "+inputStr)
+
+        return newID
 
     def findID(self,city:str,state:str)-> int:
-        tempResults = self.dbctrl.execute("SELECT location_id FROM locations WHERE EXISTS (SELECT location_id FROM locations WHERE city_name = '"+city+"' AND state_name = '"+state+"') AND city_name = '"+city+"' AND state_name = '"+state+"'")
-        return tempResults.fetchone()[0]
+        tempResults = self.dbctrl.execute("SELECT location_id,latitude,longitude FROM locations WHERE EXISTS (SELECT location_id FROM locations WHERE city_name = '"+city+"' AND state_name = '"+state+"') AND city_name = '"+city+"' AND state_name = '"+state+"'")
+        return tempResults.fetchone()
     
 class CompanyDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
@@ -93,7 +102,7 @@ class CompanyDBHandler(GenericDatabaseHandler):
 
         inputStr = "("+str(newID)+",'"+name+"',"+str(industry_id)+",'"+desc+"',"+str(rating)+","+str(r_wl)+","+str(r_pb)+","+str(r_cr)+","+str(r_mm)+","+str(r_ct)+")"
         print(inputStr)
-        tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO companies VALUES "+inputStr)
+        self.dbctrl.execute("INSERT OR IGNORE INTO companies VALUES "+inputStr)
 
         return newID
     
