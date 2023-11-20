@@ -2,6 +2,7 @@ from user import User
 from databaseHandler import JobDBHandler
 from words import Tag
 from location import Location
+from company import Company
 
 class Job:
     def __init__(self):
@@ -111,6 +112,9 @@ class Job:
     
     def getCompanyID(self):
         return self.company_id
+    
+    def getCompany(self):
+        return Company().fillByID(self.company_id)
     
     def getLocationName(self):
         return self.location.getLocationName()
