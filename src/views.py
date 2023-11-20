@@ -14,9 +14,9 @@ def home():
         company = request.form.get('company')
         city = request.form.get('city')  
         state = request.form.get('state')  
-        radius = request.form.get('radius')  
-        salary_min = request.form.get('salary_min')
-        salary_max = request.form.get('salary_max')
+        radius = int(request.form.get('radius'))  
+        salary_min = int(request.form.get('salary_min'))
+        salary_max = int(request.form.get('salary_max'))
 
         job_handler.searchDB(tags, company, city, state, radius, salary_min, salary_max)
         print(tags, type(tags))
