@@ -84,6 +84,18 @@ class CompanyDBHandler(GenericDatabaseHandler):
 
         return tempResults.fetchall()
     
+    def writeCompany(self,name,industry_id,desc,rating,r_wl,r_pb,r_cr,r_mm,r_ct):
+        tempResults = self.dbctrl.execute('SELECT MAX(company_id) FROM companies')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        newID = maxID + 1
+
+        inputStr = "("+str(newID)+",'"+name+"',"+str(industry_id)+",'"+desc+"',"+str(rating)+","+str(r_wl)+","+str(r_pb)+","+str(r_cr)+","+str(r_mm)+","+str(r_ct)+")"
+        print(inputStr)
+        tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO companies VALUES "+inputStr)
+
+        return newID
     
 class JobDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):

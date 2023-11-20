@@ -67,11 +67,39 @@ class Company:
             self.rating_management = companyInfo[8]
             self.rating_culture = companyInfo[9]
 
+            #sets all keywords
+            tempKeywordIDs = dbh.findKeywordIDs(self.id)
+
+            for id in tempKeywordIDs:
+                self.keywords.append(Keyword().fillByID(id[0]))
+
         dbh.close()
         return self
     
-    def writeCompany(self):
+    def newCompany(self,name:str,industry:str,keywords:list[str],description:str,ratings: list[float]):
+        dbh = CompanyDBHandler(self.db)
 
+        self.name = name
+        self.industry = Industry().fillbyName(industry)
+        self.description = description
+        self.rating = ratings[0]
+        self.rating_wl = ratings[1]
+        self.rating_pb = ratings[2]
+        self.rating_career = ratings[3]
+        self.rating_management = ratings[4]
+        self.rating_culture = ratings[5]
+        #tags handling
+        for kw in keywords:
+            self.keywords.append(Keyword().fillbyName(kw))
+
+        self.id = dbh.writeCompany(self.name,self.industry.getID(),self.description,self.rating,self.rating_wl,self.rating_pb,self.rating_career,self.rating_management,self.rating_culture)
+
+        #write kwd associations
+        tempCompKwds = []
+        for keywords in self.keywords:
+            tempCompKwds.append((keywords.getID(),self.id))
+
+        dbh.close()
         return self
 
     # methods
