@@ -35,10 +35,12 @@ headers = {"User-Agent": "Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWeb
 company_id_list = []
 
 # Company Search Parameters
-company_name_list = ['aerospace']
+company_name_list = ['example_company']
+company_location_list = ['anywhere']
 
 # Loop Through Indeed Pages Until No More Companies
 for company_name in company_name_list:
+    for company_location in company_location_list:
         try:
             indeed_company_url = get_indeed_company_url(company_name)
 
@@ -50,6 +52,7 @@ for company_name in company_name_list:
                     'url': indeed_company_url,
                 },
             )
+
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 company_id = re.search(r'/cmp/([^/]+)', indeed_company_url).group(1)
