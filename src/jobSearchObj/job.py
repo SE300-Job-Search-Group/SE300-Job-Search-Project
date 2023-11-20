@@ -33,8 +33,8 @@ class Job:
             self.title = jobInfo[1]
             self.company_id = jobInfo[2]
             self.location = Location().fillByID(jobInfo[3])
-            self.maxSalary = jobInfo[4]
-            self.minSalary = jobInfo[5]
+            self.minSalary = jobInfo[4]
+            self.maxSalary = jobInfo[5]
             self.description = jobInfo[6]
             self.url = jobInfo[7]
 
@@ -112,14 +112,24 @@ class Job:
     def getCompanyID(self):
         return self.company_id
     
-    def getLocation(self):
+    def getLocationName(self):
         return self.location.getLocationName()
+    
+    def getLocation(self):
+        return self.location
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]
+    
+    def getMaxSalary(self):
+        return self.maxSalary
+    
+    def getMinSalary(self):
+        return self.minSalary
 
     def getDesc(self):
         return self.description
     
     def getURL(self):
         return self.url
+    

@@ -123,8 +123,8 @@ def reinitMainDatabase():
             title TEXT NOT NULL, 
             company_id INTEGER,
             location_id INTEGER,
-            max_salary INTEGER,
-            min_salary INTEGER, 
+            min_salary INTEGER,
+            max_salary INTEGER, 
             description TEXT,
             url TEXT,
             FOREIGN KEY (company_id)
