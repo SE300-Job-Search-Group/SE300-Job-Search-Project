@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %} Job Comparison Results {% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Job Comparison Results</h1>
+    
+    {% if selected_job %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ selected_job.getTitle() }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ selected_job.getCompanyID() }}</h6>
+                <p class="card-text">Location: {{ selected_job.getLocation() }}</p>
+                <p class="card-text">Salary Range: ${{ selected_job.getSalaryRange()[0] }} - ${{ selected_job.getSalaryRange()[1] }}</p>
+                <p class="card-text">Description: {{ selected_job.getDesc() }}</p>
+                <p class="card-text">Tags:
+                    <ul>
+                        {% for tag in selected_job.getTags() %}
+                            <li>{{ tag }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+                <p class="card-text">This job is selected as the better job.</p>
+            </div>
+        </div>
+    {% else %}
+        <p>No job selected for comparison.</p>
+    {% endif %}
+</div>
+{% endblock %}
