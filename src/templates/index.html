@@ -10,9 +10,13 @@
             </div>
             <h2>Advanced Search</h2>
             <div class="form-group">
-                <input type="text" name="company" class="form-control" placeholder="Filter by Company">
-                <input type="text" name="location" class="form-control" placeholder="Filter by Location">
-                <label for="salary_range">Salary Range:</label>
+                <input type="text" name="company" class="form-control" placeholder="Company">
+                <input type="text" name="city" class="form-control" placeholder="City">
+                <input type="text" name="state" class="form-control" placeholder="State">
+                <p>Radius (miles) <span id="radius_display">10</span></p>
+                <input id="radius" type="range" name="radius" min="10" max="100" step="5" value="10" />
+                <br>
+                <label for="salary_range">Salary Range ($)</label>
                 <p>Minimum Salary: <span id="salary_min_display">50000</span></p>
                 <input id="salary_min" type="range" name="salary_min" min="50000" max="150000" step="1000" value="50000" />
                 <p>Maximum Salary: <span id="salary_max_display">150000</span></p>
@@ -26,15 +30,21 @@
 <style>
 .aero-search-title {
     font-size: 64px;
-    font-family: 'Helvitica Neue', sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 .aero-search-title i.fas.fa-plane {
     color: #2a71cd;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+        // Radius slider
+        $("#radius").on("input", function () {
+            $("#radius_display").text($(this).val());
+        });
+
         // Minimum salary slider
         $("#salary_min").on("input", function () {
             $("#salary_min_display").text('$' + $(this).val());
@@ -47,4 +57,3 @@
     });
 </script>
 {% endblock %}
-

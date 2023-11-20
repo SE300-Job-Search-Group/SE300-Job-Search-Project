@@ -2,7 +2,6 @@ from flask import Blueprint, request, session, render_template, redirect, url_fo
 from flask_paginate import Pagination, get_page_parameter
 from jobSearchObj import JobHandler, UserHandler
 
-
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
 user_handler = UserHandler()
@@ -11,15 +10,16 @@ user_handler = UserHandler()
 def home():
     if request.method == 'POST':
         query = request.form.get('query')
-        keywords = query.split()
+        tags = query.split()
         company = request.form.get('company')
-        location = request.form.get('location')
+        city = request.form.get('city')  
+        state = request.form.get('state')  
+        radius = request.form.get('radius')  
         salary_min = request.form.get('salary_min')
         salary_max = request.form.get('salary_max')
 
-        # Use job_handler.searchDB() with the filters
-        job_handler.searchDB(keywords, company, location, salary_min, salary_max)
-        print(keywords, type(keywords))
+        job_handler.searchDB(tags, company, city, state, radius, salary_min, salary_max)
+        print(tags, type(tags))
         return redirect(url_for('views.search_results'))
 
     return render_template("index.html")
@@ -146,20 +146,27 @@ def job_match():
         jobMatch.match_jobs(work_life_balance, compensation, job_security, management, culture)
 
         # Redirect to job_match_results with matched jobs
-        return redirect(url_for('views.match_results'))
+        return redirect(url_for('views.job_match_results'))
 
     return render_template('job_match.html')
 
-# Route to render the job compare page
-@views.route('/job_compare', methods=['GET'])
-def job_compare():
+views.route('/job_match_results', methods=['GET'])
+def job_match_results():
+    # Logic to fetch matched jobs based on the job matching algorithm
+    # For example:
+    matched_jobs = jobMatch.get_matched_jobs() 
+
+    return render_template('job_match_results.html', matched_jobs=matched_jobs)
+
+
+@views.route('/company_compare', methods=['GET'])
+def company_compare():
     # Replace 'get_matched_jobs()' with your function to get matching jobs
     matched_jobs = get_matched_jobs()  # Replace this line with your actual job retrieval logic
-    return render_template('job_compare.html', jobs=matched_jobs)
+    return render_template('company_compare.html', jobs=matched_jobs)
 
-# Route to handle job comparison and display results
-@views.route('/job_compare_results', methods=['POST'])
-def job_compare_results():
+@views.route('/company_compare_results', methods=['POST'])
+def comapany_compare_results():
     selected_job_id = request.form.get('selected_job')
     # Get details of the selected job from the ID and perform comparison logic
 
@@ -168,6 +175,7 @@ def job_compare_results():
 
     # Render the job comparison results page
     return render_template('job_compare_results.html', selected_job=selected_job)
-@views.route("/about") #defining the route to about page 
+
+@views.route("/about")  
 def about():
     return render_template("about.html")
