@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
-from jobSearchObj import JobHandler, UserHandler, JobMatch, CompanyMatch
+from jobSearchObj import JobHandler, UserHandler
 
 
 views = Blueprint(__name__, "views")
@@ -150,15 +150,24 @@ def job_match():
 
     return render_template('job_match.html')
 
-@views.route('/job_match_results')
-def match_results():
-    # Pass the matched jobs to the template
-    return render_template('job_match_results.html', jobs=matched_jobs)
-
-@views.route("/job_compare") #defining the route to compare page 
+# Route to render the job compare page
+@views.route('/job_compare', methods=['GET'])
 def job_compare():
-    return render_template("job_compare.html")
+    # Replace 'get_matched_jobs()' with your function to get matching jobs
+    matched_jobs = get_matched_jobs()  # Replace this line with your actual job retrieval logic
+    return render_template('job_compare.html', jobs=matched_jobs)
 
+# Route to handle job comparison and display results
+@views.route('/job_compare_results', methods=['POST'])
+def job_compare_results():
+    selected_job_id = request.form.get('selected_job')
+    # Get details of the selected job from the ID and perform comparison logic
+
+    # Replace the following line with your job comparison logic
+    selected_job = get_job_details(selected_job_id)  # Replace with actual job retrieval logic
+
+    # Render the job comparison results page
+    return render_template('job_compare_results.html', selected_job=selected_job)
 @views.route("/about") #defining the route to about page 
 def about():
     return render_template("about.html")
