@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %} Job Match Results {% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Job Match Results</h1>
+    
+    {% if jobs %}
+        <div class="row">
+            {% for job in jobs %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ job.getTitle() }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ job.getCompanyID() }}</h6>
+                            <p class="card-text">Location: {{ job.getLocation() }}</p>
+                            <p class="card-text">Salary Range: ${{ job.getSalaryRange()[0] }} - ${{ job.getSalaryRange()[1] }}</p>
+                            <p class="card-text">Description: {{ job.getDesc() }}</p>
+                            <p class="card-text">Tags:
+                                <ul>
+                                    {% for tag in job.getTags() %}
+                                        <li>{{ tag }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No matching jobs found.</p>
+    {% endif %}
+</div>
+{% endblock %}
