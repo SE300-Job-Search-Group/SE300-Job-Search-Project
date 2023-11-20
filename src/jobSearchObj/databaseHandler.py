@@ -103,14 +103,14 @@ class JobDBHandler(GenericDatabaseHandler):
         
         return tempResults.fetchone()
     
-    def writeJob(self,title,company_id,locID,minSal,maxSal,desc):
+    def writeJob(self,title,company_id,locID,minSal,maxSal,desc,url):
         tempResults = self.dbctrl.execute('SELECT MAX(job_id) FROM jobs')
         maxID = tempResults.fetchone()[0]
         if maxID is None:
             maxID = 0
         newID = maxID + 1
 
-        inputStr = "("+str(newID)+",'"+title+"',"+str(company_id)+","+str(locID)+","+str(maxSal)+","+str(minSal)+",'"+desc+"')"
+        inputStr = "("+str(newID)+",'"+title+"',"+str(company_id)+","+str(locID)+","+str(maxSal)+","+str(minSal)+",'"+desc+"','"+url+"')"
         tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO jobs VALUES "+inputStr)
 
         return newID

@@ -259,8 +259,8 @@ def fillJobs():
     
     # yea idk i just wanted to test it out :) add more as needed
     jobData = [
-        (1, 'Entry Level Software Engineer', 1, 1, 5, 100000, 'idk'),
-        (2, 'Project Manager', 1, 1, 1000000, 2000000, 'manage the projects duh')
+        (1, 'Entry Level Software Engineer', 1, 1, 5, 100000, 'idk','https://testurl.com'),
+        (2, 'Project Manager', 1, 1, 1000000, 2000000, 'manage the projects duh','https://testurl.com')
     ]
     locData = [
         (1,'Daytona Beach', 'FL',29.207060,-81.020737)
@@ -291,7 +291,7 @@ def fillJobs():
 
     dbctrl.executemany("""
         INSERT or IGNORE INTO jobs VALUES
-            (?,?,?,?,?,?,?)
+            (?,?,?,?,?,?,?,?)
     """,jobData)
 
     # job tags

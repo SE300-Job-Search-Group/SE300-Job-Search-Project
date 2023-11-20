@@ -12,6 +12,7 @@ print("Company: ", tempJob.getCompanyID(),type(tempJob.getCompanyID()))
 print("Salary Range: ", tempJob.getSalaryRange(),type(tempJob.getSalaryRange()))
 print("Location: ", tempJob.getLocation(),type(tempJob.getLocation()))
 print("Description: ", tempJob.getDesc(),type(tempJob.getDesc()))
+print("URL: ", tempJob.getURL(),type(tempJob.getURL()))
 
 #example case of writing a new job
 
@@ -23,8 +24,9 @@ tempMaxSal = 1
 tempCity = 'Daytona Beach'
 tempState = 'FL'
 tempDesc = 'Work for a failing company with no product! great pay.'
+tempURL = 'https://thisisaurl.com/testing'
 
-tempJob = Job().newJob(tempTitle,tempTags,tempComp.getID(),tempCity,tempState,tempMinSal,tempMaxSal,tempDesc)
+tempJob = Job().newJob(tempTitle,tempTags,tempComp.getID(),tempCity,tempState,tempMinSal,tempMaxSal,tempDesc,tempURL)
 
 print("Job ID: ",tempJob.getID(),type(tempJob.getID()))
 print("Title: ",tempJob.getTitle(),type(tempJob.getTitle()))
@@ -33,3 +35,4 @@ print("Company: ", tempJob.getCompanyID(),type(tempJob.getCompanyID()))
 print("Salary Range: ", tempJob.getSalaryRange(),type(tempJob.getSalaryRange()))
 print("Location: ", tempJob.getLocation(),type(tempJob.getLocation()))
 print("Description: ", tempJob.getDesc(),type(tempJob.getDesc()))
+print("URL: ", tempJob.getURL(),type(tempJob.getURL()))
