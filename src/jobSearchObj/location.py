@@ -6,6 +6,8 @@ class Location:
         self.id = None
         self.city = None
         self.state = None
+        self.lat = None
+        self.lang = None
     
     #init functions
     def fillByID(self,id:int): #returns new location object filled from input ID
@@ -26,9 +28,13 @@ class Location:
         self.city = city
         self.state = state
 
+        #searches for existing ID
+
         existingID = dbh.findID(self.city, self.state)
-        print(str(existingID))
-        self.id = existingID
+        if existingID is not None:
+            self.id = existingID
+        else: # creates new location & writes to db
+            pass
 
         dbh.close()
         return self

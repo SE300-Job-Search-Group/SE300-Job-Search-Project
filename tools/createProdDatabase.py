@@ -1,19 +1,16 @@
 import sqlite3
 
-# RUNNING THIS DELETES ALL DATA IN test.db
-
-#initialization
 db = sqlite3.connect("./database/main.db")
 dbctrl = db.cursor()
 
-## MAIN TABLE
-
-# Subtables that the main tables reference
 dbctrl.execute("""
     CREATE TABLE locations(
         location_id INTEGER PRIMARY KEY,
         city_name TEXT NOT NULL,
-        state_name TEXT NOT NULL
+        state_name TEXT NOT NULL,
+        latitude REAL,
+        longitude REAL,
+        UNIQUE(city_name,state_name)
     )
 """)
 
@@ -54,6 +51,7 @@ dbctrl.execute("""
         max_salary INTEGER,
         min_salary INTEGER, 
         description TEXT,
+        url TEXT,
         FOREIGN KEY (company_id)
             REFERENCES companies (company_id)
                 ON UPDATE CASCADE
