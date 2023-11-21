@@ -12,17 +12,24 @@ def home():
         query = request.form.get('query')
         tags = query.split()
         company = request.form.get('company')
-        city = request.form.get('city')  
-        state = request.form.get('state')  
-        radius = int(request.form.get('radius'))  
+        city = request.form.get('city')
+        state = request.form.get('state')
+        radius = request.form.get('radius')  # Get radius without converting to int yet
         salary_min = int(request.form.get('salary_min'))
         salary_max = int(request.form.get('salary_max'))
+
+        # Check if both city and state are provided before converting radius to int
+        if city and state:
+            radius = int(radius)  # Convert radius to int only if city and state are provided
+        else:
+            radius = None  # If city and state are not provided, set radius as None
 
         job_handler.searchDB(tags, company, city, state, radius, salary_min, salary_max)
         print(tags, type(tags))
         return redirect(url_for('views.search_results'))
 
     return render_template("index.html")
+
 
 @views.route("/search_results", methods=['GET'])
 @views.route("/search_results/<int:page>", methods=['GET'])
