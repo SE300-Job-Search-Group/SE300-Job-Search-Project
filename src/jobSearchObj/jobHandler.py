@@ -13,45 +13,21 @@ class JobHandler:
     #methods
 
     def searchDB(self, tags:list, company: str, city:str, state: str, distance:int, sal_min: int, sal_max: int):
-        print('INPUT PARAMETERS')
-        print(tags,type(tags))
-        print(str(distance),type(distance))
-        print(company,type(company))
-        print(city,type(city))
-        print(state,type(state))
-        print(str(sal_min),type(sal_min))
-        print(str(sal_max),type(sal_max))
-        
+
         self.jobs = None
         if tags is not None:
             self.jobs = self.searchTags(tags)
         else:
             Exception("No Inputs Detected")
 
-        print('AFTER TAG SERACH:')
-        for job in self.jobs:
-            print(str(job.getID()))
-
         if company is not None:
             self.filterCompany(Company().findCompany(company))
-
-        print('AFTER COMPANY SERACH:')
-        for job in self.jobs:
-            print(str(job.getID()))
 
         if city and state is not None:
             self.filterDistance(Location().assignID(city,state),distance)
 
-        print('AFTER LOC SERACH:')
-        for job in self.jobs:
-            print(str(job.getID()))
-
         if sal_min and sal_max is not None:
             self.filterSalary(sal_min,sal_max)
-
-        print('AFTER Salary SERACH:')
-        for job in self.jobs:
-            print(str(job.getID()))
 
         return self.jobs
 
@@ -79,16 +55,13 @@ class JobHandler:
     def filterCompany(self,company: Company):
         tempJobs = []
         for job in self.jobs:
-            if job.getCompanyID() != company.getID():
+            if job.getCompanyID() == company.getID():
                 tempJobs.append(job)
         self.jobs = tempJobs
 
     def filterDistance(self,location: Location,distance: int):
         tempJobs = []
         for job in self.jobs:
-            print(job.getTitle())
-            print(str(job.getLocation().getLat()))
-            print(str(job.getLocation().getLong()))
 
             if location.distanceFrom(job.getLocation()) < distance:
                 tempJobs.append(job)
@@ -99,8 +72,10 @@ class JobHandler:
         tempJobs = []
         for job in self.jobs:
             job.getSalaryRange()
-            if job.getMaxSalary() < minSal:
-                self.jobs.remove(job)
+            if job.getMaxSalary() > minSal:
+                tempJobs.append(job)
+
+        self.jobs = tempJobs
 
     #functions
 
