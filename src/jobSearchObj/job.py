@@ -2,6 +2,7 @@ from user import User
 from databaseHandler import JobDBHandler
 from words import Tag
 from location import Location
+from company import Company
 
 class Job:
     def __init__(self):
@@ -18,6 +19,7 @@ class Job:
         self.minSalary = None
         self.maxSalary = None
         self.description = None
+        self.url = None
 
     # init functions
     def fillByID(self,id): # returns a new job object filled based on provided job_id
@@ -32,9 +34,10 @@ class Job:
             self.title = jobInfo[1]
             self.company_id = jobInfo[2]
             self.location = Location().fillByID(jobInfo[3])
-            self.maxSalary = jobInfo[4]
-            self.minSalary = jobInfo[5]
+            self.minSalary = jobInfo[4]
+            self.maxSalary = jobInfo[5]
             self.description = jobInfo[6]
+            self.url = jobInfo[7]
 
             #sets all tags
             tempTagIDs = dbh.findTagIDs(self.id)
@@ -45,7 +48,7 @@ class Job:
         dbh.close()
         return self
     
-    def newJob(self,title: str,tags: list[str],company_id: int,city: str,state: str,minSalary: int, maxSalary: int, description: str):
+    def newJob(self,title: str,tags: list[str],company_id: int,city: str,state: str,minSalary: int, maxSalary: int, description: str,url: str):
         dbh = JobDBHandler(self.db)
 
         self.title = title
@@ -54,12 +57,13 @@ class Job:
         self.minSalary = minSalary
         self.maxSalary = maxSalary
         self.description = description
+        self.url = url
         #tags handling
         for tag in tags:
             self.tags.append(Tag().fillbyName(tag))
 
         #write jobs
-        self.id = dbh.writeJob(self.title,self.company_id,self.location.getID(),self.minSalary,self.maxSalary,self.description)
+        self.id = dbh.writeJob(self.title,self.company_id,self.location.getID(),self.minSalary,self.maxSalary,self.description,self.url)
 
         #write tag associations
         tempJobTags = []
@@ -109,11 +113,27 @@ class Job:
     def getCompanyID(self):
         return self.company_id
     
-    def getLocation(self):
+    def getCompany(self):
+        return Company().fillByID(self.company_id)
+    
+    def getLocationName(self):
         return self.location.getLocationName()
+    
+    def getLocation(self):
+        return self.location
     
     def getSalaryRange(self):
         return [self.minSalary, self.maxSalary]
+    
+    def getMaxSalary(self):
+        return self.maxSalary
+    
+    def getMinSalary(self):
+        return self.minSalary
 
     def getDesc(self):
         return self.description
+    
+    def getURL(self):
+        return self.url
+    

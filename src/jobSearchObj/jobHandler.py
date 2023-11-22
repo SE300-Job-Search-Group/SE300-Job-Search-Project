@@ -1,8 +1,8 @@
 from job import Job
 from company import Company
 from words import Tag
-import sqlite3
 from databaseHandler import JobSearchDBHandler
+from location import Location
 
 class JobHandler:
 
@@ -12,13 +12,24 @@ class JobHandler:
 
     #methods
 
-    def searchDB(self, tags:list, company: str, loc:str, sal_min: int, sal_max: int):
-        tag_res = []
+    def searchDB(self, tags:list, company: str, city:str, state: str, distance:int, sal_min: int, sal_max: int):
+
+        self.jobs = None
         if tags is not None:
-            tag_res = self.searchTags(tags)
-        
-        #temp keyword results
-        self.jobs = tag_res
+            self.jobs = self.searchTags(tags)
+        else:
+            Exception("No Inputs Detected")
+
+        if company is not None:
+            self.filterCompany(Company().findCompany(company))
+
+        if city and state is not None:
+            self.filterDistance(Location().assignID(city,state),distance)
+
+        if sal_min and sal_max is not None:
+            self.filterSalary(sal_min,sal_max)
+
+        return self.jobs
 
     def searchTags(self,tags: list)-> list[Job]:
         #consts. change as needed
@@ -40,6 +51,31 @@ class JobHandler:
             jobs.append(Job().fillByID(id))
 
         return jobs
+
+    def filterCompany(self,company: Company):
+        tempJobs = []
+        for job in self.jobs:
+            if job.getCompanyID() == company.getID():
+                tempJobs.append(job)
+        self.jobs = tempJobs
+
+    def filterDistance(self,location: Location,distance: int):
+        tempJobs = []
+        for job in self.jobs:
+
+            if location.distanceFrom(job.getLocation()) < distance:
+                tempJobs.append(job)
+
+        self.jobs = tempJobs
+
+    def filterSalary(self,minSal:int,maxSal:int):
+        tempJobs = []
+        for job in self.jobs:
+            job.getSalaryRange()
+            if job.getMaxSalary() > minSal:
+                tempJobs.append(job)
+
+        self.jobs = tempJobs
 
     #functions
 

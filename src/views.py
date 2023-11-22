@@ -1,7 +1,6 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
-from jobSearchObj import JobHandler, UserHandler, JobMatch, CompanyMatch
-
+from jobSearchObj import JobHandler, UserHandler
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
@@ -11,18 +10,26 @@ user_handler = UserHandler()
 def home():
     if request.method == 'POST':
         query = request.form.get('query')
-        keywords = query.split()
+        tags = query.split()
         company = request.form.get('company')
-        location = request.form.get('location')
-        salary_min = request.form.get('salary_min')
-        salary_max = request.form.get('salary_max')
+        city = request.form.get('city')
+        state = request.form.get('state')
+        radius = request.form.get('radius')  # Get radius without converting to int yet
+        salary_min = int(request.form.get('salary_min'))
+        salary_max = int(request.form.get('salary_max'))
 
-        # Use job_handler.searchDB() with the filters
-        job_handler.searchDB(keywords, company, location, salary_min, salary_max)
-        print(keywords, type(keywords))
+        # Check if both city and state are provided before converting radius to int
+        if city and state:
+            radius = int(radius)  # Convert radius to int only if city and state are provided
+        else:
+            radius = None  # If city and state are not provided, set radius as None
+
+        job_handler.searchDB(tags, company, city, state, radius, salary_min, salary_max)
+        print(tags, type(tags))
         return redirect(url_for('views.search_results'))
 
     return render_template("index.html")
+
 
 @views.route("/search_results", methods=['GET'])
 @views.route("/search_results/<int:page>", methods=['GET'])
@@ -146,19 +153,36 @@ def job_match():
         jobMatch.match_jobs(work_life_balance, compensation, job_security, management, culture)
 
         # Redirect to job_match_results with matched jobs
-        return redirect(url_for('views.match_results'))
+        return redirect(url_for('views.job_match_results'))
 
     return render_template('job_match.html')
 
-@views.route('/job_match_results')
-def match_results():
-    # Pass the matched jobs to the template
-    return render_template('job_match_results.html', jobs=matched_jobs)
+views.route('/job_match_results', methods=['GET'])
+def job_match_results():
+    # Logic to fetch matched jobs based on the job matching algorithm
+    # For example:
+    matched_jobs = jobMatch.get_matched_jobs() 
 
-@views.route("/job_compare") #defining the route to compare page 
-def job_compare():
-    return render_template("job_compare.html")
+    return render_template('job_match_results.html', matched_jobs=matched_jobs)
 
-@views.route("/about") #defining the route to about page 
+
+@views.route('/company_compare', methods=['GET'])
+def company_compare():
+    # Replace 'get_matched_jobs()' with your function to get matching jobs
+    matched_jobs = get_matched_jobs()  # Replace this line with your actual job retrieval logic
+    return render_template('company_compare.html', jobs=matched_jobs)
+
+@views.route('/company_compare_results', methods=['POST'])
+def comapany_compare_results():
+    selected_job_id = request.form.get('selected_job')
+    # Get details of the selected job from the ID and perform comparison logic
+
+    # Replace the following line with your job comparison logic
+    selected_job = get_job_details(selected_job_id)  # Replace with actual job retrieval logic
+
+    # Render the job comparison results page
+    return render_template('job_compare_results.html', selected_job=selected_job)
+
+@views.route("/about")  
 def about():
     return render_template("about.html")

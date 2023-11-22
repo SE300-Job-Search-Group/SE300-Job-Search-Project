@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-4">Job Match</h1>
-    <form method="POST" action="{{ url_for('match_results') }}">
+    <form method="POST" action="{{ url_for('views.job_match_results') }}">
         <div class="form-group">
             <label for="workLifeBalance">Work-Life Balance</label>
             <input type="range" class="form-control-range" id="workLifeBalance" name="workLifeBalance" min="0" max="10" value="5">
