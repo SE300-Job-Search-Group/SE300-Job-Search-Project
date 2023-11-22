@@ -1,7 +1,8 @@
 import sqlite3
 
 class GenericDatabaseHandler:
-    def __init__(self,dir):
+    def __init__(self):
+        dir = "./database/test.db"
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
@@ -106,6 +107,26 @@ class CompanyDBHandler(GenericDatabaseHandler):
 
         return newID
     
+    def findReviews(self,company_id:int):
+        tempResults = self.dbctrl.execute("SELECT * FROM reviews where company_id = "+str(company_id))
+
+        return tempResults.fetchall()
+    
+class ReviewDBHandler(GenericDatabaseHandler):
+    def searchByID(self,id:int):
+        tempResults = self.dbctrl.execute('SELECT * FROM reviews WHERE review_id = '+str(id))
+
+    def writeReview(self,company_id: int,review:str):
+        tempResults = self.dbctrl.execute('SELECT MAX(review_id) FROM reviews')
+        maxID = tempResults.fetchone()[0]
+        if maxID is None:
+            maxID = 0
+        newID = maxID + 1
+        inputStr = "("+str(newID)+","+str(company_id)+",'"+review+"')"
+        self.dbctrl.execute("INSERT OR IGNORE INTO reviews VALUES "+inputStr)
+
+        return newID
+
 class JobDBHandler(GenericDatabaseHandler):
     def searchByID(self, id: int):
         tempResults = self.dbctrl.execute("SELECT * FROM jobs WHERE EXISTS (SELECT job_id FROM jobs WHERE job_id = "+str(id)+") AND job_id = "+str(id))

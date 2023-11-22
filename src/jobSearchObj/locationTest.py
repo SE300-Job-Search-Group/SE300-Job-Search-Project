@@ -1,7 +1,7 @@
 from location import Location
 from databaseHandler import GenericDatabaseHandler
 
-dbh = GenericDatabaseHandler("./database/test.db")
+dbh = GenericDatabaseHandler()
 
 #writing new location
 """
