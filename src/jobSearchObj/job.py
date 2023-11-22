@@ -7,9 +7,6 @@ from company import Company
 class Job:
     def __init__(self):
         
-        # DB TO USE
-        self.db = "./database/test.db";
-        
         # setting attributes
         self.id = None
         self.title = None
@@ -23,7 +20,7 @@ class Job:
 
     # init functions
     def fillByID(self,id): # returns a new job object filled based on provided job_id
-        dbh = JobDBHandler(self.db)
+        dbh = JobDBHandler()
 
         jobInfo = dbh.searchByID(id)
 
@@ -49,7 +46,7 @@ class Job:
         return self
     
     def newJob(self,title: str,tags: list[str],company_id: int,city: str,state: str,minSalary: int, maxSalary: int, description: str,url: str):
-        dbh = JobDBHandler(self.db)
+        dbh = JobDBHandler()
 
         self.title = title
         self.company_id = company_id

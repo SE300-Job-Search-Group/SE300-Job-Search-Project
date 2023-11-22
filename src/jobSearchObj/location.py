@@ -4,7 +4,6 @@ from opencage.geocoder import OpenCageGeocode
 
 class Location:
     def __init__(self):
-        self.db = "./database/test.db"
         self.id = None
         self.city = None
         self.state = None
@@ -16,7 +15,7 @@ class Location:
     
     #init functions
     def fillByID(self,id:int): #returns new location object filled from input ID
-        dbh = LocDBHandler(self.db)
+        dbh = LocDBHandler()
         tempLoc = dbh.searchByID(id)
         if tempLoc is None:
             raise Exception("Database Search Error: No Existing Job with ID")
@@ -31,7 +30,7 @@ class Location:
         return self
 
     def assignID(self,city: str,state: str): #returns a new location object filled out based on input ID NEEDS WORK TO INCLUDE ID ASSIGNING IF LOCATION DOES NOT EXIST
-        dbh = LocDBHandler(self.db)
+        dbh = LocDBHandler()
         self.city = city
         self.state = state
 

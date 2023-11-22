@@ -1,7 +1,6 @@
 from databaseHandler import WordsDBHandler
 class GenericWord:
     def __init__(self):
-        self.db = "./database/test.db"
         self.word = None
         self.id = None
         self.type = None
@@ -9,7 +8,7 @@ class GenericWord:
     #init Methods
 
     def fillByID(self,id: int): # returns a GenericWord Object with filled info from input ID
-        dbh = WordsDBHandler(self.db)
+        dbh = WordsDBHandler()
         self.id = id
         tempWord = dbh.searchByID(self.id,self.type)
         if tempWord is None:
@@ -29,7 +28,7 @@ class GenericWord:
 
     def _assignID(self): #assigns a new id INTERNAL
         # searches db if exists
-        dbh = WordsDBHandler(self.db)
+        dbh = WordsDBHandler()
         
         existingID = dbh.findID(self.word,self.type)
         if existingID is None:
