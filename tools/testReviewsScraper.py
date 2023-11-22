@@ -1,74 +1,163 @@
-import re
-import json
 import requests
+#from bs4 import BeautifulSoup
 import sqlite3
 from urllib.parse import urlencode
+import re
+import json
+import html
 from bs4 import BeautifulSoup
 
-# Initialize a SQLite database connection
-conn = sqlite3.connect('company_review_data.db')
-cursor = conn.cursor()
+def create_database():
+    conn = sqlite3.connect('testReviews.db')
+    cursor = conn.cursor()
+    cursor.execute("""
+        DROP TABLE IF EXISTS
+            jobs
+    """)
 
-# Create a table to store company review data
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS companies (
-        company_id TEXT PRIMARY KEY,
-        company_name TEXT,
-        company_reviews TEXT,
-        company_ratings TEXT,
-        company_keywords TEXT
-    )
-''')
-
-def save_company_to_database(company_id, company_name, company_reviews, company_ratings, company_keywords):
     cursor.execute('''
-        INSERT INTO companies (company_id, company_name, company_reviews, company_ratings, company_keywords)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (company_id, company_name, company_reviews, company_ratings, company_keywords))
+        CREATE TABLE IF NOT EXISTS jobs (
+            id INTEGER PRIMARY KEY,
+            company_name TEXT,
+            company_reviews NUMERIC,
+            job_title TEXT,
+            job_description TEXT,
+            job_salaryHigh NUMERIC,
+            job_salaryLow NUMERIC,
+            job_keywords TEXT,
+            job_city TEXT,
+            job_state TEXT,
+            URL TEXT
+        )
+    ''')
+
     conn.commit()
+    #conn.close()
 
-def get_indeed_company_url(company_id):
-    return f"https://www.indeed.com/cmp/{company_id}"
+def get_indeed_search_url(keyword, location, offset=0):
+    parameters = {"q": keyword, "l": location, "filter": 0, "start": offset}
+    return "https://www.indeed.com/jobs?" + urlencode(parameters)
 
-headers = {"User-Agent": "Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"}
+##bypass indeed blocking
+def scrapeops_url(url):
+    SCRAPEOPS_API_KEY = '1bcf4bb7-35b1-47e3-91b9-1053edd36bc7'
+    payload = {'api_key': SCRAPEOPS_API_KEY, 'url': url, 'country': 'us'}
+    proxy_url = 'https://proxy.scrapeops.io/v1/?' + urlencode(payload)
+    return proxy_url
 
-company_id_list = []
+def scrape_indeed_aerospace_jobs():
 
-# Company Search Parameters
-company_name_list = ['example_company']
-company_location_list = ['anywhere']
+    conn = sqlite3.connect('testReviews.db')
+    cursor = conn.cursor()
 
-# Loop Through Indeed Pages Until No More Companies
-for company_name in company_name_list:
-    for company_location in company_location_list:
-        try:
-            indeed_company_url = get_indeed_company_url(company_name)
+    company_ids = {}
+    current_company_id = 1
 
-            # Send URL To ScrapeOps Instead of Indeed
-            response = requests.get(
-                url='https://proxy.scrapeops.io/v1/',
-                params={
-                    'api_key': '368ff5f6-f062-4cc3-b874-d08d6a7a1ff3',
-                    'url': indeed_company_url,
-                },
-            )
+    while True:
+        
+        for offset in range(0, 1010, 10):
+            indeed_jobs_url = get_indeed_search_url("aerospace", "United States", offset)
+            response = requests.get(scrapeops_url(indeed_jobs_url))
+            script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
 
             if response.status_code == 200:
-                soup = BeautifulSoup(response.text, 'html.parser')
-                company_id = re.search(r'/cmp/([^/]+)', indeed_company_url).group(1)
-                company_name = soup.find('span', class_='cmp-HeadingSection-companyName').text.strip()
-                company_reviews = soup.find('div', class_='cmp-AboutCompanyWidget-text').text.strip()
-                company_ratings = soup.find('span', class_='cmp-HeaderCompanyReview-ratings').text.strip()
-                company_keywords = soup.find('div', class_='cmp-KeywordList-keywordList').text.strip()
+                
+                if script_tag is not None:
+                    json_blob = json.loads(script_tag.group(1))
+        
+                # Extract jobs data
+                    jobs_list =json_blob['metaData']['mosaicProviderJobCardsModel']['results']      
+                
+                    for job in jobs_list:
+                        if job.get('jobkey') is not None:
+                            company_name = job.get('company')
+                            company_reviews = job.get('companyRating')
+                            job_title = job.get('displayTitle')
+                            job_description = job.get('snippet') #after second u003E
+                            #cut off at backwards slash
+                            #take out initial string "snippet":"\u003Cul style=\"list-style-type:circle;margin-top: 0px;margin-bottom: 0px;padding-left:20px;\"\u003E \n \u003Cli
+                            job_salary = job.get('estimatedSalary')
+                            job_salaryHigh = 0
+                            job_salaryLow = 0
+                            job_keywords = job.get('jobCardReqContainer')
+                            job_city = job.get('jobLocationCity')
+                            job_state = job.get('jobLocationState')
+                            URL = job.get('thirdPartyApplyUrl')
+                            
+                            if company_name not in company_ids:
+                                company_ids[company_name] = current_company_id
+                                
 
-                # Insert company data into the database
-                save_company_to_database(company_id, company_name, company_reviews, company_ratings, company_keywords)
-                company_id_list.append(company_id)
+                            if company_reviews:
+                              company_reviews = company_reviews           
+                            else:
+                                company_reviews = 9
 
-        except Exception as e:
-            print('Error', e)
+                            if job_salary:
+                                job_salaryHigh = job_salary['max']
+                                job_salaryLow = job_salary['min']
+                            else:
+                                job_salary = "Salary not specified"
 
-print(company_id_list)
+                            if job_description:
+                                # Remove HTML tags
+                                job_description = html.unescape(job_description)
+                                job_description = re.sub(r'<[^>]*>', '', job_description)
+                                
+                            else:
+                                job_description = "Description not specified"
 
-# Close the database connection
-conn.close()
+                            if job_keywords:
+                                job_keywords = job_keywords 
+                            else:
+                                job_keywords = "No keywords specified"
+
+                            if job_city:
+                                job_city = job_city
+                            else:
+                                job_city = "City not specified"
+
+                            if job_state:
+                                job_state = job_state
+                            else:
+                                job_state = "State not specified"
+                         
+                            if URL:
+                                    company_page = requests.get(scrapeops_url(URL))
+                                    if company_page.status_code == 200:
+                                        soup = BeautifulSoup(company_page.content, 'html.parser')
+
+                                        company_reviews_element = soup.find('span', class_='cmp-ReveiwsList')
+                                        company_ratings_element = soup.find('span', class_='aggregateRating')
+
+                                        if company_reviews_element:
+                                            company_reviews = company_reviews_element.text.strip()
+                                        else:
+                                            company_reviews = "Reviews not available"
+
+                                        if company_ratings_element:
+                                            company_ratings = company_ratings_element.text.strip()
+                                        else:
+                                            company_ratings = "Ratings not available"
+                        cursor.execute('''
+                            INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
+                        
+                        tags = 'placeholder'
+                        Job.newJob(job_title,tags,current_company_id,job_city,job_state,job_salaryLow, job_salaryHigh, job_description)
+
+                        conn.commit()
+                        current_company_id += 1
+
+                        ## If response contains less than 10 jobs then stop pagination
+                        if len(jobs_list) < 10:
+                            print('3')
+                            break
+
+                        
+
+if __name__ == "__main__":
+    create_database()
+    scrape_indeed_aerospace_jobs()
+    scrape_indeed_aerospace_jobs.conn.close()
