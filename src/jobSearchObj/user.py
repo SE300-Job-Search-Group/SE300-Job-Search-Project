@@ -6,7 +6,6 @@ from typing import Union
 class User:
     
     def __init__(self):
-        self.db = "./database/test.db"
 
         #attributes
         self.id = None
@@ -20,7 +19,7 @@ class User:
 
     # methods
     def login(self, user: str, password: str) -> Union[bool, int]:
-        dbh = UserDBHandler(self.db)
+        dbh = UserDBHandler()
         self.id = dbh.validateLogin(user, password)
         if self.id is None:
             return False
@@ -59,7 +58,7 @@ class User:
 
         #find available ID & write User Data to ID
         #### MAKE SURE KEYWORDS SKILLS AND OBJECTS EXIST IN DB PRIOR THIS POINT
-        dbh = UserDBHandler(self.db)
+        dbh = UserDBHandler()
         self.id = dbh.findAvailableID()
         dbh.writeUser(self.id,self.username,self.__password,self.location.getID(),self.minSalary,self.maxSalary)
 
@@ -80,7 +79,7 @@ class User:
         dbh.close()
         
     def updateUser(self,keywords: list, skills: list, location: Location, minSal: int, maxSal: int):
-        dbh = UserDBHandler(self.db)
+        dbh = UserDBHandler()
 
 
         userInfo = [(self.id,self.username,self.__password,location.getID(),self.minSalary,self.maxSalary)]

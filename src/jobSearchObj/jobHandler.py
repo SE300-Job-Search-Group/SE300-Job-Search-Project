@@ -7,7 +7,6 @@ from location import Location
 class JobHandler:
 
     def __init__(self):
-        self.db = "./database/test.db"
         self.jobs = [] #list of jobs to be shown
 
     #methods
@@ -35,7 +34,7 @@ class JobHandler:
         #consts. change as needed
         numMatches = 1
         
-        jsdb = JobSearchDBHandler(self.db)
+        jsdb = JobSearchDBHandler()
 
         tag_ids = []
         for kw in tags:
