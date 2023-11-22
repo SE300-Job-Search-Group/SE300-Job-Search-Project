@@ -1,10 +1,8 @@
 from userHandler import UserHandler
 from databaseHandler import GenericDatabaseHandler
 
-testDB = "./database/test.db"
-
 testUH = UserHandler()
-dbh = GenericDatabaseHandler(testDB)
+dbh = GenericDatabaseHandler()
 
 print('BEFORE NEW ACC')
 print(dbh.getTable("keywords"))

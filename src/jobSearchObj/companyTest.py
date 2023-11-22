@@ -24,3 +24,11 @@ print("Industry: ", tempComp.getIndustry(),type(tempComp.getIndustry()))
 print("Keywords: ", tempComp.getKeywords(),type(tempComp.getKeywords()))
 print("Description: ",tempComp.getDesc(),type(tempComp.getDesc()))
 print("Rating(Overall, Work-life, Pay/Benefits, Career, Management, Culture): ", tempComp.getRating(),type(tempComp.getRating()))
+
+
+# adding & viewing reviews
+tempReviews = ["""I hate this company!!! Shitty worklife balance ANNNND Im not even getting paid WTF!""","REVIEW NUMBER 2 (Im LAZY)"]
+
+returnReviews = tempComp.addReviews(tempReviews)
+
+print(tempComp.getReviewContents())

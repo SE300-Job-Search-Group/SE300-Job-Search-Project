@@ -1,7 +1,7 @@
 from databaseHandler import GenericDatabaseHandler
 from words import Tag, Keyword, Skill
 
-dbh = GenericDatabaseHandler("./database/test.db")
+dbh = GenericDatabaseHandler()
 
 print(dbh.getTable("tags"))
 print(dbh.getTable("keywords"))

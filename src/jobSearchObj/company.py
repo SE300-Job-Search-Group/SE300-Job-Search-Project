@@ -1,12 +1,10 @@
 from user import User
 from databaseHandler import CompanyDBHandler
 from words import Industry,Keyword
+from review import Review
 
 class Company:
     def __init__(self):
-
-        # DB TO USE
-        self.db = "./database/test.db";
 
         # Attributes
         self.id = None
@@ -20,10 +18,12 @@ class Company:
         self.rating_career = None
         self.rating_management = None
         self.rating_culture = None
+
+        self.reviews = []
     
     # init functions
     def fillByID(self, id): # returns a new Company give the input ID
-        dbh = CompanyDBHandler(self.db)
+        dbh = CompanyDBHandler()
 
         companyInfo = dbh.searchByID(id)
 
@@ -51,7 +51,7 @@ class Company:
         return self
     
     def findCompany(self,name):
-        dbh = CompanyDBHandler(self.db)
+        dbh = CompanyDBHandler()
         companyInfo = dbh.searchByName(name)
         if companyInfo is None:
             raise Exception("Database Search Error: No Existing Company with Name")
@@ -76,8 +76,27 @@ class Company:
         dbh.close()
         return self
     
+    def addReviews(self,reviews:list[str]):
+        for review in reviews:
+            self.reviews.append(Review().addReview(self.id,review))
+        return self.reviews
+    
+    def addReview(self,review:str):
+        self.reviews.append(Review().addReview(self.id,review))
+        return self.reviews
+
+    def fillReviews(self):
+        dbh = CompanyDBHandler()
+
+        tempRes = dbh.findReviews(self.id)
+
+        for review in tempRes:
+            self.reviews.append(Review().fill(review[0],review[1],review[2]))
+        
+        return self.reviews
+    
     def newCompany(self,name:str,industry:str,keywords:list[str],description:str,ratings: list[float]):
-        dbh = CompanyDBHandler(self.db)
+        dbh = CompanyDBHandler()
 
         self.name = name
         self.industry = Industry().fillbyName(industry)
@@ -135,3 +154,13 @@ class Company:
     
     def getRating(self):
         return [self.rating, self.rating_wl, self.rating_pb, self.rating_career, self.rating_management, self.rating_culture]
+    
+    def getReviews(self):
+        return self.reviews
+    
+    def getReviewContents(self):
+        tempRes = []
+        for review in self.reviews:
+            tempRes.append(review.getReview())
+
+        return tempRes
