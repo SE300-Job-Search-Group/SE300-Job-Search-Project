@@ -18,11 +18,11 @@ def home():
         salary_min = int(request.form.get('salary_min'))
         salary_max = int(request.form.get('salary_max'))
 
-        # Check if both city and state are provided before converting radius to int
+        # Check if both city and state are provided before using the radius
         if city and state:
-            radius = int(radius)  # Convert radius to int only if city and state are provided
+            radius = int(radius) 
         else:
-            radius = None  # If city and state are not provided, set radius as None
+            radius = None  
 
         job_handler.searchDB(tags, company, city, state, radius, salary_min, salary_max)
         print(tags, type(tags))
@@ -150,14 +150,14 @@ def job_match():
         culture = int(request.form['culture'])
 
         # Pass user rankings to the job matching algorithm
-        jobMatch.match_jobs(work_life_balance, compensation, job_security, management, culture)
+        #jobMatch.match_jobs(work_life_balance, compensation, job_security, management, culture)
 
         # Redirect to job_match_results with matched jobs
         return redirect(url_for('views.job_match_results'))
 
     return render_template('job_match.html')
 
-views.route('/job_match_results', methods=['GET'])
+@views.route('/job_match_results', methods=['GET'])
 def job_match_results():
     # Logic to fetch matched jobs based on the job matching algorithm
     # For example:
@@ -165,23 +165,28 @@ def job_match_results():
 
     return render_template('job_match_results.html', matched_jobs=matched_jobs)
 
+@views.route('/company_match', methods=['GET', 'POST'])
+def company_match():
+    if request.method == 'POST':
+        company1 = request.form.get('company1')
+        company2 = request.form.get('company2')
 
-@views.route('/company_compare', methods=['GET'])
-def company_compare():
-    # Replace 'get_matched_jobs()' with your function to get matching jobs
-    matched_jobs = get_matched_jobs()  # Replace this line with your actual job retrieval logic
-    return render_template('company_compare.html', jobs=matched_jobs)
+        # Perform your comparison logic here with company1 and company2
+        # Redirect to job_compare_results with the comparison results
+        #return redirect(url_for('views.company_match_results'))
 
-@views.route('/company_compare_results', methods=['POST'])
-def comapany_compare_results():
+    return render_template('company_match.html')
+
+@views.route('/company_match_results', methods=['POST'])
+def company_match_results():
     selected_job_id = request.form.get('selected_job')
     # Get details of the selected job from the ID and perform comparison logic
 
     # Replace the following line with your job comparison logic
-    selected_job = get_job_details(selected_job_id)  # Replace with actual job retrieval logic
+    #job retrieval logic
 
     # Render the job comparison results page
-    return render_template('job_compare_results.html', selected_job=selected_job)
+    return render_template('company_match_results.html')
 
 @views.route("/about")  
 def about():
