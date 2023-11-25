@@ -26,4 +26,4 @@ class CompanyMatch:
     # score company
     def scoreCompany():
         keywordCompare()
-        Score = (numMatches/usrKeywords) + catRating
+        Score = (len(numMatches)/len(usrKeywords)) + len(catRating)
