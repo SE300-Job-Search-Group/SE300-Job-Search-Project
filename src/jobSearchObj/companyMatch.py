@@ -6,7 +6,7 @@ class CompanyMatch:
     # loop to compare user keywords from profile to keywords from company reviews
     def keywordCompare():
         usrKeywords = User.getKeywords() #import user keywords stored in SQL
-        numMatches = 0 #placeholder
+        numMatches = 0 
         for x in usrKeywords:
             if x in Keywords.rPhrase:
                 numMatches + 1 
