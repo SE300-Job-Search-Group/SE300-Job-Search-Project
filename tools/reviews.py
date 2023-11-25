@@ -2,6 +2,13 @@ companies = [
     {
         "company_name": "General Electric",
         "company_rating": 4.0,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 3.9,
+            "Job Security & Advancement": 3.5,
+            "Management": 3.6,
+            "Culture": 3.8
+        },
         "reviews": [
             {
                 "position": "Administrative Assistant to the Manager of Marine Controls and Tactical Systems Contracts",
@@ -14,8 +21,34 @@ companies = [
         ]
     },
     {
+        "company_name": "The Aerospace Corporation",
+        "company_rating": 4.0,
+        "additional_ratings": {
+            "Work-Life Balance": 4.1,
+            "Pay and Benefits": 3.9,
+            "Job Security & Advancement": 3.6,
+            "Management": 3.4,
+            "Culture": 3.8
+        },
+        "reviews": [
+            {
+                "comment": "Company panders to the young crowd who lack the knowledge to do things in general. Career path is stagnant for those without the top clearances. Pay is generally lower than the industry. Benefits, vacations, and overtime make up for the pay for those willing to work 10-15 hours per week."
+            },
+            {
+                "comment": "The leadership team has changed quite a bit over the last decade. Many were apprehensive, but it came with great changes. In my personal experience, management is very supportive. They provide opportunities for growth and a very friendly and comfortable culture. The company as a whole encourages growth and welcomes you to explore other opportunities within the company along with competitive salaries."
+            }
+        ]
+    },
+    {
         "company_name": "Boeing",
         "company_rating": 3.9,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 4.1,
+            "Job Security & Advancement": 3.4,
+            "Management": 3.3,
+            "Culture": 3.5
+        },
         "reviews": [
             {
                 "question": "What is the best part of working at the company?",
@@ -39,20 +72,34 @@ companies = [
         ]
     },
     {
-        "company_name": "The Aerospace Corporation",
-        "company_rating": 4.0,
+        "company_name": "Crane Aerospace & Electronics",
+        "company_rating": 3.8,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 3.6,
+            "Job Security & Advancement": 3.4,
+            "Management": 3.2,
+            "Culture": 3.3
+        },
         "reviews": [
             {
-                "comment": "Company panders to the young crowd who lack the knowledge to do things in general. Career path is stagnant for those without the top clearances. Pay is generally lower than the industry. Benefits, vacations, and overtime make up for the pay for those willing to work 10-15 hours per week."
+                "comment": "Working in the mornings was nice. The job even thought could be very demanding, was rewarding to see that we can apply what we've learned to achieve a perfect result. Management was willing to help and teach new tasks. Co workers very happy with each other. Very good pot lucks often."
             },
             {
-                "comment": "The leadership team has changed quite a bit over the last decade. Many were apprehensive, but it came with great changes. In my personal experience, management is very supportive. They provide opportunities for growth and a very friendly and comfortable culture. The company as a whole encourages growth and welcomes you to explore other opportunities within the company along with competitive salaries."
+                "comment": "A lot of very wonderful people working there and most of them are helpful. Management is mostly poor, some of them are not even sure what my job is. Some of them cannot remember my name without looking at my badge."
             }
         ]
     },
     {
         "company_name": "Collins Aerospace",
         "company_rating": 3.6,
+        "additional_ratings": {
+            "Work-Life Balance": 3.6,
+            "Pay and Benefits": 3.6,
+            "Job Security & Advancement": 3.2,
+            "Management": 3.1,
+            "Culture": 3.2
+        },
         "reviews": [
             {
                 "comment": "Being a design engineer at Collins allows you to become a well-rounded engineer because we work with a large variety of materials and processes. Sometimes you can get stuck in a team that isn't working on any new designs, but most managers are open to you moving to another team if you feel like you need a change. People are promoted pretty quickly. Diversity and Inclusion initiatives have been on the rise, although overall there is a pretty low level of diversity. The company has been vocal about wanting to improve employee well-being, and all levels of management I have worked with have been open to direct feedback. Overall very few complaints!"
@@ -78,6 +125,13 @@ companies = [
     {
         "company_name": "Howmet Aerospace",
         "company_rating": 3.1,
+        "additional_ratings": {
+            "Work-Life Balance": 3.0,
+            "Pay and Benefits": 3.6,
+            "Job Security & Advancement": 2.8,
+            "Management": 2.5,
+            "Culture": 2.8
+        },
         "reviews": [
             {
                 "comment": "I've had bad jobs that expect more for less pay. This is not a bad job. Especially for the pay and benefits. People make the job harder than it needs to be. You just have to stay in your work area and do your job. That's all they ask."
@@ -90,6 +144,13 @@ companies = [
     {
         "company_name": "GulfStream Aerospace",
         "company_rating": 3.7,
+        "additional_ratings": {
+            "Work-Life Balance": 3.6,
+            "Pay and Benefits": 3.9,
+            "Job Security & Advancement": 3.2,
+            "Management": 3.1,
+            "Culture": 3.5
+        },
         "reviews": [
             {
                 "question": "What is the best part of working at the company?",
@@ -128,6 +189,13 @@ companies = [
     {
         "company_name": "AEVEX Aerospace",
         "company_rating": 3.8,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 3.9,
+            "Job Security & Advancement": 3.3,
+            "Management": 3.5,
+            "Culture": 3.6
+        },
         "reviews": [
             {
                 "comment": "I actually enjoy my job here and the people in my department are great. The management is a disaster, we still use paper time cards, and are underpaid. Communication is a joke and lots of people are stuck in their old ways of doing things, usually for the worse."
@@ -153,6 +221,13 @@ companies = [
     {
         "company_name": "Firefly Aerospace",
         "company_rating": 3.4,
+        "additional_ratings": {
+            "Work-Life Balance": 2.9,
+            "Pay and Benefits": 3.3,
+            "Job Security & Advancement": 2.8,
+            "Management": 3.1,
+            "Culture": 3.2
+        },
         "reviews": [
             {
                 "comment": "Spent a summer here as an intern in Integration. This was maybe 3 years ago. Things were hectic and somewhat disorganized but everyone there was a true believer in what they were trying to do. It's been great watching them hit goals over the last few years. Very responsive HR team and everyone seemed to have years of experience. If I was looking for aerospace work, I'd look at Firefly first."
@@ -165,6 +240,13 @@ companies = [
     {
         "company_name": "National Aerospace Solutions",
         "company_rating": 3.2,
+        "additional_ratings": {
+            "Work-Life Balance": 3.7,
+            "Pay and Benefits": 3.6,
+            "Job Security & Advancement": 3.1,
+            "Management": 2.5,
+            "Culture": 3.0
+        },
         "reviews": [
             {
                 "comment": "The work is very interesting. The pay is good. I believe it is a great job for someone beginning an engineering career or finishing one. It may not be the best for someone in the middle. It is easy to become comfortable and complacent."
@@ -177,6 +259,13 @@ companies = [
     {
         "company_name": "Ball Aerospace",
         "company_rating": 3.6,
+        "additional_ratings": {
+            "Work-Life Balance": 3.7,
+            "Pay and Benefits": 3.8,
+            "Job Security & Advancement": 3.1,
+            "Management": 3.0,
+            "Culture": 3.3
+        },
         "reviews": [
             {
                 "comment": "Not a bad company to have on your resume. Impossible to get good pay or advance in your career unless you know someone or you are liked by management. Testing jobs require you to be behind closed doors, so you do not get to show face like other people, so you are often overlooked for promotions and pay raises."
@@ -189,6 +278,13 @@ companies = [
     {
         "company_name": "Northrop Grumman",
         "company_rating": 4.0,
+        "additional_ratings": {
+            "Work-Life Balance": 3.9,
+            "Pay and Benefits": 4.0,
+            "Job Security & Advancement": 3.5,
+            "Management": 3.5,
+            "Culture": 3.7
+        },
         "reviews": [
             {
                 "comment": "Exceptional company! My experience at this organization has been nothing short of fantastic. The emphasis on work-life balance is truly commendable, allowing employees to thrive both professionally and personally. The compensations are not only competitive but reflect the company's commitment to recognizing and rewarding talent. The talent team is a standout, showcasing a remarkable ability to attract and nurture top-notch professionals. The positive and inclusive work culture fosters collaboration, making every day a pleasure to be a part of the team. From my perspective, this company goes above and beyond in creating an environment where employees can excel. I feel fortunate to work for such a forward-thinking and employee-centric organization. Highly recommended for those seeking a fulfilling and rewarding career."
@@ -201,6 +297,13 @@ companies = [
     {
         "company_name": "SpaceX",
         "company_rating": 3.6,
+        "additional_ratings": {
+            "Work-Life Balance": 2.5,
+            "Pay and Benefits": 3.6,
+            "Job Security & Advancement": 3.0,
+            "Management": 2.8,
+            "Culture": 3.4
+        },
         "reviews": [
             {
                 "comment": "I hated it, but some people loved it. The mantra around here is make everything so easy a robot can replace you. Its just no brained factory work. If you talk to the right people you can move anywhere in the company, youll work more hours but dont expect high raises. They offer unlimited overtime instead of higher pay. Pay was mid. Benefits were good, they give you SpaceX stock for staying in the company and you get to buy SpaceX stock with your paycheck as well. Also they have free coffee and baristas everywhere and $5 meals from constantly rotating food trucks. But honestly I felt like a part of my soul died everyday spent there. Also theres a lot of people who work here who see Elon musk as some kind of god. Its kinda weird. Felt very cult like. I left with like 100 shares of SpaceX stock that are mine forever."
@@ -213,6 +316,13 @@ companies = [
     {
         "company_name": "Textron Aviation",
         "company_rating": 3.9,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 3.9,
+            "Job Security & Advancement": 3.3,
+            "Management": 3.5,
+            "Culture": 3.6
+        },
         "reviews": [
             {
                 "comment": "As an intern, they will most likely put you on the project that nobody at the company wants to do. I was stuck doing a project that was a essentially busy work for my entire time at the company. I was promised chances to go out on the factory floor and work directly with the planes. Instead I was at a desk 8 hours a day staring at a computer. If desk work is all you have ever wished for then go for it."
@@ -225,6 +335,13 @@ companies = [
     {
         "company_name": "L3Harris",
         "company_rating": 3.9,
+        "additional_ratings": {
+            "Work-Life Balance": 3.9,
+            "Pay and Benefits": 4.0,
+            "Job Security & Advancement": 3.5,
+            "Management": 3.5,
+            "Culture": 3.7
+        },
         "reviews": [
             {
                 "comment": "Plan on 50+ hour workweeks. 60 is appreciated. PTO is unlimited but you'll never take all 160 hrs and you don't get paid for unused. Off fridays mean you get to work from home. Lots of talented, dedicated folks - just be prepared to dedicate yourself and work the long hours. Some positions have paid overtime, so there's money to be made. Defense contracting takes some getting used to if you're from the private sector. Little incentive for efficiency. Lots of very rigid, defined processes. Can feel like it's impossible to get things done. LOTS of turnover means there's opportunity for advancement, and also stress and inefficiency. Very conformist environment. Great parental leave policy, but 60 hr weeks don't allow much time with the baby after that."
@@ -237,6 +354,13 @@ companies = [
     {
         "company_name": "Raytheon",
         "company_rating": 3.9,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 4.0,
+            "Job Security & Advancement": 3.4,
+            "Management": 3.4,
+            "Culture": 3.6
+        },
         "reviews": [
             {
                 "comment": "Raytheon Technologies was definitely a fun and easy going place to work at. Everyday there was something new to work on and people were generally happy. Willing to teach, etc. Only issue I had was switching shifts, despite this it's still a fun place to work at and I recommend for machinists."
@@ -247,8 +371,15 @@ companies = [
         ]
     },
     {
-        "company_name": "comapy",
+        "company_name": "Lockheed Martin",
         "company_rating": 4.0,
+        "additional_ratings": {
+            "Work-Life Balance": 3.9,
+            "Pay and Benefits": 4.0,
+            "Job Security & Advancement": 3.5,
+            "Management": 3.5,
+            "Culture": 3.7
+        },
         "reviews": [
             {
                 "comment": "I work in one of the major R&D divisions at LM, and this job provides everything you traditionally want in a job, but not much more. The work is interesting, the office culture is very laid-back and supportive, and the pay is decent. The 4/10-flex schedule is also a godsend. If you're young and looking for adventure, or if you have some deep need to self-actualize and your true passion is not necessarily technical research, this may not be the best long-term choice (though the fantastic schedule also means you'll have time for personal development). However, if you're looking for a good, stable job with interesting work, or if you're deeply passionate about a specific research area, this will be a fantastic job for you."
@@ -261,6 +392,13 @@ companies = [
     {
         "company_name": "NASA Jet Propulsion Laboratory",
         "company_rating": 4.2,
+        "additional_ratings": {
+            "Work-Life Balance": 4.2,
+            "Pay and Benefits": 4.1,
+            "Job Security & Advancement": 3.8,
+            "Management": 3.5,
+            "Culture": 4.1
+        },
         "reviews": [
             {
                 "comment": "The job is great, and you get to do things that exist nowhere else in the world; however, as of 2023 many good people have been lost to industry. Given the difficulty hiring during COVID and the 2023 hiring freeze most people who are left are those who get promoted or have upward mobility. This means they also block others from attending meetings and control who gets awards and recognition. It was great years ago, but since the pandemic JPL has become a very toxic place to work. Either you have the power or you serve those who play the politics to get power."
@@ -273,6 +411,13 @@ companies = [
     {
         "company_name": "System One",
         "company_rating": 3.6,
+        "additional_ratings": {
+            "Work-Life Balance": 3.5,
+            "Pay and Benefits": 3.3,
+            "Job Security & Advancement": 3.0,
+            "Management": 3.3,
+            "Culture": 3.4
+        },
         "reviews": [
             {
                 "comment": "Benefits are great, they pay for all your health insurance, lots of PTO. I liked what I did originally but once they went public, it was all about the bottom line and they had no problem laying off lots of people. Very little opportunity for advancement but would be an OK job for a few years."
@@ -285,6 +430,13 @@ companies = [
     {
         "company_name": "Curtiss-Wright",
         "company_rating": 3.3,
+        "additional_ratings": {
+            "Work-Life Balance": 3.2,
+            "Pay and Benefits": 3.3,
+            "Job Security & Advancement": 2.8,
+            "Management": 2.8,
+            "Culture": 2.9
+        },
         "reviews": [
             {
                 "comment": "Amazing leadership but HR & certain people in corporate tend to protect the Senior level bullies. Seems like as long as you have a personal connection with someone in corporate you are bullet proof to be written up or laid off."
@@ -297,6 +449,13 @@ companies = [
     {
         "company_name": "JarBo",
         "company_rating": 5.0,
+        "additional_ratings": {
+            "Work-Life Balance": 5.0,
+            "Pay and Benefits": 4.9,
+            "Job Security & Advancement": 4.9,
+            "Management": 5.0,
+            "Culture": 5.0
+        },
         "reviews": [
             {
                 "comment": "Great people who genuinely care about helping others. In the context of job placement and career advancement, no organization will put in the effort like JARBO - they are a lifelong resource and you shouldn't hesitate to reach out to them!"
@@ -309,6 +468,13 @@ companies = [
     {
         "company_name": "Royell Manufacturing",
         "company_rating": 2.9,
+        "additional_ratings": {
+            "Work-Life Balance": 3.1,
+            "Pay and Benefits": 2.4,
+            "Job Security & Advancement": 2.7,
+            "Management": 2.4,
+            "Culture": 2.7
+        },
         "reviews": [
             {
                 "comment": "I would log in, and the lead would tell me what was priority. I was new and workload was constantly changing. I was being shown too much and trying to learn it all. My brain would just shut down. If you didn't learn everything about part marking, to the computer process and packaging, etc within a few days, the lead and another employee would get short with me, and just treat me like a scolded child!"
@@ -321,6 +487,13 @@ companies = [
     {
         "company_name": "Slingshot Aerospace",
         "company_rating": 4.0,
+        "additional_ratings": {
+            "Work-Life Balance": 5.0,
+            "Pay and Benefits": 5.0,
+            "Job Security & Advancement": 5.0,
+            "Management": 5.0,
+            "Culture": 2.0
+        },
         "reviews": [
             {
                 "comment": "Without government clearance, your projects will be very isolated. People are more than happy to help when you have a problem. However, it is hard to find someone willing to brainstorm with you. You also can't talk about any of the exciting things you are working on with anyone outside the company, so you have to be very comfortable with the flow of your ideas and self-teaching."
@@ -330,6 +503,13 @@ companies = [
     {
         "company_name": "Dublin Aerospace",
         "company_rating": 3.9,
+        "additional_ratings": {
+            "Work-Life Balance": 3.8,
+            "Pay and Benefits": 3.3,
+            "Job Security & Advancement": 3.3,
+            "Management": 3.8,
+            "Culture": 3.3
+        },
         "reviews": [
             {
                 "comment": "Productive and fun workplace. Company is focused on providing high customer expectations while ensuring the job is done in a timely and professional manner. The company is also currently trying to expand its operations."
@@ -342,6 +522,13 @@ companies = [
     {
         "company_name": "Schaeffler Group",
         "company_rating": 3.6,
+        "additional_ratings": {
+            "Work-Life Balance": 3.4,
+            "Pay and Benefits": 3.8,
+            "Job Security & Advancement": 3.3,
+            "Management": 3.1,
+            "Culture": 3.4
+        },
         "reviews": [
             {
                 "comment": "The place pays well, has good benefits, and the work life balance is good. The main issues would be that work can be stressful due to tight deadlines with not a lot of guidance."
@@ -354,6 +541,13 @@ companies = [
     {
         "company_name": "Cyient",
         "company_rating": 3.5,
+        "additional_ratings": {
+            "Work-Life Balance": 3.5,
+            "Pay and Benefits": 2.9,
+            "Job Security & Advancement": 3.4,
+            "Management": 3.1,
+            "Culture": 3.3
+        },
         "reviews": [
             {
                 "comment": "This has to be one of the cheapest companies, they asked for volunteers from across BUs to study why morale was so low. The conclusion was the pay and benefits were way below industry average, management's solution: didn't allow people to bring up raises in company meetings. Horrible management."
