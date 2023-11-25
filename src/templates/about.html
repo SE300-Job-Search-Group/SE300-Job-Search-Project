@@ -1,5 +1,33 @@
-{% extends "base.html" %} <!--represents the about page-->
-{% block title %} About{% endblock %}
+{% extends "base.html" %} <!-- Represents the about page -->
+{% block title %} About {% endblock %}
 {% block content %}
-<h1>about</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <h1>What is AeroSearch?</h1>
+            <div class="mt-4">
+                <p class="lead">
+                    Aerosearch is a platform to empower job seekers.<br>
+                </p>
+            </div>
+
+            <!-- Job Match Card -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Job Match</h5>
+                    <p class="card-text">Get personalized job listings based on your preferences and qualifications.</p>
+                </div>
+            </div>
+
+            <!-- Company Compare Card -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Company Match</h5>
+                    <p class="card-text">Stuck between two offers? We'll be able to tell you which company is the right fit for you based on employee reviews.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
