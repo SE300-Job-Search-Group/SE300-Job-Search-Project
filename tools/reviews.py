@@ -3,126 +3,49 @@ companies = [
         "company_name": "General Electric",
         "company_rating": 4.0,
         "reviews": [
-            {
-                "position": "Administrative Assistant to the Manager of Marine Controls and Tactical Systems Contracts",
-                "responsibilities": "Transcribed highly sensitive and confidential data to Government customers, interfaced with Government personnel, data entry, filing, answering phones.",
-                "work_experience": "There wasn't a hard part to my job. I got along well with co-workers and management. I learned how to read Government contracts."
-            },
-            {
-                "comment": "Great benefits/pay, poor leadership/favoritism. If you're favored, you advance. Don't learn much more than your job. If you make yourself irreplaceable, then you are stuck because even though they say quality is #1, all that management cares about is numbers. Piss-poor management. A+ bonuses."
-            }
+            
+                "Administrative Assistant to the Manager of Marine Controls and Tactical Systems Contracts Transcribed highly sensitive and confidential data to Government customers, interfaced with Government personnel, data entry, filing, answering phones. There wasn't a hard part to my job. I got along well with co-workers and management. I learned how to read Government contracts. Great benefits/pay, poor leadership/favoritism. If you're favored, you advance. Don't learn much more than your job. If you make yourself irreplaceable, then you are stuck because even though they say quality is #1, all that management cares about is numbers. Piss-poor management. A+ bonuses."
+            
         ]
     },
     {
         "company_name": "Boeing",
         "company_rating": 3.9,
         "reviews": [
-            {
-                "question": "What is the best part of working at the company?",
-                "answer": "Supportive managers and great team members."
-            },
-            {
-                "question": "What is the most stressful part about working at the company?",
-                "answer": "Extremely difficult and stressful work for low pay."
-            },
-            {
-                "question": "What is the work environment and culture like at the company?",
-                "answer": "Positive environment and they are an inclusive company."
-            },
-            {
-                "question": "What is a typical day like for you at the company?",
-                "answer": "Reviewing programs and ensuring they are compliant with the 32 EVM guidelines established by the DCMA."
-            },
-            {
-                "comment": "It's a great place to work. Keep in mind it's a huge company, so the culture, work, management, and processes can differ a lot depending on where you work. I've worked with great people across multiple sites. Work-life balance is great, with lots of flexibility. Benefits are great, especially 401k matching and tuition reimbursement. Only cons are slow promotions. You really need to advocate for yourself and prove your worth. The company's tools and processes can be clunky and dysfunctional."
-            }
+            
+                "Supportive managers and great team members.Extremely difficult and stressful work for low pay. Positive environment and they are an inclusive company.Reviewing programs and ensuring they are compliant with the 32 EVM guidelines established by the DCMA. It's a great place to work. Keep in mind it's a huge company, so the culture, work, management, and processes can differ a lot depending on where you work. I've worked with great people across multiple sites. Work-life balance is great, with lots of flexibility. Benefits are great, especially 401k matching and tuition reimbursement. Only cons are slow promotions. You really need to advocate for yourself and prove your worth. The company's tools and processes can be clunky and dysfunctional."
+            
         ]
     },
     {
         "company_name": "The Aerospace Corporation",
         "company_rating": 4.0,
         "reviews": [
-            {
-                "comment": "Company panders to the young crowd who lack the knowledge to do things in general. Career path is stagnant for those without the top clearances. Pay is generally lower than the industry. Benefits, vacations, and overtime make up for the pay for those willing to work 10-15 hours per week."
-            },
-            {
-                "comment": "The leadership team has changed quite a bit over the last decade. Many were apprehensive, but it came with great changes. In my personal experience, management is very supportive. They provide opportunities for growth and a very friendly and comfortable culture. The company as a whole encourages growth and welcomes you to explore other opportunities within the company along with competitive salaries."
-            }
+                "Company panders to the young crowd who lack the knowledge to do things in general. Career path is stagnant for those without the top clearances. Pay is generally lower than the industry. Benefits, vacations, and overtime make up for the pay for those willing to work 10-15 hours per week. The leadership team has changed quite a bit over the last decade. Many were apprehensive, but it came with great changes. In my personal experience, management is very supportive. They provide opportunities for growth and a very friendly and comfortable culture. The company as a whole encourages growth and welcomes you to explore other opportunities within the company along with competitive salaries."
         ]
     },
     {
         "company_name": "Collins Aerospace",
         "company_rating": 3.6,
         "reviews": [
-            {
-                "comment": "Being a design engineer at Collins allows you to become a well-rounded engineer because we work with a large variety of materials and processes. Sometimes you can get stuck in a team that isn't working on any new designs, but most managers are open to you moving to another team if you feel like you need a change. People are promoted pretty quickly. Diversity and Inclusion initiatives have been on the rise, although overall there is a pretty low level of diversity. The company has been vocal about wanting to improve employee well-being, and all levels of management I have worked with have been open to direct feedback. Overall very few complaints!"
-            },
-            {
-                "question": "What is the best part of working at the company?",
-                "answer": "Culture and open to trying new things."
-            },
-            {
-                "question": "What is the most stressful part about working at the company?",
-                "answer": "Poor planning and frantic last-minute deadlines."
-            },
-            {
-                "question": "What is the work environment and culture like at the company?",
-                "answer": "Good, friendly, and positive. Welcoming."
-            },
-            {
-                "question": "What is a typical day like for you at the company?",
-                "answer": "Busy. What's up fast moving pieces not integrated very well with parent company."
-            }
+            "Being a design engineer at Collins allows you to become a well-rounded engineer because we work with a large variety of materials and processes. Sometimes you can get stuck in a team that isn't working on any new designs, but most managers are open to you moving to another team if you feel like you need a change. People are promoted pretty quickly. Diversity and Inclusion initiatives have been on the rise, although overall there is a pretty low level of diversity. The company has been vocal about wanting to improve employee well-being, and all levels of management I have worked with have been open to direct feedback. Overall very few complaints! Culture and open to trying new things. Poor planning and frantic last-minute deadlines. Good, friendly, and positive. Welcoming. Busy. What's up fast moving pieces not integrated very well with parent company."
+            
         ]
     },
     {
         "company_name": "Howmet Aerospace",
         "company_rating": 3.1,
         "reviews": [
-            {
-                "comment": "I've had bad jobs that expect more for less pay. This is not a bad job. Especially for the pay and benefits. People make the job harder than it needs to be. You just have to stay in your work area and do your job. That's all they ask."
-            },
-            {
-                "comment": "I've been an engineer at Howmet Aerospace for a little bit now, and I want to provide an overview of my experience. On the positive side, the compensation is quite competitive, and I've had the opportunity to work on interesting robotics projects. Additionally, I've been fortunate to collaborate with some outstanding colleagues who've been invaluable. Nonetheless, there are notable drawbacks..."
-            }
+             "I've had bad jobs that expect more for less pay. This is not a bad job. Especially for the pay and benefits. People make the job harder than it needs to be. You just have to stay in your work area and do your job. That's all they ask. I've been an engineer at Howmet Aerospace for a little bit now, and I want to provide an overview of my experience. On the positive side, the compensation is quite competitive, and I've had the opportunity to work on interesting robotics projects. Additionally, I've been fortunate to collaborate with some outstanding colleagues who've been invaluable. Nonetheless, there are notable drawbacks..."
+            
         ]
     },
     {
         "company_name": "GulfStream Aerospace",
         "company_rating": 3.7,
         "reviews": [
-            {
-                "question": "What is the best part of working at the company?",
-                "answer": "The pay was nice and some coworkers were great, but overall it's another buddy system company. If you don't fall in line it'll take a lot longer to climb up."
-            },
-            {
-                "question": "What is the most stressful part about working at the company?",
-                "answer": "They preach about work/life balance, but then expect you to be there 50-60 hours a week."
-            },
-            {
-                "question": "What is the work environment and culture like at the company?",
-                "answer": "In the 2 departments I worked in, they have a high turnover rate because the management team leaves everything to be desired."
-            },
-            {
-                "question": "What is a typical day like for you at the company?",
-                "answer": "Day-to-day can be okay unless you're being micromanaged."
-            },
-            {
-                "question": "What is the best part of working at the company?",
-                "answer": "The best part of working at Gulfstream was the people..."
-            },
-            {
-                "question": "What is the most stressful part about working at the company?",
-                "answer": "Moving around from one department to another was stressful to me since I didn’t want to disappoint..."
-            },
-            {
-                "question": "What is the work environment and culture like at the company?",
-                "answer": "The environment and culture are always to give the best from you at all times since they provide you with the best equipment and training available in the industry."
-            },
-            {
-                "question": "What is a typical day like for you at the company?",
-                "answer": "Working at Gulfstream is fun because you get used to working in a safe place where everyone does their best and everything always works the way it is supposed to..."
-            }
+             "The pay was nice and some coworkers were great, but overall it's another buddy system company. If you don't fall in line it'll take a lot longer to climb up. They preach about work/life balance, but then expect you to be there 50-60 hours a week. In the 2 departments I worked in, they have a high turnover rate because the management team leaves everything to be desired. Day-to-day can be okay unless you're being micromanaged. The best part of working at Gulfstream was the people... Moving around from one department to another was stressful to me since I didn’t want to disappoint... The environment and culture are always to give the best from you at all times since they provide you with the best equipment and training available in the industry. Working at Gulfstream is fun because you get used to working in a safe place where everyone does their best and everything always works the way it is supposed to..."
+
         ]
     },
     {

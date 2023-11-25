@@ -5,7 +5,10 @@ from urllib.parse import urlencode
 import re
 import json
 import html
-from job import Job
+from src.jobSearchObj.job import Job
+from company import Company
+import reviews
+from src import Keywords
 
 def create_database():
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
@@ -50,9 +53,6 @@ def scrape_indeed_aerospace_jobs():
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
     cursor = conn.cursor()
 
-    company_ids = {}
-    current_company_id = 1
-
     while True:
         
         for offset in range(0, 1010, 10):
@@ -83,9 +83,6 @@ def scrape_indeed_aerospace_jobs():
                             job_city = job.get('jobLocationCity')
                             job_state = job.get('jobLocationState')
                             URL = job.get('thirdPartyApplyUrl')
-                            
-                            if company_name not in company_ids:
-                                company_ids[company_name] = current_company_id
                                 
 
                             if company_reviews:
@@ -128,11 +125,20 @@ def scrape_indeed_aerospace_jobs():
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
                         
-                        tags = 'placeholder'
+                        tags = 0 #placeholder
                         Job.newJob(job_title,tags,current_company_id,job_city,job_state,job_salaryLow, job_salaryHigh, job_description)
 
+                        reviews1 = [] 
+                        for company in reviews.companies:
+                            if company['company_name'].lower() == company_name.lower():
+                                reviews1.extend(company['reviews'])
+                                print(reviews1)
+                        
+                        keywords = Keywords.extractKeywords(reviews1)
+                        company.newCompany(company_name,'Aerospace', keywords, job_description,reviews1) 
+
                         conn.commit()
-                        current_company_id += 1
+
 
                         ## If response contains less than 10 jobs then stop pagination
                         if len(jobs_list) < 10:
