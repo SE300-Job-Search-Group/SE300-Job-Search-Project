@@ -1,4 +1,4 @@
-from companyMatch import companyMatch
+from companyMatch import CompanyMatch
 
 class JobMatch:
     pass

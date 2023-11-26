@@ -9,8 +9,11 @@ def extractKeywords(initial):
     print(initial)
 
     #parse words
-    r = Rake()
-    r.extract_keywords_from_text(initial)
-    rPhrase = r.get_ranked_phrases()
+    if initial == "Reviews Not Found":
+        rPhrase = "none"
+    else:
+        r = Rake()
+        r.extract_keywords_from_text(initial)
+        rPhrase = r.get_ranked_phrases()
 
     return rPhrase

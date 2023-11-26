@@ -14,9 +14,12 @@ class CompanyMatch:
                 numMatches + 1 
         return numMatches
 
-    def normalizeRanking(company_name, work_life_balance, compensation, job_security, management, culture):
+    def userRanking(work_life_balance, compensation, job_security, management, culture):
         # import user's preference for category weight
         normRank = [work_life_balance, compensation, job_security, management, culture] #placeholder for normalized user ranking
+        return normRank
+
+    def normalizeRanking(company_name, normRank):
         # import company scores
         catScores = company.findCompany(company_name).companyInfo[5:9]
 
@@ -26,7 +29,7 @@ class CompanyMatch:
             catRanking = (normRank *cat)/5
 
     # score company
-    def scoreCompany(company_name, work_life_balance, compensation, job_security, management, culture):
+    def scoreCompany(company_name, normRank):
         keywordCompare(company_name)
-        normalizeRanking(company_name, work_life_balance, compensation, job_security, management, culture)
+        normalizeRanking(company_name, normRank)
         Score = (len(numMatches)/len(usrKeywords)) + len(catRating)

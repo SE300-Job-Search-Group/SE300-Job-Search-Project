@@ -1,14 +1,13 @@
 import requests
-#from bs4 import BeautifulSoup
 import sqlite3
 from urllib.parse import urlencode
 import re
 import json
 import html
-from job import Job
+from jobSearchObj.job import Job
 from company import Company
 import reviews
-from src import Keywords
+import Keywords
 
 def create_database():
     conn = sqlite3.connect('indeed_aerospace_jobs.db')
@@ -124,22 +123,25 @@ def scrape_indeed_aerospace_jobs():
                             INSERT INTO jobs (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
-                        
-                        tags = company_name + job_title 
-                        tags = tags.split()
-                        current_company_id = 1
-                        Job.newJob(job_title,tags,current_company_id,job_city,job_state,job_salaryLow, job_salaryHigh, job_description)
 
                         reviews1 = [] 
+                        ratings = []
                         for company in reviews.companies:
                             if company['company_name'].lower() == company_name.lower():
                                 reviews1.extend(company['reviews'])
-                                print(reviews1)
+                                ratA = company['company_rating']
+                                ratB = company.extend(company['additional_ratings'])
+                                ratings = ratA.extend(ratB)
+                            else:
+                                reviews1 = "Reviews Not Found"
+                                ratings = [0, 0, 0, 0, 0, 0]
                         
                         keywords = Keywords.extractKeywords(reviews1)
-                        ratings = []
-                        ratings.extend(company['company_rating' + 'additional_ratings'])
-                        company.newCompany(company_name,'Aerospace', keywords, job_description,ratings) 
+                        Company.newCompany(company_name,'Aerospace', keywords, job_description, ratings) 
+
+                        tags = company_name + job_title 
+                        tags = tags.split()
+                        Job.newJob(job_title,tags,company.getID(Company),job_city,job_state,job_salaryLow, job_salaryHigh, job_description, URL)
 
                         conn.commit()
 
