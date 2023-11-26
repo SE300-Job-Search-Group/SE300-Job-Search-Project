@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 import re
 import json
 import html
-from src.jobSearchObj.job import Job
+from job import Job
 from company import Company
 import reviews
 from src import Keywords
@@ -125,7 +125,9 @@ def scrape_indeed_aerospace_jobs():
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
                         
-                        tags = 0 #placeholder
+                        tags = company_name + job_title 
+                        tags = tags.split()
+                        current_company_id = 1
                         Job.newJob(job_title,tags,current_company_id,job_city,job_state,job_salaryLow, job_salaryHigh, job_description)
 
                         reviews1 = [] 
@@ -135,7 +137,9 @@ def scrape_indeed_aerospace_jobs():
                                 print(reviews1)
                         
                         keywords = Keywords.extractKeywords(reviews1)
-                        company.newCompany(company_name,'Aerospace', keywords, job_description,reviews1) 
+                        ratings = []
+                        ratings.extend(company['additional_ratings'])
+                        company.newCompany(company_name,'Aerospace', keywords, job_description,ratings) 
 
                         conn.commit()
 
