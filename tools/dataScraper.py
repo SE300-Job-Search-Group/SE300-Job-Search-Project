@@ -138,7 +138,7 @@ def scrape_indeed_aerospace_jobs():
                         
                         keywords = Keywords.extractKeywords(reviews1)
                         ratings = []
-                        ratings.extend(company['additional_ratings'])
+                        ratings.extend(company['company_rating' + 'additional_ratings'])
                         company.newCompany(company_name,'Aerospace', keywords, job_description,ratings) 
 
                         conn.commit()
