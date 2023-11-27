@@ -1,10 +1,11 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
-from jobSearchObj import JobHandler, UserHandler
+from jobSearchObj import JobHandler, UserHandler, CompanyMatch
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
 user_handler = UserHandler()
+company_match = CompanyMatch()
 
 @views.route("/home", methods=['GET', 'POST'])
 def home():
@@ -139,15 +140,36 @@ def logout():
     user_handler.logout()
     return redirect(url_for('views.login')) 
 
-@views.route('/job_match', methods=['GET', 'POST'])
-def job_match():
+@views.route('/company_match', methods=['GET', 'POST'])
+def company_match():
     if request.method == 'POST':
-        # Fetch form data
+       
+        company1 = request.form.get('company1')
+        company2 = request.form.get('company2')
         work_life_balance = int(request.form['workLifeBalance'])
         compensation = int(request.form['compensation'])
         job_security = int(request.form['jobSecurity'])
         management = int(request.form['management'])
         culture = int(request.form['culture'])
+
+        company_match.scoreCompany(company1, company2, work_life_balance, compensation, job_security, management, culture)
+        
+        return redirect(url_for('views.company_match_results'))
+
+    return render_template('company_match.html')
+
+@views.route('/company_match_results', methods=['POST'])
+def company_match_results():
+    
+    #company retrieval logic
+
+    return render_template('company_match_results.html')
+
+@views.route('/job_match', methods=['GET', 'POST'])
+def job_match():
+    if request.method == 'POST':
+        # Fetch form data
+        
 
         # Pass user rankings to the job matching algorithm
         #jobMatch.match_jobs(work_life_balance, compensation, job_security, management, culture)
@@ -159,34 +181,13 @@ def job_match():
 
 @views.route('/job_match_results', methods=['GET'])
 def job_match_results():
+
+    selected_job_id = request.form.get('selected_job')
     # Logic to fetch matched jobs based on the job matching algorithm
     # For example:
     matched_jobs = jobMatch.get_matched_jobs() 
 
     return render_template('job_match_results.html', matched_jobs=matched_jobs)
-
-@views.route('/company_match', methods=['GET', 'POST'])
-def company_match():
-    if request.method == 'POST':
-        company1 = request.form.get('company1')
-        company2 = request.form.get('company2')
-
-        # Perform your comparison logic here with company1 and company2
-        # Redirect to job_compare_results with the comparison results
-        #return redirect(url_for('views.company_match_results'))
-
-    return render_template('company_match.html')
-
-@views.route('/company_match_results', methods=['POST'])
-def company_match_results():
-    selected_job_id = request.form.get('selected_job')
-    # Get details of the selected job from the ID and perform comparison logic
-
-    # Replace the following line with your job comparison logic
-    #job retrieval logic
-
-    # Render the job comparison results page
-    return render_template('company_match_results.html')
 
 @views.route("/about")  
 def about():

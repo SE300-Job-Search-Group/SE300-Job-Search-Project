@@ -12,7 +12,27 @@
             <label for="company2">Company 2:</label>
             <input type="text" class="form-control" id="company2" name="company2" required>
         </div>
-        <button type="submit" class="btn btn-primary">Compare</button>
+        <div class="form-group">
+            <label for="workLifeBalance">Work-Life Balance</label>
+            <input type="range" class="form-control-range" id="workLifeBalance" name="workLifeBalance" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="compensation">Compensation and Benefits</label>
+            <input type="range" class="form-control-range" id="compensation" name="compensation" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="jobSecurity">Job Security and Advancement</label>
+            <input type="range" class="form-control-range" id="jobSecurity" name="jobSecurity" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="management">Management</label>
+            <input type="range" class="form-control-range" id="management" name="management" min="0" max="10" value="5">
+        </div>
+        <div class="form-group">
+            <label for="culture">Culture</label>
+            <input type="range" class="form-control-range" id="culture" name="culture" min="0" max="10" value="5">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 {% endblock %}
