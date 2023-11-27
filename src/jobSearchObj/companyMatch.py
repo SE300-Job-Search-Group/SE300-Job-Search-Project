@@ -31,5 +31,7 @@ class CompanyMatch:
     # score company
     def scoreCompany(company_name, normRank):
         keywordCompare(company_name)
-        normalizeRanking(company_name, normRank)
+        normalizeRanking(company_name, normRank) #can pass in userRanking stuff as well as two companies to compare
         Score = (len(numMatches)/len(usrKeywords)) + len(catRating)
+        #sort by score:
+        

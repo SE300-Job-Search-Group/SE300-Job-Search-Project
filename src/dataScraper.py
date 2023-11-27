@@ -99,6 +99,7 @@ def scrape_indeed_aerospace_jobs():
                                 # Remove HTML tags
                                 job_description = html.unescape(job_description)
                                 job_description = re.sub(r'<[^>]*>', '', job_description)
+                                job_description = re.sub(r"'", '', job_description)
                                 
                             else:
                                 job_description = "Description not specified"
@@ -111,12 +112,12 @@ def scrape_indeed_aerospace_jobs():
                             if job_city:
                                 job_city = job_city
                             else:
-                                job_city = "City not specified"
+                                job_city = "Melbourne"
 
                             if job_state:
                                 job_state = job_state
                             else:
-                                job_state = "State not specified"
+                                job_state = "FL"
                          
                         
                         cursor.execute('''
@@ -125,26 +126,30 @@ def scrape_indeed_aerospace_jobs():
                         ''', (company_name, company_reviews, job_title, job_description, job_salaryHigh, job_salaryLow, job_keywords, job_city, job_state, URL))
 
                         reviews1 = [] 
-                        ratings = []
+                        print(company_name)
                         for company in reviews.companies:
+                            ratings = []
                             if company['company_name'].lower() == company_name.lower():
-                                reviews1.extend(company['reviews'])
-                                ratA = company['company_rating']
-                                ratB = company.extend(company['additional_ratings'])
-                                ratings = ratA.extend(ratB)
+                                reviews1 = company['reviews']
+                                ratings.append(company['company_rating'])  # Adding the main company rating
+                                ratings.extend(company['additional_ratings'])
+                                print(ratings)
+                                break
                             else:
                                 reviews1 = "Reviews Not Found"
-                                ratings = [0, 0, 0, 0, 0, 0]
-                        
+                                ratings = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                        print('DEBUG(REVIEWS): '+str(reviews1))
+                        print('DEBUG(RATINGS):'+str(ratings))
                         keywords = Keywords.extractKeywords(reviews1)
-                        Company.newCompany(company_name,'Aerospace', keywords, job_description, ratings) 
+
+                        #create loop to skip over companies already in database
+                        tempComp = Company().newCompany(company_name,'Aerospace', keywords, job_description, ratings) 
 
                         tags = company_name + job_title 
                         tags = tags.split()
-                        Job.newJob(job_title,tags,company.getID(Company),job_city,job_state,job_salaryLow, job_salaryHigh, job_description, URL)
+                        Job().newJob(job_title,tags,tempComp.getID(),job_city,job_state,job_salaryLow, job_salaryHigh, job_description, URL)
 
                         conn.commit()
-
 
                         ## If response contains less than 10 jobs then stop pagination
                         if len(jobs_list) < 10:
