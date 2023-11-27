@@ -96,7 +96,7 @@ companies = [
         "reviews": ["Raytheon Technologies was definitely a fun and easy going place to work at. Everyday there was something new to work on and people were generally happy. Willing to teach, etc. Only issue I had was switching shifts, despite this it's still a fun place to work at and I recommend for machinists. Raytheon Technologies was definitely a fun and easy going place to work at. Everyday there was something new to work on and people were generally happy. Willing to teach, etc. Only issue I had was switching shifts, despite this it's still a fun place to work at and I recommend for machinists."        ]
     },
     {
-        "company_name": "Lockheed Martin",
+        "company_name": "Lockheed Martin Technologies",
         "company_rating": 4.0,
         "additional_ratings": [3.9, 4.0, 3.5, 3.5, 3.7],
         "reviews": ["I work in one of the major R&D divisions at LM, and this job provides everything you traditionally want in a job, but not much more. The work is interesting, the office culture is very laid-back and supportive, and the pay is decent. The 4/10-flex schedule is also a godsend. If you're young and looking for adventure, or if you have some deep need to self-actualize and your true passion is not necessarily technical research, this may not be the best long-term choice (though the fantastic schedule also means you'll have time for personal development). However, if you're looking for a good, stable job with interesting work, or if you're deeply passionate about a specific research area, this will be a fantastic job for you. The overall experience at the company has been satisfactory, but there are areas for improvement. Communication within the team could be more transparent, and there's a need for better-defined roles and responsibilities. Additionally, the work-life balance has been somewhat challenging due to occasional tight deadlines. While there are positive aspects, addressing these concerns could enhance the overall work environment"]
@@ -159,6 +159,6 @@ companies = [
 
 
 # Accessing information
-print("Company Name:", companies[0]["company_name"])
-print("Company Rating:", companies[0]["company_rating"])
+#print("Company Name:", companies[0]["company_name"])
+#print("Company Rating:", companies[0]["company_rating"])
 

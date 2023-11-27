@@ -2,7 +2,7 @@ import sqlite3
 
 class GenericDatabaseHandler:
     def __init__(self):
-        dir = "./database/test.db"
+        dir = "./database/main.db"
         self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
@@ -102,7 +102,7 @@ class CompanyDBHandler(GenericDatabaseHandler):
         newID = maxID + 1
 
         inputStr = "("+str(newID)+",'"+name+"',"+str(industry_id)+",'"+desc+"',"+str(rating)+","+str(r_wl)+","+str(r_pb)+","+str(r_cr)+","+str(r_mm)+","+str(r_ct)+")"
-        print(inputStr)
+        print('DEBUG (COMPANY INPUT TO DB):'+inputStr)
         self.dbctrl.execute("INSERT OR IGNORE INTO companies VALUES "+inputStr)
 
         return newID
@@ -141,6 +141,7 @@ class JobDBHandler(GenericDatabaseHandler):
         newID = maxID + 1
 
         inputStr = "("+str(newID)+",'"+title+"',"+str(company_id)+","+str(locID)+","+str(maxSal)+","+str(minSal)+",'"+desc+"','"+url+"')"
+        print('DEBUG(JOB INPUT TO DB): '+inputStr)
         tempResults = self.dbctrl.execute("INSERT OR IGNORE INTO jobs VALUES "+inputStr)
 
         return newID

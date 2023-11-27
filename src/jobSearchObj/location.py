@@ -45,8 +45,13 @@ class Location:
         else: # creates new location & writes to db
             geocoder = OpenCageGeocode(self.key)
             res = geocoder.geocode(self.city+' '+self.state)
-            self.lat = res[0]['geometry']['lat']
-            self.long = res[0]['geometry']['lng']
+            try:
+                self.lat = res[0]['geometry']['lat']
+                self.long = res[0]['geometry']['lng']
+            except:
+                res = geocoder.geocode('Ann Arbor, MI')
+                self.lat = res[0]['geometry']['lat']
+                self.long = res[0]['geometry']['lng']
 
             #write to db
             self.id = dbh.addLocation(self.city,self.state,self.lat,self.long)
