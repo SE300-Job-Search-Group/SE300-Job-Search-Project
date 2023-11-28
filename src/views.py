@@ -1,11 +1,12 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
-from jobSearchObj import JobHandler, UserHandler, CompanyMatch
+from jobSearchObj import JobHandler, UserHandler, CompanyMatch, CompanyDBHandler
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
 user_handler = UserHandler()
-company_match = CompanyMatch()
+match_company = CompanyMatch()
+search_company = CompanyDBHandler()
 
 @views.route("/home", methods=['GET', 'POST'])
 def home():
@@ -143,27 +144,72 @@ def logout():
 @views.route('/company_match', methods=['GET', 'POST'])
 def company_match():
     if request.method == 'POST':
-       
         company1 = request.form.get('company1')
         company2 = request.form.get('company2')
-        work_life_balance = int(request.form['workLifeBalance'])
-        compensation = int(request.form['compensation'])
-        job_security = int(request.form['jobSecurity'])
-        management = int(request.form['management'])
-        culture = int(request.form['culture'])
 
-        company_match.scoreCompany(company1, company2, work_life_balance, compensation, job_security, management, culture)
-        
-        return redirect(url_for('views.company_match_results'))
+        # Handling the conversion to integers with error handling
+        try:
+            work_life_balance = int(request.form['workLifeBalance'])
+            compensation = int(request.form['compensation'])
+            job_security = int(request.form['jobSecurity'])
+            management = int(request.form['management'])
+            culture = int(request.form['culture'])
+            print(work_life_balance, type(work_life_balance))
+        except (KeyError, ValueError) as e:
+            # Handle the case where the form input is missing or not an integer
+            return "Error: Please provide valid integer values for the ratings."
+
+        return redirect(url_for('views.company_match_results',
+                                company1=company1,
+                                company2=company2,
+                                work_life_balance=work_life_balance,
+                                compensation=compensation,
+                                job_security=job_security,
+                                management=management,
+                                culture=culture))
 
     return render_template('company_match.html')
 
-@views.route('/company_match_results', methods=['POST'])
-def company_match_results():
-    
-    #company retrieval logic
 
-    return render_template('company_match_results.html')
+@views.route('/company_match_results', methods=['GET', 'POST'])
+def company_match_results():
+    if request.method == 'POST':
+        # Retrieve data from the submitted form
+        company1 = request.form.get('company1')
+        company2 = request.form.get('company2')
+        work_life_balance = request.form.get('workLifeBalance')
+        compensation = request.form.get('compensation')
+        job_security = request.form.get('jobSecurity')
+        management = request.form.get('management')
+        culture = request.form.get('culture')
+
+        # Check if any of the values retrieved are None before converting to int
+        if None in (work_life_balance, compensation, job_security, management, culture):
+            return "Error: Please provide values for all ratings."
+
+        # Convert the retrieved values to integers
+        try:
+            work_life_balance = int(work_life_balance)
+            compensation = int(compensation)
+            job_security = int(job_security)
+            management = int(management)
+            culture = int(culture)
+        except ValueError:
+            return "Error: Please provide valid integer values for the ratings."
+
+        # Call the scoreCompany method passing the retrieved variables
+        matched_companies = match_company.scoreCompany(
+            company1, company2, work_life_balance, compensation, job_security, management, culture)
+
+        # Retrieve Company objects based on company names
+        company1Obj = search_company.searchByName(matched_companies[0])
+        company2Obj = search_company.searchByName(matched_companies[1])
+
+        # Pass the matched companies to the template
+        return render_template('company_match_results.html', company1Obj=company1Obj, company2Obj=company2Obj)
+
+    return "Error: This route only accepts POST requests."
+
 
 @views.route('/job_match', methods=['GET', 'POST'])
 def job_match():
@@ -182,10 +228,10 @@ def job_match():
 @views.route('/job_match_results', methods=['GET'])
 def job_match_results():
 
-    selected_job_id = request.form.get('selected_job')
+    
     # Logic to fetch matched jobs based on the job matching algorithm
     # For example:
-    matched_jobs = jobMatch.get_matched_jobs() 
+    
 
     return render_template('job_match_results.html', matched_jobs=matched_jobs)
 

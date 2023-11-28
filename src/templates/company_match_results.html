@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 {% block title %} Company Match Results {% endblock %}
 {% block content %}
+<div class="container">
+    <h1>Company Match Results</h1>
 
+    <!-- Displaying the matched companies in cards -->
+    <div class="card">
+        <div class="card-header">
+            Best Match
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ company1.getName() }}</h5>
+            <!-- Additional information or details about the first company -->
+            <a href="{{ company1.getLink() }}" class="btn btn-primary" target="_blank">Visit Company Website</a>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            Other Match
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ company2.getName() }}</h5>
+            <!-- Additional information or details about the second company -->
+            <a href="{{ company2.getLink() }}" class="btn btn-primary" target="_blank">Visit Company Website</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

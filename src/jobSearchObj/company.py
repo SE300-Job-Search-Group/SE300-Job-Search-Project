@@ -59,7 +59,7 @@ class Company:
             self.id = companyInfo[0]
             self.name = companyInfo[1]
             self.industry = Industry().fillByID(companyInfo[2])
-            self.description = companyInfo[3]
+            self.link = companyInfo[3]
             self.rating = companyInfo[4]
             self.rating_wl = companyInfo[5]
             self.rating_pb = companyInfo[6]
@@ -149,8 +149,8 @@ class Company:
             tempKwds.append(kw.getWord())
         return tempKwds
     
-    def getDesc(self):
-        return self.description
+    def getLink(self):
+        return self.link
     
     def getRating(self):
         return [self.rating, self.rating_wl, self.rating_pb, self.rating_career, self.rating_management, self.rating_culture]
