@@ -7,7 +7,8 @@ class CompanyMatch:
 
     # loop to compare user keywords from profile to keywords from company reviews
     def keywordCompare(self, company_name1, company_name2):
-        usrKeywords = User().getKeywords() #import user keywords stored in SQL
+        avgJoe = User()
+        usrKeywords = avgJoe.getKeywords() #import user keywords stored in SQL
         # usrKeywords = ["good", "nice"] # test
         numMatches1 = 0 
         numMatches2 = 0
