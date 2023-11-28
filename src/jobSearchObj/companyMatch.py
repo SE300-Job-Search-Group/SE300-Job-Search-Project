@@ -54,6 +54,6 @@ class CompanyMatch:
         return matches
         
 # test:
-cm = CompanyMatch()
-matches = cm.scoreCompany("Northrop Grumman", "Lockheed Martin", 1, 3, 5, 7, 9)
-print(matches)
+#cm = CompanyMatch()
+#matches = cm.scoreCompany("Northrop Grumman", "Lockheed Martin", 1, 3, 5, 7, 9)
+#print(matches)
