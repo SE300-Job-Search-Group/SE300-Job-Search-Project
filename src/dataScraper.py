@@ -82,6 +82,8 @@ def scrape_indeed_aerospace_jobs():
                             job_city = job.get('jobLocationCity')
                             job_state = job.get('jobLocationState')
                             URL = job.get('thirdPartyApplyUrl')
+                            if job.get('companyOverviewLink') is not None:
+                                companyURL = "https://www.indeed.com/" + job.get('companyOverviewLink')
                                 
 
                             if company_reviews:
@@ -118,6 +120,11 @@ def scrape_indeed_aerospace_jobs():
                                 job_state = job_state
                             else:
                                 job_state = "FL"
+
+                            if companyURL:
+                                companyURL = companyURL
+                            else:
+                                companyURL = "https://www.indeed.com/cmp/Neumeier-Engineering-1"
                          
                         
                         cursor.execute('''
@@ -143,7 +150,7 @@ def scrape_indeed_aerospace_jobs():
                         keywords = Keywords.extractKeywords(reviews1)
 
                         #create loop to skip over companies already in database
-                        tempComp = Company().newCompany(company_name,'Aerospace', keywords, job_description, ratings) 
+                        tempComp = Company().newCompany(company_name,'Aerospace', keywords, companyURL, ratings) 
 
                         tags = company_name + job_title 
                         tags = tags.split()
