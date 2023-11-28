@@ -40,8 +40,8 @@ class CompanyMatch:
     def scoreCompany(self, company_name1, company_name2, work_life_balance, compensation, job_security, management, culture):
         usrKeywords, numMatches1, numMatches2 = self.keywordCompare(company_name1, company_name2)
         catRanking1, catRanking2 = self.normalizeRanking(company_name1, company_name2,work_life_balance, compensation, job_security, management, culture) #can pass in userRanking stuff as well as two companies to compare
-        if usrKeywords<1:
-            usrKeywords = 1
+        if len(usrKeywords)<1:
+            usrKeywords = "word"
         Score1 = (numMatches1/len(usrKeywords)) + sum(catRanking1)/5
         Score2 = (numMatches2/len(usrKeywords)) + sum(catRanking2)/5
         #sort by score:
@@ -54,6 +54,6 @@ class CompanyMatch:
         return matches
         
 # test:
-# cm = CompanyMatch()
-# matches = cm.scoreCompany("Northrop Grumman", "Lockheed Martin", 1, 3, 5, 7, 9)
-# print(matches)
+cm = CompanyMatch()
+matches = cm.scoreCompany("Northrop Grumman", "Lockheed Martin", 1, 3, 5, 7, 9)
+print(matches)
