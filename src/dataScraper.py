@@ -58,7 +58,7 @@ def scrape_indeed_aerospace_jobs():
             indeed_jobs_url = get_indeed_search_url("aerospace", "United States", offset)
             response = requests.get(scrapeops_url(indeed_jobs_url))
             script_tag = re.search(r'window.mosaic.providerData\["mosaic-provider-jobcards"\]=(\{.+?\});', response.text)
-
+            print(response.status_code)
             if response.status_code == 200:
                 
                 if script_tag is not None:
@@ -84,7 +84,9 @@ def scrape_indeed_aerospace_jobs():
                             URL = job.get('thirdPartyApplyUrl')
                             if job.get('companyOverviewLink') is not None:
                                 companyURL = "https://www.indeed.com" + job.get('companyOverviewLink')
-                                
+                            else:
+                                companyURL = "https://www.indeed.com"
+
                             if company_name:
                                 company_name = company_name
                                 company_name = re.sub(r"'", '', company_name)
