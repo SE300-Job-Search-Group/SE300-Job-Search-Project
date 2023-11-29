@@ -11,7 +11,7 @@ class Company:
         self.name = None
         self.industry = None # Industry Object
         self.keywords = [] # list of Keyword Object
-        self.description = None
+        self.link = None
         self.rating = None
         self.rating_wl = None
         self.rating_pb = None
@@ -33,7 +33,7 @@ class Company:
             self.id = companyInfo[0]
             self.name = companyInfo[1]
             self.industry = Industry().fillByID(companyInfo[2])
-            self.description = companyInfo[3]
+            self.link = companyInfo[3]
             self.rating = companyInfo[4]
             self.rating_wl = companyInfo[5]
             self.rating_pb = companyInfo[6]

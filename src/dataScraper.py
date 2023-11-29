@@ -83,7 +83,7 @@ def scrape_indeed_aerospace_jobs():
                             job_state = job.get('jobLocationState')
                             URL = job.get('thirdPartyApplyUrl')
                             if job.get('companyOverviewLink') is not None:
-                                companyURL = "https://www.indeed.com/" + job.get('companyOverviewLink')
+                                companyURL = "https://www.indeed.com" + job.get('companyOverviewLink')
                                 
 
                             if company_reviews:

@@ -1,12 +1,12 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
 from flask_paginate import Pagination, get_page_parameter
-from jobSearchObj import JobHandler, UserHandler, CompanyMatch, CompanyDBHandler
+from jobSearchObj import JobHandler, UserHandler, CompanyMatch, Company
 
 views = Blueprint(__name__, "views")
 job_handler = JobHandler()
 user_handler = UserHandler()
 match_company = CompanyMatch()
-search_company = CompanyDBHandler()
+search_company = Company()
 
 @views.route("/home", methods=['GET', 'POST'])
 def home():
@@ -200,14 +200,17 @@ def company_match_results():
         # Call the scoreCompany method passing the retrieved variables
         matched_companies = match_company.scoreCompany(
             company1, company2, work_life_balance, compensation, job_security, management, culture)
-
+        print(matched_companies)
         # Retrieve Company objects based on company names
-        company1Obj = search_company.searchByName(matched_companies[0])
-        company2Obj = search_company.searchByName(matched_companies[1])
+        company1Obj = Company().findCompany(matched_companies[0])
+        print(company1Obj.getName())  # Check if getName() method works
+        print(company1Obj.getLink())  # Check if getLink() method works
+        company2Obj = Company().findCompany(matched_companies[1])
+        print(company2Obj.getName())  # Check if getName() method works
+        print(company2Obj.getLink())  # Check if getLink() method works
 
         # Pass the matched companies to the template
         return render_template('company_match_results.html', company1Obj=company1Obj, company2Obj=company2Obj)
-
     return "Error: This route only accepts POST requests."
 
 
