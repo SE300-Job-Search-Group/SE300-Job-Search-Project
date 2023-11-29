@@ -228,16 +228,6 @@ def job_match():
 
     return render_template('job_match.html', matched_companies=matched_companies, matched_jobs=matched_jobs)
 
-@views.route('/job_match_results', methods=['GET'])
-def job_match_results():
-
-    
-    # Logic to fetch matched jobs based on the job matching algorithm
-    # For example:
-    
-
-    return render_template('job_match_results.html', matched_jobs=matched_jobs)
-
 @views.route("/about")  
 def about():
     return render_template("about.html")
