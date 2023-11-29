@@ -1,5 +1,4 @@
 from flask import Blueprint, request, session, render_template, redirect, url_for
-from flask_paginate import Pagination, get_page_parameter
 from jobSearchObj import JobHandler, UserHandler, CompanyMatch, Company
 
 views = Blueprint(__name__, "views")
@@ -33,19 +32,12 @@ def home():
 
 
 @views.route("/search_results", methods=['GET'])
-@views.route("/search_results/<int:page>", methods=['GET'])
-def search_results(page=1):
-    jobs=job_handler.getJobs()
-    per_page = 10  # Jobs per page
+def search_results():
+    jobs = job_handler.getJobs()
+    print(jobs)
 
-    # Paginate the matching_jobs
-    pagination = Pagination(jobs, page=page, per_page=per_page)
+    return render_template('search_results.html', jobs=jobs)
 
-    start_idx = (page - 1) * per_page
-    end_idx = start_idx + per_page
-    jobs = jobs[start_idx:end_idx]  # Get the jobs for the current page
-
-    return render_template('search_results.html', jobs=jobs, pagination=pagination)
 
 @views.route("/register", methods=["GET", "POST"])
 def register():
@@ -216,15 +208,8 @@ def company_match_results():
 @views.route('/job_match', methods=['GET', 'POST'])
 def job_match():
     
-    # Retrieve matched_companies from the session
     matched_companies = session.get('matched_companies')
-    print(matched_companies[0])
-    print(type(matched_companies[0]))
-    #company = Company().findCompany(matched_companies[0])
-    #companyID = company.getID()
-    #print(companyID)
     matched_jobs = JobHandler().searchTags(matched_companies[0])
-    print(matched_jobs)
 
     return render_template('job_match.html', matched_companies=matched_companies, matched_jobs=matched_jobs)
 

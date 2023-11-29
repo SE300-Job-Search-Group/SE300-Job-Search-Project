@@ -112,6 +112,9 @@ class Job:
     def getCompanyID(self):
         return self.company_id
     
+    def getCompanyName(self):
+        return Company().fillByID(self.id).getName()
+    
     def getCompany(self):
         return Company().fillByID(self.company_id)
     
