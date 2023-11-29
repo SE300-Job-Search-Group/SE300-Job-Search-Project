@@ -31,8 +31,8 @@ class Job:
             self.title = jobInfo[1]
             self.company_id = jobInfo[2]
             self.location = Location().fillByID(jobInfo[3])
-            self.minSalary = jobInfo[4]
-            self.maxSalary = jobInfo[5]
+            self.maxSalary = jobInfo[4]
+            self.minSalary = jobInfo[5]
             self.description = jobInfo[6]
             self.url = jobInfo[7]
 

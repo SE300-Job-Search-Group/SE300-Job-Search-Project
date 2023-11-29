@@ -42,9 +42,7 @@ class JobHandler:
             tag_ids.append(Tag().fillbyName(kw).getID())
 
         #fetch job data
-        print(tag_ids)
         job_ids = jsdb.searchByTags(tag_ids,numMatches)
-        print(job_ids)
         jobs = []
 
         for id in job_ids:

@@ -230,7 +230,6 @@ class JobSearchDBHandler(GenericDatabaseHandler):
         for id in tag_ids:
             tag_id_phrase = tag_id_phrase +str(id)+","
         tag_id_phrase = tag_id_phrase.rstrip(tag_id_phrase[-1])
-        print(tag_id_phrase)
         tempResults = self.dbctrl.execute("""
             SELECT job_id FROM job_tag
                 WHERE tag_id IN ("""+tag_id_phrase+""") 

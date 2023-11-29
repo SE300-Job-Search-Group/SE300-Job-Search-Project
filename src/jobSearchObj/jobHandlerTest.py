@@ -1,14 +1,14 @@
 from jobHandler import JobHandler
 
-test_keywords = ['Lockheed','Martin']
+test_keywords = ['PathFinder']
 
 jh = JobHandler()
 
 test_result = jh.searchTags(test_keywords)
 
 for job in test_result:
-    print(str(job.getID()))
-    print(str(job.getSalaryRange()))
+    print('TESTING: JOB ID: '+str(job.getID()))
+    print(str(job.getMinSalary()))
 
 """
 # general search function
