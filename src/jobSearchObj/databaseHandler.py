@@ -2,8 +2,9 @@ import sqlite3
 
 class GenericDatabaseHandler:
     def __init__(self):
-        dir = "./database/main.db"
-        self.db = sqlite3.connect(dir)
+        #dir = "./database/main.db"
+        self.db = sqlite3.connect('./database/main.db', check_same_thread=False)
+        #self.db = sqlite3.connect(dir)
         self.dbctrl = self.db.cursor()
     
     #Generic Commands

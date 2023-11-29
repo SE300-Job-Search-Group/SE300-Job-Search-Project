@@ -1,6 +1,5 @@
 from companyMatch import CompanyMatch
 from user import User
-
 class JobMatch:
 
     def userMatch(self, user: User) -> float:

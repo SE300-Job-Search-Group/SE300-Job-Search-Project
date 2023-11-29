@@ -1,6 +1,6 @@
 import sqlite3
 
-db = sqlite3.connect("./database/test.db")
+db = sqlite3.connect("./database/main.db")
 cur = db.cursor()
 
 def viewJobs():
