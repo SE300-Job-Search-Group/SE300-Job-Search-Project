@@ -67,6 +67,8 @@ class Job:
         for tag in self.tags:
             tempJobTags.append((tag.getID(),self.id))
 
+        dbh.writeTags(tempJobTags)
+
         dbh.close()
         return self
 

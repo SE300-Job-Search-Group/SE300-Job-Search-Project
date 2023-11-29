@@ -3,12 +3,14 @@ from words import Tag, Keyword, Skill
 
 dbh = GenericDatabaseHandler()
 
-print(dbh.getTable("tags"))
+print(dbh.getTable("job_tag"))
+"""
 print(dbh.getTable("keywords"))
 print(dbh.getTable("skills"))
 print(dbh.getTable('locations'))
 print(dbh.getTable('companies'))
 print(dbh.getTable('jobs'))
+"""
 
 dbh.close()
 

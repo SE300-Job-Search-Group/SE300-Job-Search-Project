@@ -18,7 +18,7 @@ print("URL: ", tempJob.getURL(),type(tempJob.getURL()))
 
 tempTitle = "CEO"
 tempTags = ['PathFinder', 'Manager', 'C-Suite', 'Executive']
-tempComp = Company().findCompany('PathFinder')
+tempComp = Company().findCompany('ULA')
 tempMinSal = 0
 tempMaxSal = 1
 tempCity = 'Daytona Beach'

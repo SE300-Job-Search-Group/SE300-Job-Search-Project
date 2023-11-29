@@ -1,6 +1,6 @@
 from jobHandler import JobHandler
 
-test_keywords = ['PathFinder','Engineer','Software']
+test_keywords = ['Lockheed','Martin']
 
 jh = JobHandler()
 
@@ -10,7 +10,7 @@ for job in test_result:
     print(str(job.getID()))
     print(str(job.getSalaryRange()))
 
-
+"""
 # general search function
 
 #inputs
@@ -27,3 +27,4 @@ for job in test_result:
     print(str(job.getID()))
     print(str(job.getSalaryRange()))
 
+"""
