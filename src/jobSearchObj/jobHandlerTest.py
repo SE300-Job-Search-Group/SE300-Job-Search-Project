@@ -1,14 +1,20 @@
 from jobHandler import JobHandler
 
-test_keywords = ['PathFinder']
+test_keywords = ['Engineer']
+test_company = None
+test_city = None
+test_state = None
+test_distance = None
+test_sal_min = None
+test_sal_max = None
 
 jh = JobHandler()
 
-test_result = jh.searchTags(test_keywords)
+test_result = jh.searchDB(test_keywords,test_company,test_city,test_state,test_distance,test_sal_min,test_sal_max)
 
 for job in test_result:
-    print('TESTING: JOB ID: '+str(job.getID()))
-    print(str(job.getMinSalary()))
+    print('[TESTING]JOB ID: '+str(job.getID()))
+    print('[TESTING]SALARY RANGE: '+str(job.getSalaryRange()))
 
 """
 # general search function

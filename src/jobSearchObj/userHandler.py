@@ -10,6 +10,7 @@ class UserHandler:
 
     #methods
     def login(self, user: str, password: str) -> Union[bool, int]:
+        self.curUser = User()
         # Assuming self.curUser is an instance of the user class
         loginSuccess = self.curUser.login(user, password)
 
@@ -49,7 +50,6 @@ class UserHandler:
         #location object
         location = Location().assignID(new_city, new_state)
         self.curUser.updateUser(keywords,skills,location,new_minSal,new_maxSal)
-
 
     #functions
     def userUsername(self):
