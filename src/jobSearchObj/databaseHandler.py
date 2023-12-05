@@ -195,6 +195,7 @@ class UserDBHandler(GenericDatabaseHandler):
     
     def writeUser(self,id,username,password,location_id,minSalary,maxSalary): #writes a new user to the user table in DB
         inputstr = "("+str(id)+",'"+username+"','"+password+"',"+str(location_id)+','+str(minSalary)+','+str(maxSalary)+')'
+        self.dbctrl.execute("""DELETE FROM users WHERE user_id = """+str(id))
         self.dbctrl.execute("""INSERT INTO users  VALUES """+inputstr)
         
     def writeUserKeywords(self,user_kw_list: list): #write user keyword associations to user_keyword table in db
