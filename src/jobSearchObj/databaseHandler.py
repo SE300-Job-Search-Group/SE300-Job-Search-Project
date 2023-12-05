@@ -116,6 +116,7 @@ class CompanyDBHandler(GenericDatabaseHandler):
 class ReviewDBHandler(GenericDatabaseHandler):
     def searchByID(self,id:int):
         tempResults = self.dbctrl.execute('SELECT * FROM reviews WHERE review_id = '+str(id))
+        return tempResults.fetchone()
 
     def writeReview(self,company_id: int,review:str):
         tempResults = self.dbctrl.execute('SELECT MAX(review_id) FROM reviews')
